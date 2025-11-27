@@ -54,6 +54,7 @@ namespace ClientServicing.Main.Resources.Helper
                     {
                         var requestObj = requestContent.Value;
                         var type = requestObj.GetType();
+                        //Request Body Properties
                         foreach (var prop in type.GetProperties())
                         {
                             var value = prop.GetValue(requestObj);

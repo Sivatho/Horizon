@@ -13,7 +13,7 @@ namespace ClientServicing.Test.Tests.API.TDD
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task GivenBankRequestIsNotNull_WhenFetchBanks_ThenValidateResponseSuccess_ANDReposneContentNotNull_AndFieldDataTypesAreCorrect() {
+        public async Task GivenBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid() {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "BankRequestIsNotNull.json"));
@@ -24,10 +24,10 @@ namespace ClientServicing.Test.Tests.API.TDD
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
             //Assert
-            ValidateResponseCodeIsOkAndResponseIsNotNullAndResponseDataTypesIsValid(response, fetchBanksResponse);
+            ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, fetchBanksResponse);
         }
         [Test]
-        public async Task GivenBankRequestIsNull_WhenFetchBanks_ThenValidateResponseSuccess_ANDReposneContentNotNull_AndFieldDataTypesAreCorrect()
+        public async Task GivenBankRequestIsNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
@@ -38,8 +38,9 @@ namespace ClientServicing.Test.Tests.API.TDD
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
             //Assert
-            ValidateResponseCodeIsOkAndResponseIsNotNullAndResponseDataTypesIsValid(response, fetchBanksResponse);
+            ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, fetchBanksResponse);
         }
+       
         private FetchBanksResponse populateFetchBanksResponse(RestResponse response)
         {
             using JsonDocument doc = JsonDocument.Parse(response.Content);
@@ -86,7 +87,7 @@ namespace ClientServicing.Test.Tests.API.TDD
             }
             return fetchBanksResponse;
         }
-        private void ValidateResponseCodeIsOkAndResponseIsNotNullAndResponseDataTypesIsValid(RestResponse response, FetchBanksResponse fetchBanksResponse)
+        private void ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(RestResponse response, FetchBanksResponse fetchBanksResponse)
         {
             // Http Status Code
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");

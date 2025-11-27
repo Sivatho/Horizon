@@ -1,7 +1,7 @@
 {
     "bankID": 2,
-    "bankName": "",
-    "bankShortName": "",
+    "bankName": "Nedbank Limited",
+    "bankShortName": "Nedbank",
     "dispSeq": 0,
     "isActive": true,
     "lastChanged": null,

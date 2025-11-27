@@ -60,7 +60,7 @@ namespace ClientServicing.Main.Controller
             }
         }
 
-        public async Task<RestResponse> GetBankingDetailHistoryAsync(string policyNo)
+        public async Task<RestResponse> GetBankingDetailHistoryAsync(int policyNo)
         {
             try
             {

@@ -74,7 +74,6 @@ namespace ClientServicing.Test.Tests.API.TDD
             }
             return getBankDetailHistoryResponse;
         }
-
         private void Then_ValidateGetBankDetailHistoryResponse_WhenResponseCodeIsOk_When_ExecutionOutcome_ANDDataIsNull_WhenPropertyDataTypesIsValid(RestResponse response, GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
             // Http Status Code
@@ -117,6 +116,11 @@ namespace ClientServicing.Test.Tests.API.TDD
             //Response Content
             Assert.That(getBankDetailHistoryResponse.executionOutcome, Is.Not.Null, "GetBank Detail History Response: Execution Outcome should not be null");
             Assert.That(getBankDetailHistoryResponse.data, Is.Null.Or.Empty, "GetBank Detail History Response: Data should null");
+
+            //Validate Each Object Data Types
+            Assert.That(getBankDetailHistoryResponse.executionOutcome.succeeded, Is.TypeOf<bool>());
+            Assert.That(getBankDetailHistoryResponse.executionOutcome.message, Is.Null.Or.TypeOf<string?>());
+            Assert.That(getBankDetailHistoryResponse.executionOutcome.errors, Is.Null.Or.TypeOf<string?>());
         }
     }
 }

@@ -26,19 +26,17 @@ namespace ClientServicing.Main.Resources.Helper
         }
         public void LogRequestAndResponse(RestRequest restRequest, RestResponse response)
         {
-
+            // Response Logging
             Console.WriteLine("======================================================================");
             Console.WriteLine("Request:");
             Console.WriteLine($"\tMethod: {restRequest.Method}");
             Console.WriteLine($"\tResource: {restRequest.Resource}");
-
             // Request Headers
-            Console.WriteLine("\tHeaders:");
-            foreach (var header in restRequest.Parameters.Where(p => p.Type == ParameterType.HttpHeader))
+            Console.WriteLine("\tParameters:");
+            foreach (var parameter in restRequest.Parameters.Where(p => p.Type == ParameterType.GetOrPost))
             {
-                Console.WriteLine($"\t\t{header.Name}: {header.Value}");
+                Console.WriteLine($"\t\t{parameter.Name}: {parameter.Value}");
             }
-
             // Request Body
             var requestContent = restRequest.Parameters.FirstOrDefault(p => p.Type == ParameterType.RequestBody);
             if (requestContent != null)
@@ -71,7 +69,8 @@ namespace ClientServicing.Main.Resources.Helper
             // Response Logging
             Console.WriteLine("\n======================================================================");
             Console.WriteLine("Response:");
-
+            //Response Base URI
+            Console.WriteLine($"Response Uri: {response.ResponseUri}");
             // Response Headers
             Console.WriteLine("\tHeaders:");
             if (response.Headers != null)
@@ -81,10 +80,8 @@ namespace ClientServicing.Main.Resources.Helper
                     Console.WriteLine($"\t\t{header.Name}: {header.Value}");
                 }
             }
-
-            // Status Code
+            // Response Status Code
             Console.WriteLine($"\tStatus Code: {response.StatusCode}");
-
             // Response Body
             Console.WriteLine("\tBody:");
             Console.WriteLine($"\t\t{response.Content}");

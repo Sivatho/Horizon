@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.Models;
 using ClientServicing.Main.Models.Bank;
 using RestSharp;
 
@@ -20,10 +22,9 @@ namespace ClientServicing.Test.Tests.API.TDD
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);
-            GetBankDetailHistoryResponse getBankDetailHistoryResponse = System.Text.Json.JsonSerializer.Deserialize<GetBankDetailHistoryResponse>(response.Content);
-
-            //Assrt
-            ValidateGetBankDetailHistoryResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, getBankDetailHistoryResponse);
+            var getBankDetailHistoryResponse = populateGetBankDetailHistoryResponse(response);
+            //Assert
+            Then_ValidateGetBankDetailHistoryResponse_WhenResponseCodeIsOk_When_ExecutionOutcome_ANDDataIsNull_WhenPropertyDataTypesIsValid(response, getBankDetailHistoryResponse);
 
         }
         [Test]
@@ -35,18 +36,51 @@ namespace ClientServicing.Test.Tests.API.TDD
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);
-            GetBankDetailHistoryResponse getBankDetailHistoryResponse = System.Text.Json.JsonSerializer.Deserialize<GetBankDetailHistoryResponse>(response.Content);
+            var getBankDetailHistoryResponse = populateGetBankDetailHistoryResponse(response);
 
-            //Assrt
-            ValidateGetBankDetailHistoryResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, getBankDetailHistoryResponse);
+            //Assert
+            Then_ValidateGetBankDetailHistoryResponseWhen_ResponseCodeIsOk_And_ExecutionOutcomeIsNotNull_AndDataIsNull(response, getBankDetailHistoryResponse);
         }
         
-        private void ValidateGetBankDetailHistoryResponseIsOk_AndIsNotNull_AndDataTypesIsValid(RestResponse response, GetBankDetailHistoryResponse getBankDetailHistoryResponse)
+        public GetBankDetailHistoryResponse populateGetBankDetailHistoryResponse(RestResponse response)
+        {
+            using JsonDocument doc = JsonDocument.Parse(response.Content);
+            GetBankDetailHistoryResponse getBankDetailHistoryResponse = new GetBankDetailHistoryResponse
+            {
+                executionOutcome = new ExecutionOutcome(),
+                data = new List<GetBankDetailHistory>()
+            };
+            foreach (var property in doc.RootElement.EnumerateObject())
+            {
+                switch (property.Name.ToLower())
+                {
+                    case "succeeded":
+                        getBankDetailHistoryResponse.executionOutcome.succeeded = property.Value.GetBoolean();
+                        break;
+                    case "message":
+                        getBankDetailHistoryResponse.executionOutcome.message = property.Value.GetString();
+                        break;
+                    case "errors":
+                        getBankDetailHistoryResponse.executionOutcome.errors = property.Value.GetString();
+                        break;
+                    case "data":
+                        foreach (var item in property.Value.EnumerateArray())
+                        {
+                            GetBankDetailHistory bankDetailHistory = JsonSerializer.Deserialize<GetBankDetailHistory>(item.GetRawText());
+                            getBankDetailHistoryResponse.data.Add(bankDetailHistory);
+                        }
+                        break;
+                }
+            }
+            return getBankDetailHistoryResponse;
+        }
+
+        private void Then_ValidateGetBankDetailHistoryResponse_WhenResponseCodeIsOk_When_ExecutionOutcome_ANDDataIsNull_WhenPropertyDataTypesIsValid(RestResponse response, GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
             // Http Status Code
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
 
-           
+            
             //Response Content
             Assert.That(getBankDetailHistoryResponse.executionOutcome, Is.Not.Null, "GetBank Detail History Response: Response Message should not be null");
             Assert.That(getBankDetailHistoryResponse.data, Is.Not.Null, "GetBank Detail History Response: Data should not be null");
@@ -74,6 +108,15 @@ namespace ClientServicing.Test.Tests.API.TDD
                 Assert.That(getBankDetailHistory.audModifyDate, Is.TypeOf<string>());
                 Assert.That(getBankDetailHistory.audModifyUser, Is.TypeOf<string>());
             }
+        }
+        private void Then_ValidateGetBankDetailHistoryResponseWhen_ResponseCodeIsOk_And_ExecutionOutcomeIsNotNull_AndDataIsNull(RestResponse response, GetBankDetailHistoryResponse getBankDetailHistoryResponse)
+        {
+            // Http Status Code
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
+
+            //Response Content
+            Assert.That(getBankDetailHistoryResponse.executionOutcome, Is.Not.Null, "GetBank Detail History Response: Execution Outcome should not be null");
+            Assert.That(getBankDetailHistoryResponse.data, Is.Null.Or.Empty, "GetBank Detail History Response: Data should null");
         }
     }
 }

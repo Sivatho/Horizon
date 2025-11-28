@@ -66,7 +66,7 @@ namespace ClientServicing.Main.Controller
             {
                 //Arrange
                 var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.GetBankingDetailHistory), Method.Get);
-                request.AddParameter("policyNo", policyNo);               
+                request.AddUrlSegment("policyNo", policyNo);            
                 
                 //Act
                 var response = await restClient.ExecuteAsync(request);
@@ -99,7 +99,7 @@ namespace ClientServicing.Main.Controller
             {
                 //Arrange
                 var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.ValidateAccountNumberUsageLimit), Method.Get);
-                request.AddParameter("accountNumber", accountNumber);
+                request.AddUrlSegment("accountNumber", accountNumber);
 
                 //Act
                 var response = await restClient.ExecuteAsync(request);

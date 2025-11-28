@@ -42,7 +42,8 @@ namespace ClientServicing.Main.Controller
                 //Assert
                 if (!response.IsSuccessful)
                 {
-                    TestContext.Out.WriteLine($"FetchBank > Response failed. Status: {response.StatusCode}," +
+                    TestContext.Out.WriteLine($"FetchBank > Response failed. Status:" +
+                        $" {response.StatusCode}," +
                         $" {response.ErrorMessage}");
                 }
                 return response;
@@ -108,7 +109,8 @@ namespace ClientServicing.Main.Controller
                 //Assert
                 if (!response.IsSuccessful)
                 {
-                    TestContext.Out.WriteLine($"ValidateAccountNumberUsageLimit > Response failed. Status: {response.StatusCode}," +
+                    TestContext.Out.WriteLine($"ValidateAccountNumberUsageLimit > Response failed. Status:" +
+                        $" {response.StatusCode}," +
                         $" {response.ErrorMessage}");
                 }
                 return response;

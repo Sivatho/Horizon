@@ -51,5 +51,19 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# Build results
+bin/
+obj/
+[Bb]uild/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio files
+.vs/
+
+# Ignore Debug build output
+**/bin/Debug/net8.0
+**/obj/Debug/net8.0
+
 # debug information files
 *.dwo

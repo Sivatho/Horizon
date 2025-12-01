@@ -126,12 +126,31 @@ namespace ClientServicing.Main.Controller
             }
         }
 
-        public Task<RestResponse> ValidateBankAccountAsync<T>(T payload) where T : class
+        public async Task<RestResponse> ValidateBankAccountAsync<T>(T payload) where T : class
         {
-            //Arrange
-            //Act
-            //Assert
-            throw new NotImplementedException();
+            try {
+                //Arrange
+                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccount),Method.Post);
+                request.AddJsonBody(payload);
+                //Act
+                var response = await restClient.ExecuteAsync(request);
+                //Assert
+                if (!response.IsSuccessful) {
+                    TestContext.Out.WriteLine($"ValidateBankAccount > Response failed. Status:" +
+                        $" {response.StatusCode}," +
+                        $" {response.ErrorMessage}");
+                }
+                return response;
+            }
+            catch (Exception ex) {
+                TestContext.Out.WriteLine($"\tValidateBankAccount > Exception occurred: {ex.Message}");
+                TestContext.Out.WriteLine($"\tValidateBankAccount > Stack Trace: {ex.StackTrace}");
+                return new RestResponse
+                {
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    ErrorMessage = ex.Message
+                };
+            }
         }
 
         public Task<RestResponse> ValidateBankAccountQAVSRAsync<T>(T payload) where T : class

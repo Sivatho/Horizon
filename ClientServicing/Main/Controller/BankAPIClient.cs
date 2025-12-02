@@ -134,6 +134,8 @@ namespace ClientServicing.Main.Controller
                 request.AddJsonBody(payload);
                 //Act
                 var response = await restClient.ExecuteAsync(request);
+                utilitiesHelper.LogRequestAndResponse(request, response);
+
                 //Assert
                 if (!response.IsSuccessful) {
                     TestContext.Out.WriteLine($"ValidateBankAccount > Response failed. Status:" +

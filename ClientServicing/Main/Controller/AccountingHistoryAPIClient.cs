@@ -143,7 +143,7 @@ namespace ClientServicing.Main.Controller
                 try
                 {
                 //Arrange
-                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(.EndPoints.GetStatementLineID), Method.Post);
+                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.GetStatementLineID), Method.Post);
                 request.AddJsonBody(payload);
                     //Act
                     var response = await restClient.ExecuteAsync(request);
@@ -175,7 +175,32 @@ namespace ClientServicing.Main.Controller
                 //Assert
                 throw new NotImplementedException();
             }
+
+        public Task<RestResponse> policyAcountingHistorySummaryAsync<T>(T payload) where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RestResponse> policyCashReceiptAsync<T>(T payload) where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RestResponse> GetStatementLineIDAsync<T>(T payload) where T : class
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RestResponse> CashReceiptInfoUpsertAsync(string accountNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<RestResponse> ManualReceiptInfoUpsertAsync(int policyNo)
+        {
+            throw new NotImplementedException();
         }
     }
+    }
 
-}
+

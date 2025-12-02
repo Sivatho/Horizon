@@ -1,14 +1,14 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.Controller;
-using ClientServicing.Main.Models;
 using ClientServicing.Main.Models.Bank;
+using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD
 {
-    public class FetchBankTests
+    public class FetchBankAPITests
     {       
         UtilitiesHelper utilitiesHelper = new();
 
@@ -16,7 +16,7 @@ namespace ClientServicing.Test.Tests.API.TDD
         public async Task GivenBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid() {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "BankRequestIsNotNull.json"));
+            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "FetchBanksRequestIsNotNull.json"));
             fetchBankRequest.lastChanged = DateTime.Now.AddDays(-10);
 
             //Act
@@ -31,7 +31,7 @@ namespace ClientServicing.Test.Tests.API.TDD
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "BankRequestIsNull.json"));
+            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "FetchBanksRequestIsNull.json"));
             
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);

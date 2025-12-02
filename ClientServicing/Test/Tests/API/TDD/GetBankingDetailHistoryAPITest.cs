@@ -1,17 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.Controller;
-using ClientServicing.Main.Models;
 using ClientServicing.Main.Models.Bank;
+using ClientServicing.Main.Models.General;
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD
 { 
-    public class GetBankingDetailHistoryTest
+    public class GetBankingDetailHistoryAPITest
     {
         [Test]
         public async Task GivenPolicyNumberValid_WhenGetBankingDetailHistoryAsync_ThenValidateGetBankDetailHistoryResponseIsOk_AndIsNotNull_AndDataTypesIsValid()

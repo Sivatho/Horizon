@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.Controller;
-using ClientServicing.Main.Models;
 using ClientServicing.Main.Models.Bank;
+using ClientServicing.Main.Models.General;
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD

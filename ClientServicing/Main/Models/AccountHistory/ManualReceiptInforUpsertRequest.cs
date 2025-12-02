@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
-    internal class ManualReceiptInforUpsertRequest
+    public class ManualReceiptInforUpsertRequest
     {
     }
 }

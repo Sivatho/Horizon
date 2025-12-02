@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientServicing.Main.Models.AccountHistory
+﻿namespace ClientServicing.Main.Models.AccountHistory
 {
-    internal class ManualReceiptInforUpsertRequest
+    public class ManualReceiptInforUpsertResponse
     {
     }
 }

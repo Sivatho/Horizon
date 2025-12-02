@@ -6,7 +6,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD
 {
-    public class ValidateAccountNumberUsageLimitTest
+    public class ValidateAccountNumberUsageLimitAPITest
     {
         [Test]
         public async Task GivenAccountNumberUsageLimitIsValid_WhenValidateAccountNumberUsageLimitAsync_ThenValidateResponseIsOk_AndIsNotNull_AndDataTypesIsValid()

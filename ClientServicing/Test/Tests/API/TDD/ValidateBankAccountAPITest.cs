@@ -8,7 +8,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD
 {
-    public class ValidateBankAccountTest
+    public class ValidateBankAccountAPITest
     {
         UtilitiesHelper utilitiesHelper = new();
         [Test]

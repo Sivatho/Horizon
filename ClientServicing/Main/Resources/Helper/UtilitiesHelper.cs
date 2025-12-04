@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using Newtonsoft.Json.Schema;
 using RestSharp;
 
 namespace ClientServicing.Main.Resources.Helper
@@ -86,6 +83,16 @@ namespace ClientServicing.Main.Resources.Helper
             Console.WriteLine("\tBody:");
             Console.WriteLine($"\t\t{response.Content}");
 
+        }
+        public void ValidateJsonSchema(string jsonResponse, string schemaJson)
+        {
+            JSchema schema = JSchema.Parse(schemaJson);
+            JObject json = JObject.Parse(jsonResponse);
+
+            IList<string> validationErrors = new List<string>();
+            bool isValid = json.IsValid(schema, out validationErrors);
+
+            Assert.That(isValid, Is.True, $"Schema validation failed: {string.Join(", ", validationErrors)}");
         }
     }
 }

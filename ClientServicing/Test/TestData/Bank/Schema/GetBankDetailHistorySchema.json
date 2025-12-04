@@ -1,0 +1,59 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "properties": {
+        "succeeded": { "type": "boolean" },
+        "message": { "type": [ "string", "null" ] },
+        "errors": { "type": [ "string", "null" ] },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "debitDay": { "type": "integer" },
+                    "paymentMethod": { "type": "integer" },
+                    "bankAccHolder": { "type": "string" },
+                    "bankId": { "type": "integer" },
+                    "bankName": { "type": "string" },
+                    "bankAccTypeCd": { "type": "integer" },
+                    "bankAccTypeDescr": { "type": "string" },
+                    "branchCode": { "type": "string" },
+                    "bankAccNo": { "type": "string" },
+                    "bankAccountId": { "type": "integer" },
+                    "entityNo": { "type": "integer" },
+                    "effFrom": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "effTo": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "audModifyDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "audModifyUser": { "type": "string" }
+                },
+                "required": [
+                    "debitDay",
+                    "paymentMethod",
+                    "bankAccHolder",
+                    "bankId",
+                    "bankName",
+                    "bankAccTypeCd",
+                    "bankAccTypeDescr",
+                    "branchCode",
+                    "bankAccNo",
+                    "bankAccountId",
+                    "entityNo",
+                    "effFrom",
+                    "effTo",
+                    "audModifyDate",
+                    "audModifyUser"
+                ]
+            }
+        }
+    },
+    "required": [ "succeeded", "message", "errors", "data" ]
+}

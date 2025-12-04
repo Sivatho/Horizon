@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
-    internal class CashReceiptInforUpsertRequest
+    public class CashReceiptInforUpsertRequest
     {
+        public int policyNo { get; set; }
+        public String legacyPolicyNumber { get; set; }
+        public String cashReceiptInformation { get; set; }
     }
 }

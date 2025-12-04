@@ -10,8 +10,8 @@ namespace ClientServicing.Main.IController
 {
     public interface IAccountHistory
     {
-        Task<RestResponse> policyAcountingHistoryAsync<T>(int policyNo) where T : class;
-        Task<RestResponse> policyAcountingHistorySummaryAsync<T>(T payload) where T : class;
+        Task<RestResponse> policyAccountingHistoryAsync<T>(T policyNo) where T : class;
+        Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T payload) where T : class;
         Task<RestResponse> policyCashReceiptAsync<T>(T payload) where T : class;
         Task<RestResponse> GetStatementLineIDAsync<T>(T payload) where T : class;
         Task<RestResponse> CashReceiptInfoUpsertAsync(string accountNumber);

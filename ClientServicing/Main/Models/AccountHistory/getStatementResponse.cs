@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
-    internal class getStatementResponse
+    public class getStatementResponse
     {
+        public String statementInformation { get; set; }
     }
 }

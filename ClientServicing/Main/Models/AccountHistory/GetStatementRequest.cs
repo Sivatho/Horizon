@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
-    internal class GetStatementRequest
+    public class GetStatementRequest
     {
+        public int policyNo { get; set; }
+        public String legacyPolicyNumber { get; set; }
     }
 }

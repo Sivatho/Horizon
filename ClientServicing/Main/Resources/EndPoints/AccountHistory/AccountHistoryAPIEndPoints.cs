@@ -10,7 +10,7 @@ namespace ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints
     {
         public enum EndPoints
         {
-            policyAcountingHistory,
+            policyAccountingHistory,
             policyAcountingHistorySummary,
             policyCashReceipt,
             GetStatementLineID,
@@ -21,7 +21,7 @@ namespace ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints
         {
             return endPoint switch
             {
-                EndPoints.policyAcountingHistory => "/api/AccountingHistory/policyAcountingHistory",
+                EndPoints.policyAccountingHistory => "/api/AccountingHistory/policyAcountingHistory",
                 EndPoints.policyAcountingHistorySummary => "/api/AccountingHistory/policyAcountingHistorySummary",
                 EndPoints.policyCashReceipt => "/api/AccountingHistory/policyCashReceipt",
                 EndPoints.GetStatementLineID => "/api/AccountingHistory/GetStatementLineID",

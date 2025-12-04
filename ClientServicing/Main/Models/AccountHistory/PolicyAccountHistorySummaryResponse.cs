@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientServicing.Main.Models.Bank
+namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyAccountHistorySummaryResponse
     {
-        public ExecutionOutcome executionOutcome { get; set; }
-        public List<GetBankDetailHistory> data { get; set; }
+        
+       
     }
 }

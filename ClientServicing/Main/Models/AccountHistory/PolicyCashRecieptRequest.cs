@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientServicing.Main.Models.Bank
+namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyCashRecieptRequest
     {
-        public ExecutionOutcome executionOutcome { get; set; }
+     
         public int totalPolicies { get; set; }
         public bool limitExceeded { get; set; }
     }

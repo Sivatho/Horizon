@@ -4,16 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientServicing.Main.Models.Bank
+namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyAccountHistoryRequest
     {
-        public int? bankID { get; set; }
-        public string? bankName { get; set; }
-        public string? bankShortName { get; set; }
-        public int? dispSeq { get; set; }
-        public bool? isActive { get; set; }
-        public DateTime? lastChanged { get; set; }
-        public string? userID { get; set; }
-    }
+        public int policyNo { get; set; }
+      //public string legacyPolicyNumber { get; set; }
+
+    
+
+
+        }
 }

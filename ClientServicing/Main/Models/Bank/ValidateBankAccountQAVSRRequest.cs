@@ -10,7 +10,8 @@ namespace ClientServicing.Main.Models.Bank
         public int productCategoryId { get; set; }
         public string title { get; set; }
         public int titleCd { get; set; }
-        public string firstName { get; set; }        public string surname { get; set; }
+        public string firstName { get; set; }        
+        public string surname { get; set; }
         public string initials { get; set; }
         public string emailAddress { get; set; }
         public bool isAMember { get; set; }

@@ -8,7 +8,7 @@ using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
-    public class GetBankDetailsHisoryResponseValidationMethods : AbstractValidationMethods,IGetBankDetailsHisoryResponseValidationMethods
+    public class GetBankDetailsHisoryResponseValidationMethods : AbstractValidationMethods, IGetBankDetailsHisoryResponseValidationMethods
     {
         public override void ValidateResponseContentsIsValid_AndDataTypesIsValid(RestResponse restResponse)
         {
@@ -51,12 +51,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             using var doc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
         }
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
-        {
-            UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
-            utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
-        }
         public void ValidateBankDetailHistoryDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
             Assert.That(getBankDetailHistoryResponse.executionOutcome.succeeded, Is.True, "GetBankDetailHistory Response: Succeeded should be null or empty");
@@ -95,6 +89,13 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(bankDetailHistoryData.audModifyDate, Is.Null.Or.Empty, "GetBankDetailHistory Response: Audit Modify Date should be null or empty");
                 Assert.That(bankDetailHistoryData.audModifyUser, Is.Null.Or.Empty, "GetBankDetailHistory Response: Audit Modify User should be null or empty");
             }
+            TestContext.Out.WriteLine("GetBankDetailHistory Response: All fields are null or empty as expected.");
+        }
+        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
+        {
+            UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
+            utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
         }
     }
 }

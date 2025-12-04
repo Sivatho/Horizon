@@ -3,16 +3,18 @@ using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
+using NUnit.Framework.Constraints;
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class FetchBankAPITests
-    {       
+    {
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task GivenBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid() {
+        public async Task GivenBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
+        {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "FetchBanksRequestIsNotNull.json"));
@@ -23,7 +25,8 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
             //Assert
-            ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, fetchBanksResponse);
+            ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(response);
+            ValidateFetchBankResponseIsNotNull(fetchBanksResponse);
         }
         [Test]
         public async Task GivenBankRequestIsNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
@@ -31,15 +34,20 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank", "FetchBanksRequestIsNull.json"));
-            
+
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
+
             //Assert
-            ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(response, fetchBanksResponse);
+            // Http Status Code
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
+
+            ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(response);
+            ValidateFetchBankResponseIsNotNull(fetchBanksResponse);
         }
-       
+
         private FetchBanksResponse populateFetchBanksResponse(RestResponse response)
         {
             using JsonDocument doc = JsonDocument.Parse(response.Content);
@@ -86,32 +94,53 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             }
             return fetchBanksResponse;
         }
-        private void ValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid(RestResponse response, FetchBanksResponse fetchBanksResponse)
+        private void ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
-            // Http Status Code
-            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
 
+            var rules = new List<JsonValidationRule> {
+                new JsonValidationRule { 
+                    PropertyName = "succeeded",
+                    AllowedKinds = new[] { 
+                        JsonValueKind.True, JsonValueKind.False 
+                    }
+                },
+                new JsonValidationRule { 
+                    PropertyName = "message", 
+                    AllowedKinds = new[] { 
+                        JsonValueKind.String, JsonValueKind.Null 
+                    } 
+                },
+                new JsonValidationRule { 
+                    PropertyName = "errors", 
+                    AllowedKinds = new[] { 
+                        JsonValueKind.String, JsonValueKind.Null 
+                    } 
+                },
+                new JsonValidationRule {
+                    PropertyName = "data",
+                    AllowedKinds = new[] { JsonValueKind.Array },
+                    NestedRules = new Dictionary<string, JsonValueKind[]>
+                    {
+                        { "bankID", new[] { JsonValueKind.Number } },
+                        { "bankName", new[] { JsonValueKind.String } },
+                        { "bankShortName", new[] { JsonValueKind.String, JsonValueKind.Null } },
+                        { "dispSeq", new[] { JsonValueKind.Number } },
+                        { "isActive", new[] { JsonValueKind.True, JsonValueKind.False } },
+                        { "lastChanged", new[] { JsonValueKind.String } }, // DateTime as string
+                        { "userID", new[] { JsonValueKind.String } }
+                    }
+                }
+            };
+
+            using var doc = JsonDocument.Parse(restResponse.Content);
+            JsonValidationRule.ValidateJson(doc.RootElement, rules);
+
+        }
+        private void ValidateFetchBankResponseIsNotNull(FetchBanksResponse fetchBanksResponse)
+        {
             //Response Content
             Assert.That(fetchBanksResponse.responseMessage, Is.Not.Null, "Fetch Banks Response: Response Message should not be null");
             Assert.That(fetchBanksResponse.data, Is.Not.Null, "Fetch Banks Response: Data should not be null");
-
-            //Validate Each Object Data Types
-            Assert.That(fetchBanksResponse.responseMessage.succeeded, Is.TypeOf<bool>());
-            Assert.That(fetchBanksResponse.responseMessage.message, Is.Null.Or.TypeOf<string?>());
-            Assert.That(fetchBanksResponse.responseMessage.errors, Is.Null.Or.TypeOf<string?>());
-
-            foreach (var bank in fetchBanksResponse.data)
-            {
-                Assert.That(bank.bankID, Is.TypeOf<int>());
-                Assert.That(bank.bankName, Is.TypeOf<string>());
-                Assert.That(bank.bankShortName, Is.Null.Or.TypeOf<string>());
-                Assert.That(bank.dispSeq, Is.TypeOf<int>());
-                Assert.That(bank.isActive, Is.TypeOf<bool>());
-                Assert.That(bank.bankID, Is.TypeOf<int>());
-                Assert.That(bank.lastChanged, Is.TypeOf<DateTime>());
-                Assert.That(bank.userID, Is.TypeOf<string>());
-            }
         }
-
     }
 }

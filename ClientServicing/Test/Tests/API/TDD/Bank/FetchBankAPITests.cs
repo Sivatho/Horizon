@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
@@ -8,7 +9,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
-    public class FetchBankAPITests
+    public class FetchBankAPITests : FetchBankResponseValidationMethod
     {
         UtilitiesHelper utilitiesHelper = new();
 
@@ -24,9 +25,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
-            //Assert
-            ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(response);
-            ValidateFetchBankResponseIsNotNull(fetchBanksResponse);
+            //Assertl
+            Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
+            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
+            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
+            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
         [Test]
         public async Task GivenBankRequestIsNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
@@ -41,11 +44,10 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
 
             //Assert
-            // Http Status Code
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-
-            ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(response);
-            ValidateFetchBankResponseIsNotNull(fetchBanksResponse);
+            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
+            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
+            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
 
         private FetchBanksResponse populateFetchBanksResponse(RestResponse response)
@@ -93,54 +95,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
                 }
             }
             return fetchBanksResponse;
-        }
-        private void ValidateFetchBankResponseContentsIsValid_And_DataTypesIsValid(RestResponse restResponse)
-        {
-
-            var rules = new List<JsonValidationRule> {
-                new JsonValidationRule { 
-                    PropertyName = "succeeded",
-                    AllowedKinds = new[] { 
-                        JsonValueKind.True, JsonValueKind.False 
-                    }
-                },
-                new JsonValidationRule { 
-                    PropertyName = "message", 
-                    AllowedKinds = new[] { 
-                        JsonValueKind.String, JsonValueKind.Null 
-                    } 
-                },
-                new JsonValidationRule { 
-                    PropertyName = "errors", 
-                    AllowedKinds = new[] { 
-                        JsonValueKind.String, JsonValueKind.Null 
-                    } 
-                },
-                new JsonValidationRule {
-                    PropertyName = "data",
-                    AllowedKinds = new[] { JsonValueKind.Array },
-                    NestedRules = new Dictionary<string, JsonValueKind[]>
-                    {
-                        { "bankID", new[] { JsonValueKind.Number } },
-                        { "bankName", new[] { JsonValueKind.String } },
-                        { "bankShortName", new[] { JsonValueKind.String, JsonValueKind.Null } },
-                        { "dispSeq", new[] { JsonValueKind.Number } },
-                        { "isActive", new[] { JsonValueKind.True, JsonValueKind.False } },
-                        { "lastChanged", new[] { JsonValueKind.String } }, // DateTime as string
-                        { "userID", new[] { JsonValueKind.String } }
-                    }
-                }
-            };
-
-            using var doc = JsonDocument.Parse(restResponse.Content);
-            JsonValidationRule.ValidateJson(doc.RootElement, rules);
-
-        }
-        private void ValidateFetchBankResponseIsNotNull(FetchBanksResponse fetchBanksResponse)
-        {
-            //Response Content
-            Assert.That(fetchBanksResponse.responseMessage, Is.Not.Null, "Fetch Banks Response: Response Message should not be null");
-            Assert.That(fetchBanksResponse.data, Is.Not.Null, "Fetch Banks Response: Data should not be null");
         }
     }
 }

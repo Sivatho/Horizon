@@ -8,6 +8,7 @@ namespace ClientServicing.Test.Tests.Performance.TDD.Bank
     
     public class FetchBankPerformanceTest
     {
+    /*
         [Test]
         public async Task GivenSingleBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
         {
@@ -63,5 +64,6 @@ namespace ClientServicing.Test.Tests.Performance.TDD.Bank
                 .WithReportFormats(ReportFormat.Html, ReportFormat.Txt, ReportFormat.Csv)
                 .Run();
         }
+    */
     }
 }

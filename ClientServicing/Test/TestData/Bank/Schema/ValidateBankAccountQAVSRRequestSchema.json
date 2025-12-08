@@ -1,0 +1,242 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "PayerDto",
+    "type": "object",
+    "properties": {
+        "payerEntityNo": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "policyNumber": {
+            "type": [ "string", "null" ]
+        },
+        "productCategory": {
+            "type": [ "string", "null" ]
+        },
+        "productCategoryId": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "title": {
+            "type": [ "string", "null" ]
+        },
+        "titleCd": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "firstName": {
+            "type": [ "string", "null" ]
+        },
+        "surname": {
+            "type": [ "string", "null" ]
+        },
+        "initials": {
+            "type": [ "string", "null" ]
+        },
+        "emailAddress": {
+            "type": [ "string", "null" ],
+            "format": "email"
+        },
+        "isAMember": {
+            "type": [ "boolean", "null" ]
+        },
+        "legalRefNo": {
+            "type": [ "string", "null" ]
+        },
+        "legalRefNoTypeCD": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "dateOfBirth": {
+            "type": [ "string", "null" ],
+            "format": "date-time"
+        },
+        "genderCd": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "employerName": {
+            "type": [ "string", "null" ]
+        },
+        "employeeNumber": {
+            "type": [ "string", "null" ]
+        },
+        "employeeDepartmentCd": {
+            "type": [ "string", "null" ]
+        },
+        "employeeDepartment": {
+            "type": [ "string", "null" ]
+        },
+        "authorizationTypeCd": {
+            "type": "integer",
+            "format": "int32"
+        },
+        "payroll": {
+            "type": [ "string", "null" ]
+        },
+        "mandateType": {
+            "type": [ "string", "null" ]
+        },
+        "agentID": {
+            "type": [ "string", "null" ]
+        },
+        "isAuthorized": {
+            "type": [ "boolean", "null" ]
+        },
+        "homeNumber": {
+            "type": [ "string", "null" ]
+        },
+        "cellNumber": {
+            "type": [ "string", "null" ]
+        },
+        "workNumber": {
+            "type": [ "string", "null" ]
+        },
+        "relationCd": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "bankId": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "bankName": {
+            "type": [ "string", "null" ]
+        },
+        "bankShortName": {
+            "type": [ "string", "null" ]
+        },
+        "branchNo": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "branchCode": {
+            "type": [ "string", "null" ]
+        },
+        "bankAccNo": {
+            "type": [ "string", "null" ]
+        },
+        "bankAccHolderInitial": {
+            "type": [ "string", "null" ]
+        },
+        "bankAccHolderName": {
+            "type": [ "string", "null" ]
+        },
+        "bankAccTypeCD": {
+            "type": "integer",
+            "format": "int32"
+        },
+        "bankAccTypeDesc": {
+            "type": [ "string", "null" ]
+        },
+        "bankAccountID": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "bankAccSwiftCode": {
+            "type": [ "string", "null" ]
+        },
+        "isActive": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "paymentTypeCD": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "paymentFreqCD": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "paymentRefId": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "premium": {
+            "type": "number",
+            "format": "double"
+        },
+        "earlyTracking": {
+            "type": "boolean"
+        },
+        "debitDay": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        },
+        "firstDebitDay": {
+            "type": [ "string", "null" ],
+            "format": "date-time"
+        },
+        "firstDebitMonth": {
+            "type": [ "string", "null" ],
+            "format": "date-time"
+        },
+        "effectiveDate": {
+            "type": [ "string", "null" ],
+            "format": "date-time"
+        },
+        "gsd": {
+            "type": "object",
+            "title": "GsdDto",
+            "properties": {
+                "deductionAuthorization": {
+                    "type": "boolean"
+                },
+                "payrollName": {
+                    "type": [ "string", "null" ]
+                },
+                "payrollId": {
+                    "type": [ "string", "null" ]
+                },
+                "departmentId": {
+                    "type": [ "integer", "null" ],
+                    "format": "int32"
+                },
+                "departmentName": {
+                    "type": [ "string", "null" ]
+                },
+                "employeeNumber": {
+                    "type": [ "string", "null" ]
+                },
+                "mandateType": {
+                    "type": [ "string", "null" ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "lastChanged": {
+            "type": [ "string", "null" ],
+            "format": "date-time"
+        },
+        "userID": {
+            "type": [ "string", "null" ]
+        },
+        "entityNo": {
+            "type": [ "object", "null" ],
+            "description": "Empty/opaque object per specification."
+        },
+        "agentCode": {
+            "type": [ "string", "null" ]
+        },
+        "agentName": {
+            "type": [ "string", "null" ]
+        },
+        "payAtNumber": {
+            "type": [ "string", "null" ]
+        },
+        "csdEmployeeNo": {
+            "type": [ "string", "null" ]
+        },
+        "csdCompanyDepartment": {
+            "type": [ "string", "null" ]
+        },
+        "csdCompanyName": {
+            "type": [ "string", "null" ]
+        },
+        "csdCompanyCd": {
+            "type": [ "integer", "null" ],
+            "format": "int32"
+        }
+    },
+    "additionalProperties": false
+}

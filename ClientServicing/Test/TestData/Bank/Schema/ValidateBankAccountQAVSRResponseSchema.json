@@ -1,0 +1,93 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "isValid": { "type": "boolean" },
+        "shouldUpdateAccountType": { "type": "boolean" },
+        "overrideIsValid": { "type": "boolean" },
+        "message": { "type": "string" },
+        "fraudsterFailure": { "type": "integer" },
+        "softyCompResult": {
+            "type": "object",
+            "properties": {
+                "wasTestResultOverridden": { "type": "boolean" },
+                "wasTestPerformed": { "type": "boolean" },
+                "isValid": { "type": "boolean" },
+                "message": { "type": [ "string", "null" ] }
+            }
+        },
+        "fraudsterResult": {
+            "type": "object",
+            "properties": {
+                "wasTestResultOverridden": { "type": "boolean" },
+                "fraudsterFailureType": { "type": "integer" },
+                "wasTestPerformed": { "type": "boolean" },
+                "isValid": { "type": "boolean" },
+                "message": { "type": [ "string", "null" ] }
+            }
+        },
+        "d3BlackListResult": {
+            "type": "object",
+            "properties": {
+                "wasTestResultOverridden": { "type": "boolean" },
+                "wasTestPerformed": { "type": "boolean" },
+                "isValid": { "type": "boolean" },
+                "message": { "type": [ "string", "null" ] }
+            }
+        },
+        "avsrResult": {
+            "type": "object",
+            "properties": {
+                "qLinkAvsrCheckId": { "type": "string" },
+                "errorCode": { "type": "string" },
+                "errorDescription": { "type": "string" },
+                "sessionId": { "type": [ "string", "null" ] },
+                "accountStatusId": { "type": [ "string", "null" ] },
+                "wasCachedResultUsed": { "type": "boolean" },
+                "wasBankAccountFound": { "type": "boolean" },
+                "isBankAccountOpen": { "type": "boolean" },
+                "doesBankAccountTypeMatch": { "type": "boolean" },
+                "doesInitialsMatch": { "type": "boolean" },
+                "doesIdentityNumberMatch": { "type": "boolean" },
+                "doesNameMatch": { "type": "boolean" },
+                "doesAcceptsDebits": { "type": "boolean" },
+                "doesAcceptsCredits": { "type": "boolean" },
+                "didTimeout": { "type": "boolean" },
+                "accountLengthMatch": { "type": "boolean" },
+                "missingParameter": { "type": "boolean" },
+                "doesPhoneMatch": { "type": "boolean" },
+                "doesEmailMatch": { "type": "boolean" },
+                "payDay": { "type": "integer" },
+                "hasBankAccountBeenOpenForMoreThan3Months": { "type": "boolean" },
+                "responseDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "isForcedSuccessResponse": { "type": "boolean" },
+                "hasException": { "type": "boolean" },
+                "wasTestPerformed": { "type": "boolean" },
+                "isValid": { "type": "boolean" },
+                "message": { "type": "string" }
+            }
+        },
+        "correctBankAccountType": {
+            "type": "object",
+            "properties": {
+                "type": { "type": "integer" }
+            }
+        },
+        "correctBankName": { "type": [ "string", "null" ] }
+    },
+    "required": [
+        "isValid",
+        "shouldUpdateAccountType",
+        "overrideIsValid",
+        "message",
+        "fraudsterFailure",
+        "softyCompResult",
+        "fraudsterResult",
+        "d3BlackListResult",
+        "avsrResult",
+        "correctBankAccountType"
+    ]
+}

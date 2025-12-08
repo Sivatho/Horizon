@@ -1,0 +1,39 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "BankRequest",
+    "type": "object",
+    "properties": {
+        "bankID": {
+            "type": [ "integer", "null" ],
+            "format": "int32",
+            "description": "Unique identifier of the bank (nullable)."
+        },
+        "bankName": {
+            "type": [ "string", "null" ],
+            "description": "Full bank name (nullable)."
+        },
+        "bankShortName": {
+            "type": [ "string", "null" ],
+            "description": "Short/abbreviated bank name (nullable)."
+        },
+        "dispSeq": {
+            "type": [ "integer", "null" ],
+            "format": "int32",
+            "description": "Display sequence/order (nullable)."
+        },
+        "isActive": {
+            "type": [ "boolean", "null" ],
+            "description": "Active status flag (nullable)."
+        },
+        "lastChanged": {
+            "type": [ "string", "null" ],
+            "format": "date-time",
+            "description": "Timestamp of last change in ISO 8601 (nullable)."
+        },
+        "userID": {
+            "type": [ "string", "null" ],
+            "description": "User identifier who performed the change (nullable)."
+        }
+    },
+    "additionalProperties": false
+}

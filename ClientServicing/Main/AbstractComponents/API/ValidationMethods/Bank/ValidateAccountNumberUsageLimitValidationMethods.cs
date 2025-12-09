@@ -48,7 +48,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             };
             using var doc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
-            TestContext.Out.WriteLine("ValidateAccountNumberUsageLimit: response content data types are valid.");
+            TestContext.Out.WriteLine("Response: content data types are valid.");
         }
 
         public void ValidateResponseIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
@@ -61,15 +61,10 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(validateAccountNumberUsageLimitResponse.limitExceeded,  Is.True.Or.False.And.Not.Null,                  "ValidateAccountNumberUsageLimit Response: limitExceeded can be true or false but not null."
                 );
             });
-            TestContext.Out.WriteLine("ValidateAccountNumberUsageLimit: response is not null or empty.");
+            TestContext.Out.WriteLine("Response: ValidateAccountNumberUsageLimitResponse is not null or empty.");
         }
 
         public void ValidateResponseIsNullOrWhiteSpace(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             throw new NotImplementedException();
         }

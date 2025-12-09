@@ -49,7 +49,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             };
             using var doc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
-            TestContext.Out.WriteLine("GetBankDetailHistory Response: All contents and data types are valid as expected.");
+            TestContext.Out.WriteLine("Response: All contents and data types are valid as expected.");
         }
         public void ValidateBankDetailHistoryDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
@@ -69,7 +69,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                     Assert.That(bankDetailHistoryData.audModifyUser,    Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Audit Modify User should be null or empty");
                 }
             });
-            TestContext.Out.WriteLine("GetBankDetailHistory Response: All Bank Detail History data fields are not null or empty as expected.");
+            TestContext.Out.WriteLine("Response: All Bank Detail History data fields are not null or empty as expected.");
         }
         public void ValidateResponseIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
@@ -79,7 +79,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(getBankDetailHistoryResponse.data,              Is.Not.Null.Or.Empty, "GetBankDetailHistory Response:  Data should not be null or empty");
             });
             
-            TestContext.Out.WriteLine("GetBankDetailHistory Response: ExecutionOutcome and Data are not null or empty as expected.");
+            TestContext.Out.WriteLine("Response: ExecutionOutcome and Data are not null or empty as expected.");
         }
         public void ValidateResponseIsNullOrWhiteSpace(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
@@ -101,14 +101,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                     Assert.That(bankDetailHistoryData.audModifyUser,    Is.Null.Or.Empty, "GetBankDetailHistory Response: Audit Modify User should be null or empty");
                 }
             });
-            TestContext.Out.WriteLine("GetBankDetailHistory Response: All fields are null or empty as expected.");
-        }
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
-        {
-            UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
-            utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
-            TestContext.Out.WriteLine("Response: JSON schema is valid.");
+            TestContext.Out.WriteLine("Response: All fields are null or empty as expected.");
         }
     }
 }

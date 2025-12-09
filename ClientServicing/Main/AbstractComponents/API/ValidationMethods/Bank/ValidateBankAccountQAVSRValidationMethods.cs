@@ -136,14 +136,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             throw new NotImplementedException();
         }
 
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
-        {
-            UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
-            utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
-            TestContext.Out.WriteLine("Response: JSON schema is valid.");
-        }
-
         public void ValidateValidateBankAccountQAVSRResponsetResponseDataIsNotNullOrEmpty(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)
         {
             throw new NotImplementedException();

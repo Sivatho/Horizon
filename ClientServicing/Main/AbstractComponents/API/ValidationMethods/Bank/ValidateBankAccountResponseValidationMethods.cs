@@ -137,11 +137,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             throw new NotImplementedException();
         }
 
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
-        {
-            throw new NotImplementedException();
-        }
-
         public void ValidateValidateBankAccountResponseDataIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse)
         {
             throw new NotImplementedException();

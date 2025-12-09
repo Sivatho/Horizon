@@ -58,7 +58,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 
             using var doc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
-            TestContext.Out.WriteLine("FetchBanks Response: Response contents and data types are valid.");
+            TestContext.Out.WriteLine("Response: contents and data types are valid.");
         }
 
         public void ValidateResponseIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse)
@@ -68,20 +68,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(fetchBanksResponse.responseMessage, Is.Not.Null, "Fetch Banks Response: Response Message should not be null");
                 Assert.That(fetchBanksResponse.data,            Is.Not.Null, "FetchBanks Response: Data should not be null");
             });
-            TestContext.Out.WriteLine("FetchBanks Response: Response Message and Data are not null or empty as expected.");
+            TestContext.Out.WriteLine("Response: Message and Data are not null or empty as expected.");
         }
 
         public void ValidateResponseIsNullOrWhiteSpace(FetchBanksResponse fetchBanksResponse)
         {
             throw new NotImplementedException();
-        }
-
-        public override void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
-        {
-            UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
-            utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
-            TestContext.Out.WriteLine("ValidateJsonSchema: Response content matches the expected JSON schema and is valid.");
         }
     }
 }

@@ -12,7 +12,7 @@ namespace ClientServicing.Main.Models.General
         public string PropertyName { get; set; }
         public JsonValueKind[] AllowedKinds { get; set; }
         public bool IsRequired { get; set; } = true;
-        public Dictionary<string, JsonValueKind[]> NestedRules { get; set; } // For arrays
+        public Dictionary<string, JsonValueKind[]> NestedRules { get; set; }
 
         public static void ValidateJson(JsonElement root, List<JsonValidationRule> rules)
         {

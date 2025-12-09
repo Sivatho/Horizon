@@ -117,7 +117,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             using var doc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
             TestContext.Out.WriteLine("Response: content and data types are valid.");
-           
         }
 
         public void ValidateResponseIsNotNullOrEmpty(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)

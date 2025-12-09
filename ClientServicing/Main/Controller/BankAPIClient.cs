@@ -22,6 +22,37 @@ namespace ClientServicing.Main.Controller
             restClient = new RestClient(options);
         }
 
+        public async Task<RestResponse> CanChangeBankAccountAsync(int bankAccountId)
+        {
+            try {
+                //Arrange
+                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.CanChangeBankAccount), Method.Get);
+                request.AddUrlSegment("bankAccountId", bankAccountId);
+                
+                //Act
+                var response = await restClient.ExecuteAsync(request);
+                utilitiesHelper.LogRequestAndResponse(request, response);
+
+                //Assert
+                if (!response.IsSuccessful)
+                {
+                    TestContext.Out.WriteLine($"CanChangeBankAccount > Response failed. Status:" +
+                        $" {response.StatusCode}," +
+                        $" {response.ErrorMessage}");
+                }
+                return response;
+            }
+            catch (Exception ex) {
+                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Exception occurred: {ex.Message}");
+                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Stack Trace: {ex.StackTrace}");
+                return new RestResponse
+                {
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
         public void Dispose()
         {
             restClient?.Dispose();

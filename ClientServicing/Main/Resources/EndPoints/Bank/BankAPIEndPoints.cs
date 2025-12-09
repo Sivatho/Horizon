@@ -14,7 +14,8 @@ namespace ClientServicing.Main.Resources.EndPoints.Bank
             ValidateBankAccount,
             ValidateBankAccountQAVSR,
             ValidateAccountNumberUsageLimit,
-            GetBankingDetailHistory
+            GetBankingDetailHistory,
+            CanChangeBankAccount
         }
         public static string GetEndPoint(EndPoints endPoint)
         {
@@ -25,6 +26,7 @@ namespace ClientServicing.Main.Resources.EndPoints.Bank
                 EndPoints.ValidateBankAccountQAVSR => "/api/Bank/ValidateBankAccountQAVSR",
                 EndPoints.ValidateAccountNumberUsageLimit => "/api/Bank/ValidateAccountNumberUsageLimit/{accountNumber}",
                 EndPoints.GetBankingDetailHistory => "/api/Bank/GetBankDetailHistory/{policyNo}",
+                EndPoints.CanChangeBankAccount => "/api/Bank/CanChangeBankAccount/{bankAccountId}",
                 _ => throw new ArgumentOutOfRangeException(nameof(endPoint), endPoint, null)
             };
         }

@@ -14,5 +14,6 @@ namespace ClientServicing.Main.IController
         Task<RestResponse> ValidateBankAccountQAVSRAsync<T>(T payload) where T : class;
         Task<RestResponse> ValidateAccountNumberUsageLimitAsync(string accountNumber);
         Task<RestResponse> GetBankingDetailHistoryAsync(int policyNo);
+        Task<RestResponse> CanChangeBankAccountAsync(int bankAccountId);
     }
 }

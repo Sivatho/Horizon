@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
-using ClientServicing.Main.Models.Bank;
+﻿using ClientServicing.Main.Models.Bank;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank
 {

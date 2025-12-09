@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.WebSockets;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
@@ -13,12 +8,12 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
-    public class CanChangeBankAccountAPITest
+    public class CanChangeBankAccountAPITest : CanChangeBankAccountIdValidationMethods
     {
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_Then() {
+        public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = 20354;
@@ -28,9 +23,13 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var canChangeBankAccountResponse = populateCanChangeBankAccountResponse(response);
 
             //Assert
+            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
+            ValidateHTTPResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
         }
+
         [Test]
-        public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_Then() {
+        public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = -1;
@@ -40,6 +39,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var canChangeBankAccountResponse = populateCanChangeBankAccountResponse(response);
 
             //Assert
+            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
+            ValidateHTTPResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
         }
         public CanChangeBankAccountResponse populateCanChangeBankAccountResponse(RestResponse response) {
             try {

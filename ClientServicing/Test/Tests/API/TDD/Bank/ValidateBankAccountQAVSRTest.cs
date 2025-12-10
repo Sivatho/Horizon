@@ -17,7 +17,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         {
             //Arrange
             BankAPIClient bankClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            ValidateBankAccountQAVSRRequest validateBankAccountQAVSRRequest = JsonSerializer.Deserialize<ValidateBankAccountQAVSRRequest>(utilitiesHelper.ReadJson("Bank/Data", "ValidateBankAccountQAVSRRequestNotNull.json"));
+            ValidateBankAccountQAVSRRequest validateBankAccountQAVSRRequest = JsonSerializer.Deserialize<ValidateBankAccountQAVSRRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "ValidateBankAccountQAVSRRequestNotNull.json"));
 
             //Act
             var response = await bankClient.ValidateBankAccountQAVSRAsync(validateBankAccountQAVSRRequest);

@@ -17,7 +17,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank/Data", "FetchBanksRequestIsNotNull.json"));
+            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "FetchBanksRequestIsNotNull.json"));
             fetchBankRequest.lastChanged = DateTime.Now.AddDays(-10);
 
             //Act
@@ -36,7 +36,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadJson("Bank/Data", "FetchBanksRequestIsNull.json"));
+            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "FetchBanksRequestIsNull.json"));
 
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);

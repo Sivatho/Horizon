@@ -1,9 +1,10 @@
-﻿using ClientServicing.Main.IController;
+﻿using System.Net;
+using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints;
 using ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-using static ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings.AdjustmentToBillingsEndPoints
+using static ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings.AdjustmentToBillingsEndPoints;
 
 namespace ClientServicing.Main.Controller
 {
@@ -30,6 +31,20 @@ namespace ClientServicing.Main.Controller
                 var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.AddAdjustmentToBillings), Method.Post);
                 request.AddBody(payload);
 
+
+
+                bool responseBool = true;
+
+                // Create a RestResponse object and set its properties
+                RestResponse restResponse = new RestResponse
+                {
+                    StatusCode = responseBool ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
+                    Content = responseBool.ToString() // or any other content you want
+                };
+
+
+                utilitiesHelper.LogRequestAndResponse(request, restResponse);
+                
                 //Act
                 var response = await restClient.ExecuteAsync(request);
                 utilitiesHelper.LogRequestAndResponse(request, response);

@@ -1,0 +1,28 @@
+{
+    "billingsAdjustmentInformation": {
+        "policyNo": 164535,
+        "effectiveDate": "2025-12-09T13:52:13.571Z",
+        "adjustmentDateFrom": "2025-12-09T13:52:13.571Z",
+        "adjustmentAmount": 0,
+        "totalAdjAmount": 0,
+        "adjustedMonthCnt": 0,
+        "adjustmentEndDate": "2025-12-09T13:52:13.571Z",
+        "comment": "string",
+        "actionID": "string"
+    },
+    "billingAdjustmentPeriods": [
+        {
+            "policyNo": 164535,
+            "legacyPolNo": "string",
+            "referenceNO": "string",
+            "billingPeriod": 0,
+            "raisedDate": "2025-12-09T13:52:13.571Z",
+            "mandateType": "string",
+            "description": "string",
+            "paymentType": "string",
+            "premiumAmount": 0,
+            "amountPaid": 0,
+            "effectiveDate": "2025-12-09T13:52:13.571Z"
+        }
+    ]
+}

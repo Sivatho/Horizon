@@ -20,7 +20,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             {
                 //Arrange
                 AccountingHistoryAPIClient accountHistoryAPIClient = new("https://horizontest.clientele.co.za/horizon.clientservicing/");
-                PolicyAccountHistoryRequest policyAccountHistoryRequest = JsonSerializer.Deserialize<PolicyAccountHistoryRequest>(utilitiesHelper.ReadJson("AccountHistory", "PolicyAccountingHistoryRequestHasPolicy.json"));
+                PolicyAccountHistoryRequest policyAccountHistoryRequest = JsonSerializer.Deserialize<PolicyAccountHistoryRequest>(utilitiesHelper.ReadTestDataJson("AccountHistory", "PolicyAccountingHistoryRequestHasPolicy.json"));
 
                 //Act
                 var response = await accountHistoryAPIClient.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(policyAccountHistoryRequest);

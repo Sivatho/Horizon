@@ -9,7 +9,7 @@ namespace ClientServicing.Main.Resources.Helper
 {
     public class UtilitiesHelper
     {
-        public string ReadJson(string parentFolderName, string fileNameAndExt)
+        public string ReadTestDataJson(string parentFolderName, string fileNameAndExt)
         {
 
             string baseDir = TestContext.CurrentContext.TestDirectory;

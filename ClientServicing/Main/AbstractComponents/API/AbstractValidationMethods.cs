@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API
         abstract public void ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(RestResponse restResponse);
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile) {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-            var schemaJson = utilitiesHelper.ReadJson(folder, jsonfile);
+            var schemaJson = utilitiesHelper.ReadTestDataJson(folder, jsonfile);
             utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
             TestContext.Out.WriteLine("ValidateJsonSchema: Response content matches the expected JSON schema and is valid.");
         }

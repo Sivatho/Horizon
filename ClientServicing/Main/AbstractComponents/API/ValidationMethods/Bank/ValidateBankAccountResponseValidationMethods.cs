@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateBankAccountResponseValidationMethods : AbstractValidationMethods, IValidateBankAccountResponseValidationMethods
     {
-        public override void ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(RestResponse restResponse)
+        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
                 new JsonValidationRule {

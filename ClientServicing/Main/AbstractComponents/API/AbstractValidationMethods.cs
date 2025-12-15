@@ -10,17 +10,20 @@ namespace ClientServicing.Main.AbstractComponents.API
 {
     public abstract class AbstractValidationMethods
     {
-        abstract public void ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(RestResponse restResponse);
+        public void ValidationAssertionHeading() 
+        {
+            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:\n======================================================================");
+        }
+        abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile) {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
             var schemaJson = utilitiesHelper.ReadTestDataJson(folder, jsonfile);
             utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
-            TestContext.Out.WriteLine("ValidateJsonSchema: Response content matches the expected JSON schema and is valid.");
+            TestContext.Out.WriteLine("Validated: Response JsonSchema content matches the expected JSON schema and is valid.");
         }
-
-        public void ValidateHTTPResponseStatusCodeOK(RestResponse restResponse) {
+        public void ValidateResponseStatusCodeOK(RestResponse restResponse) {
             Assert.That(restResponse.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-            TestContext.Out.WriteLine("Response: Status Code is 200 OK");
+            TestContext.Out.WriteLine("Validated: Response Status Code is 200 OK");
         }
     }
 }

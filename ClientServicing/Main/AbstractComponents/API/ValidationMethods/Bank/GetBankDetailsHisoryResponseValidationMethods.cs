@@ -9,7 +9,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class GetBankDetailsHisoryResponseValidationMethods : AbstractValidationMethods, IGetBankDetailsHisoryResponseValidationMethods
     {
-        public override void ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(RestResponse restResponse)
+        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
                 new JsonValidationRule {

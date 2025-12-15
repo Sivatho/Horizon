@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
-using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
@@ -19,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             throw new NotImplementedException();
         }
 
-        public override void ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(RestResponse restResponse)
+        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
                 new JsonValidationRule {

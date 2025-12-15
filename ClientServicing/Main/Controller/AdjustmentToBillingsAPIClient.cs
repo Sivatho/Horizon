@@ -4,7 +4,7 @@ using ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints;
 using ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-using static ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings.AdjustmentToBillingsEndPoints;
+using static ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings.AdjustmentToBillingsAPIEndPoints;
 
 namespace ClientServicing.Main.Controller
 {
@@ -28,22 +28,8 @@ namespace ClientServicing.Main.Controller
         {
             try {
                 //Arrange
-                var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.AddAdjustmentToBillings), Method.Post);
+                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.AddAdjustmentToBillings), Method.Post);
                 request.AddBody(payload);
-
-
-
-                bool responseBool = true;
-
-                // Create a RestResponse object and set its properties
-                RestResponse restResponse = new RestResponse
-                {
-                    StatusCode = responseBool ? HttpStatusCode.OK : HttpStatusCode.BadRequest,
-                    Content = responseBool.ToString() // or any other content you want
-                };
-
-
-                utilitiesHelper.LogRequestAndResponse(request, restResponse);
                 
                 //Act
                 var response = await restClient.ExecuteAsync(request);
@@ -74,7 +60,7 @@ namespace ClientServicing.Main.Controller
             try
             {
                 //Arrange
-                var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.CancelAdjustmentToBillings), Method.Post);
+                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.CancelAdjustmentToBillings), Method.Post);
                 request.AddBody(payload);
 
                 //Act
@@ -107,7 +93,7 @@ namespace ClientServicing.Main.Controller
             try
             {
                 //Arrange
-                var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.GetAdjustedPeriods), Method.Post);
+                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustedPeriods), Method.Post);
                 request.AddBody(payload);
 
                 //Act
@@ -140,7 +126,7 @@ namespace ClientServicing.Main.Controller
             try
             {
                 //Arrange
-                var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.GetAdjustmentToBillingsHistory), Method.Post);
+                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustmentToBillingsHistory), Method.Post);
                 request.AddBody(payload);
 
                 //Act
@@ -173,7 +159,7 @@ namespace ClientServicing.Main.Controller
             try
             {
                 //Arrange
-                var request = new RestRequest(AdjustmentToBillingsEndPoints.GetEndPoint(EndPoints.GetOutstandingPolicyPremiums), Method.Post);
+                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetOutstandingPolicyPremiums), Method.Post);
                 request.AddBody(payload);
 
                 //Act

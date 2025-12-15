@@ -11,7 +11,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AdjustmentToBillings
         
 
         [Test]
-        [Ignore("This test is ignored because it is not ready yet.")]
+        //[Ignore("This test is ignored because it is not ready yet.")]
         public async Task GivenAdjustementToBillingsPayloadIsValid_WhenAddAdjustementToBillingsAsync_ThenValidateResponseIsSuccessful()
         {
             //Arrange
@@ -28,7 +28,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AdjustmentToBillings
 
 
             //Act
-            var response = adjustmentToBillingsAPIClient.AddAdjustementToBillingsAsync(addAdjustementToBillingsRequest);
+            var response = await adjustmentToBillingsAPIClient.AddAdjustementToBillingsAsync(addAdjustementToBillingsRequest);
             
             //Assert
             TestContext.Out.WriteLine("\n======================================================================\nAssertion Result:");

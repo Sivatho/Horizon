@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings
 {
-    public class AdjustmentToBillingsEndPoints
+    public class AdjustmentToBillingsAPIEndPoints
     {
         public enum EndPoints
         {

@@ -1,10 +1,8 @@
-﻿using System.Net;
-using System.Text.Json;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
-using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
@@ -12,7 +10,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
         [Test]
-        public async Task GivenPolicyNumberValid_WhenGetBankingDetailHistoryAsync_ThenValidateGetBankDetailHistoryResponseIsOk_AndContentsIsValid_And_DataTypesIsValid()
+        public async Task Given_PolicyNumberValid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
             int policyNumber = 164535;
@@ -23,16 +21,16 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var getBankDetailHistoryResponse = populateGetBankDetailHistoryResponse(response);
 
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
             ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
             ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
 
         }
         [Test]
-        public async Task GivenPolicyNumberIsInvalid_WhenGetBankingDetailHistoryAsync_ThenValidateGetBankDetailHistoryResponseIsOk_AndDataIsNotNullOrEmpty()
+        public async Task Given_PolicyNumberIsInvalid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
             int policyNumber = 0;
@@ -43,10 +41,10 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var getBankDetailHistoryResponse = populateGetBankDetailHistoryResponse(response);
 
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
             ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
             ValidateResponseIsNullOrWhiteSpace(getBankDetailHistoryResponse);
         }

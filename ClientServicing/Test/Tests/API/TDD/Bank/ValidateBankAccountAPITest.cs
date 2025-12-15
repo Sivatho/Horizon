@@ -22,9 +22,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var response = await bankClient.ValidateBankAccountAsync(validateBankAccountRequest);
             var validateBankAccountResponse = populateValidateBankAccountResponse(response);
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseIsNotNullOrEmpty(validateBankAccountResponse);
         }
         private ValidateBankAccountResponse populateValidateBankAccountResponse(RestResponse response)

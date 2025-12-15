@@ -10,7 +10,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
     public class ValidateAccountNumberUsageLimitAPITest : ValidateAccountNumberUsageLimitValidationMethods
     {
         [Test]
-        public async Task GivenAccountNumberUsageLimitIsValid_WhenValidateAccountNumberUsageLimitAsync_ThenValidateResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
+        public async Task Given_AccountNumberUsageLimitIsValid_When_ValidateAccountNumberUsageLimitAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty()
         {
             //Arrange
             string accountNumber = "1042631522";
@@ -21,9 +21,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var validateAccountNumberUsageLimitResponse = populateValidateAccountNumberUsageLimitResponse(response);
 
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseIsNotNullOrEmpty(validateAccountNumberUsageLimitResponse);
         }
         private ValidateAccountNumberUsageLimitResponse populateValidateAccountNumberUsageLimitResponse(RestResponse response)

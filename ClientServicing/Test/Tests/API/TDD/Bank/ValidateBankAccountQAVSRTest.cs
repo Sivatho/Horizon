@@ -24,9 +24,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var validateBankAccountQAVSRResponse = populateValidateBankAccountQAVSRResponse(response);
 
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "ValidateBankAccountQAVSRResponseSchema.json");
             
         }

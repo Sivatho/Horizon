@@ -13,7 +13,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task GivenBankRequestIsNotNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
+        public async Task Given_BankRequestIsNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
@@ -25,14 +25,14 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
             //Assertl
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
         [Test]
-        public async Task GivenBankRequestIsNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
+        public async Task Given_BankRequestIsNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
@@ -42,11 +42,10 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
             var fetchBanksResponse = populateFetchBanksResponse(response);
 
-
             //Assert
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:");
-            ValidateHTTPResponseStatusCodeOK(response);
-            ValidateResponsePropertyNameIsValid_AndDataTypesIsValid(response);
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }

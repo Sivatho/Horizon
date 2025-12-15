@@ -1,0 +1,23 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Beneficiary Details Request",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "policyNo": {
+            "type": "number",
+            "description": "Policy number (integer)."
+        },
+        "legacyPolicyNumber": {
+            "type": [ "string", "null" ],
+            "description": "Legacy policy number, may be null."
+        }
+    },
+    "required": [ "policyNo", "legacyPolicyNumber" ],
+    "examples": [
+        {
+            "policyNo": 204942,
+            "legacyPolicyNumber": null
+        }
+    ]
+}

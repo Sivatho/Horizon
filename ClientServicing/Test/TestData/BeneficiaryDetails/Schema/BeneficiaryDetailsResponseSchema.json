@@ -1,0 +1,261 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://example.com/schemas/beneficiary-response.schema.json",
+    "title": "Beneficiary Details Response",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "succeeded": {
+            "type": "boolean",
+            "description": "Indicates whether the operation succeeded."
+        },
+        "message": {
+            "type": [ "string", "null" ],
+            "description": "Optional message, may be null."
+        },
+        "errors": {
+            "type": [ "string", "null" ],
+            "description": "Optional errors information, may be null or a string message."
+        },
+        "data": {
+            "type": "object",
+            "additionalProperties": false,
+            "description": "Payload containing allocation totals and beneficiary items.",
+            "properties": {
+                "totalAllocated": {
+                    "type": "number",
+                    "description": "Total percentage allocated (may include fractional values like 100.0000)."
+                },
+                "beneficiaryDetailsItems": {
+                    "type": "array",
+                    "description": "List of beneficiary detail items.",
+                    "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                            "rownumber": {
+                                "type": "number",
+                                "description": "Row index of the item."
+                            },
+                            "entityNo": {
+                                "type": "number",
+                                "description": "Entity number."
+                            },
+                            "policyNo": {
+                                "type": "number",
+                                "description": "Policy number."
+                            },
+                            "firstName": {
+                                "type": "string",
+                                "description": "First name."
+                            },
+                            "surname": {
+                                "type": "string",
+                                "description": "Surname."
+                            },
+                            "titleCd": {
+                                "type": "number",
+                                "description": "Title code."
+                            },
+                            "titleDescr": {
+                                "type": [ "string", "null" ],
+                                "description": "Title description (e.g., Mrs)."
+                            },
+                            "statusCd": {
+                                "type": "number",
+                                "description": "Status code."
+                            },
+                            "statusDescr": {
+                                "type": [ "string", "null" ],
+                                "description": "Status description (may be empty string)."
+                            },
+                            "entityRelationId": {
+                                "type": [ "number", "null" ],
+                                "description": "Entity relation ID."
+                            },
+                            "relationCd": {
+                                "type": [ "number", "null" ],
+                                "description": "Relation code."
+                            },
+                            "relationDescr": {
+                                "type": [ "string", "null" ],
+                                "description": "Relation description."
+                            },
+                            "legalReferenceNumber": {
+                                "type": "string",
+                                "description": "Legal reference number."
+                            },
+                            "legalReferenceNumberMasked": {
+                                "type": "string",
+                                "description": "Masked legal reference number."
+                            },
+                            "legalReferenceNumberTypeCd": {
+                                "type": "number",
+                                "description": "Legal reference number type code."
+                            },
+                            "percAllocation": {
+                                "type": "number",
+                                "description": "Percentage allocation (fractional allowed, e.g., 100.0000)."
+                            },
+                            "dateOfBirth": {
+                                "type": [ "string", "null" ],
+                                "format": "date-time",
+                                "description": "Date of birth in ISO 8601 format."
+                            },
+                            "status": {
+                                "type": "string",
+                                "description": "Policy/beneficiary status."
+                            },
+                            "physicalAddress": {
+                                "type": [ "string", "null" ],
+                                "description": "Physical address line 1."
+                            },
+                            "addressLine2": {
+                                "type": [ "string", "null" ],
+                                "description": "Physical address line 2."
+                            },
+                            "suburb": {
+                                "type": [ "string", "null" ],
+                                "description": "Suburb."
+                            },
+                            "addressCity": {
+                                "type": [ "string", "null" ],
+                                "description": "City."
+                            },
+                            "addressPostCode": {
+                                "type": [ "string", "null" ],
+                                "description": "Postal code."
+                            },
+                            "cellNumber": {
+                                "type": [ "string", "null" ],
+                                "description": "Cell phone number."
+                            },
+                            "cellNumberMasked": {
+                                "type": [ "string", "null" ],
+                                "description": "Masked cell number."
+                            },
+                            "homeNumber": {
+                                "type": [ "string", "null" ],
+                                "description": "Home phone number."
+                            },
+                            "workNumber": {
+                                "type": [ "string", "null" ],
+                                "description": "Work phone number."
+                            },
+                            "emailAddress": {
+                                "type": [ "string", "null" ],
+                                "description": "Email address."
+                            },
+                            "fullname": {
+                                "type": "string",
+                                "description": "Full name."
+                            },
+                            "totalPercentageAvailable": {
+                                "type": "number",
+                                "description": "Total percentage remaining (typically integer, but number is allowed)."
+                            },
+                            "role": {
+                                "type": [ "string", "null" ],
+                                "description": "Role of the beneficiary."
+                            },
+                            "genderCd": {
+                                "type": [ "number", "null" ],
+                                "description": "Gender code."
+                            },
+                            "auditToken": {
+                                "type": [ "string", "null" ],
+                                "description": "Audit token for tracking."
+                            },
+                            "bankAccNo": {
+                                "type": [ "string", "null" ],
+                                "description": "Bank account number."
+                            }
+                        },
+                        "required": [
+                            "rownumber",
+                            "entityNo",
+                            "policyNo",
+                            "firstName",
+                            "surname",
+                            "titleCd",
+                            "statusCd",
+                            "legalReferenceNumber",
+                            "legalReferenceNumberMasked",
+                            "legalReferenceNumberTypeCd",
+                            "percAllocation",
+                            "dateOfBirth",
+                            "status",
+                            "fullname",
+                            "totalPercentageAvailable"
+                        ]
+                    }
+                },
+                "policyNo": {
+                    "type": "number",
+                    "description": "Policy number associated with the data section."
+                },
+                "auditToken": {
+                    "type": [ "string", "null" ],
+                    "description": "Audit token for the data section."
+                }
+            },
+            "required": [
+                "totalAllocated",
+                "beneficiaryDetailsItems",
+                "policyNo",
+                "auditToken"
+            ]
+        }
+    },
+    "required": [ "succeeded", "message", "errors", "data" ],
+    "examples": [
+        {
+            "succeeded": true,
+            "message": null,
+            "errors": null,
+            "data": {
+                "totalAllocated": 100.0,
+                "beneficiaryDetailsItems": [
+                    {
+                        "rownumber": 1,
+                        "entityNo": 1,
+                        "policyNo": 204942,
+                        "firstName": "Member",
+                        "surname": "Estate",
+                        "titleCd": 2,
+                        "titleDescr": "Mrs",
+                        "statusCd": 1,
+                        "statusDescr": "",
+                        "entityRelationId": null,
+                        "relationCd": null,
+                        "relationDescr": null,
+                        "legalReferenceNumber": "7109019739426",
+                        "legalReferenceNumberMasked": "xxxxxxxxx9426",
+                        "legalReferenceNumberTypeCd": 2,
+                        "percAllocation": 100.0,
+                        "dateOfBirth": "1971-09-01T00:00:00",
+                        "status": "In Force",
+                        "physicalAddress": null,
+                        "addressLine2": null,
+                        "suburb": null,
+                        "addressCity": null,
+                        "addressPostCode": null,
+                        "cellNumber": null,
+                        "cellNumberMasked": null,
+                        "homeNumber": null,
+                        "workNumber": null,
+                        "emailAddress": null,
+                        "fullname": "Member Estate",
+                        "totalPercentageAvailable": 0,
+                        "role": "",
+                        "genderCd": null,
+                        "auditToken": null,
+                        "bankAccNo": null
+                    }
+                ],
+                "policyNo": 204942,
+                "auditToken": null
+            }
+        }
+    ]
+}

@@ -13,7 +13,7 @@ namespace ClientServicing.Main.Models.General
         public JsonValueKind[] AllowedKinds { get; set; }
         public bool IsRequired { get; set; } = true;
         public Dictionary<string, JsonValueKind[]> NestedRules { get; set; }
-
+        public Dictionary<string, JsonValueKind[]> ArrayItemRules { get; internal set; }
         public static void ValidateJson(JsonElement root, List<JsonValidationRule> rules)
         {
             foreach (var rule in rules)

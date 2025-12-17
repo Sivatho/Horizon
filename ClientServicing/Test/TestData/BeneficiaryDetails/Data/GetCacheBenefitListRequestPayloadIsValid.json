@@ -1,0 +1,43 @@
+{
+    "totalAllocated": 100.0000,
+    "beneficiaryDetailsItems": [
+        {
+            "rownumber": 1,
+            "entityNo": 1,
+            "policyNo": 204942,
+            "firstName": "Member",
+            "surname": "Estate",
+            "titleCd": 5,
+            "titleDescr": "Dr",
+            "statusCd": 1,
+            "statusDescr": "",
+            "entityRelationId": null,
+            "relationCd": null,
+            "relationDescr": null,
+            "legalReferenceNumber": "7109019739426",
+            "legalReferenceNumberMasked": "xxxxxxxxx9426",
+            "legalReferenceNumberTypeCd": 2,
+            "percAllocation": 100.0000,
+            "dateOfBirth": "1971-09-01T00:00:00",
+            "status": "In Force",
+            "physicalAddress": null,
+            "addressLine2": null,
+            "suburb": null,
+            "addressCity": null,
+            "addressPostCode": null,
+            "cellNumber": null,
+            "cellNumberMasked": null,
+            "homeNumber": null,
+            "workNumber": null,
+            "emailAddress": null,
+            "fullname": "Member Estate",
+            "totalPercentageAvailable": 0,
+            "role": "",
+            "genderCd": null,
+            "auditToken": null,
+            "bankAccNo": null
+        }
+    ],
+    "policyNo": 204942,
+    "auditToken": null
+}

@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title": "PayerDto",
+    "title": "Validate Bank Account QAVSR Request",
     "type": "object",
     "properties": {
         "payerEntityNo": {

@@ -1,9 +1,7 @@
 ﻿using System.Globalization;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
-using OpenQA.Selenium.BiDi.Network;
 using RestSharp;
 
 namespace ClientServicing.Main.Resources.Helper
@@ -186,7 +184,7 @@ namespace ClientServicing.Main.Resources.Helper
                 }
             }
 
-            return null;  
+            return null;
 
 
         }
@@ -200,7 +198,7 @@ namespace ClientServicing.Main.Resources.Helper
         {
             if (element.ValueKind == JsonValueKind.Null) return null;
             if (element.ValueKind == JsonValueKind.String && DateTime.TryParse(element.GetString(), out DateTime value)) return value;
-            if(element.ValueKind ==JsonValueKind.String && element.TryGetDateTime(out var dateExact)) return dateExact;
+            if (element.ValueKind == JsonValueKind.String && element.TryGetDateTime(out var dateExact)) return dateExact;
             return null;
         }
     }

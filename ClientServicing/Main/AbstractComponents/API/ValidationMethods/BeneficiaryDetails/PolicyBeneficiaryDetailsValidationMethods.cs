@@ -106,7 +106,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
             };
             using var jsonDoc = JsonDocument.Parse(restResponse.Content);
             JsonValidationRule.ValidateJson(jsonDoc.RootElement, rules);
-            TestContext.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
+            TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
         }
     }
 }

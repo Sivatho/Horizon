@@ -22,7 +22,7 @@ namespace ClientServicing.Main.Models.BeneficiaryDetails
         public string surname { get; set; }
         public int legalRefNoType { get; set; }
         public string legalRefNo { get; set; }
-        public DateTime dateOfBirth { get; set; }
+        public DateTime? dateOfBirth { get; set; }
         public int preferredTelTypeCd { get; set; }
         public string emailAddress { get; set; }
         public string cellNumber { get; set; }
@@ -39,7 +39,7 @@ namespace ClientServicing.Main.Models.BeneficiaryDetails
         public string poSuburb { get; set; }
         public string poCity { get; set; }
         public string poPostalCode { get; set; }
-        public int userID { get; set; }
+        public string userID { get; set; }
         public int genderCD { get; set; }
         public int smokerCD { get; set; }
         public int reasonCD { get; set; }
@@ -48,7 +48,7 @@ namespace ClientServicing.Main.Models.BeneficiaryDetails
         public int isPhysicallyDisabled { get; set; }
         public int isMarried { get; set; }
         public int percentageAlloc { get; set; }
-        public DateTime effectiveDate { get; set; }
+        public DateTime? effectiveDate { get; set; }
         public string auditToken { get; set; }
     }
 }

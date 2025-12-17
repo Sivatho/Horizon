@@ -1,0 +1,33 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Simple Response",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "succeeded": {
+            "type": "boolean",
+            "description": "Indicates success or failure."
+        },
+        "message": {
+            "type": [ "string", "null" ],
+            "description": "Optional message."
+        },
+        "errors": {
+            "type": [ "string", "null" ],
+            "description": "Optional error details."
+        },
+        "data": {
+            "type": "boolean",
+            "description": "Data payload as a boolean value."
+        }
+    },
+    "required": [ "succeeded", "message", "errors", "data" ],
+    "examples": [
+        {
+            "succeeded": true,
+            "message": null,
+            "errors": null,
+            "data": true
+        }
+    ]
+}

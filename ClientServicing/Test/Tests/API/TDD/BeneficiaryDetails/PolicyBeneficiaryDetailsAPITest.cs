@@ -1,14 +1,10 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.BeneficiaryDetails;
 using ClientServicing.Main.Controller;
-using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.BeneficiaryDetails;
 using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-{
-    
-}
 
 namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 {

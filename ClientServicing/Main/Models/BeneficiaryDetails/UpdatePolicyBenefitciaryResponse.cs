@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.BeneficiaryDetails
 {
-    public class UpdatePolicyBenefitciaryCacheResponse
+    public class UpdatePolicyBenefitciaryResponse
     {
         public bool succeeded { get; set; }
         public string? message { get; set; }

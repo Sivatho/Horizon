@@ -9,7 +9,7 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Benefic
 {
     public interface IUpdatePolicyBeneficiaryCacheValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(UpdatePolicyBenefitciaryCacheResponse updatePolicyBenefitciaryCacheResponse);
-        public void ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(UpdatePolicyBenefitciaryCacheResponse updatePolicyBenefitciaryCacheResponse);
+        public void ValidateResponseIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse);
+        public void ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse);
     }
 }

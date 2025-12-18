@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
 {
     public class UpdatePolicyBeneficiaryCacheValidationMethods : AbstractValidationMethods, IUpdatePolicyBeneficiaryCacheValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(UpdatePolicyBenefitciaryCacheResponse updatePolicyBenefitciaryCacheResponse)
+        public void ValidateResponseIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse)
         {
            Assert.Multiple(() =>
            {
@@ -54,7 +54,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
             TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
         }
 
-        public void ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(UpdatePolicyBenefitciaryCacheResponse updatePolicyBenefitciaryCacheResponse)
+        public void ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse)
         {
             throw new NotImplementedException();
         }

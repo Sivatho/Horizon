@@ -31,9 +31,9 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "UpdatePolicyBenefitCacheResponseSchema.json");
         }
-        private UpdatePolicyBenefitciaryCacheResponse PopulateExecutionOutcome(RestResponse restResponse)
+        private UpdatePolicyBenefitciaryResponse PopulateExecutionOutcome(RestResponse restResponse)
         {
-            var updatePolicyBenefitCacheResponse = new UpdatePolicyBenefitciaryCacheResponse();
+            var updatePolicyBenefitCacheResponse = new UpdatePolicyBenefitciaryResponse();
             using JsonDocument doc = JsonDocument.Parse(restResponse.Content);
 
             foreach (var property in doc.RootElement.EnumerateObject())

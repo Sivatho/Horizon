@@ -17,7 +17,7 @@
         public string? LegalReferenceNumber { get; set; }
         public string? LegalReferenceNumberMasked { get; set; }
         public int? LegalReferenceNumberTypeCd { get; set; }
-        public int? PercAllocation { get; set; }
+        public double? PercAllocation { get; set; }
         public DateTime? DateOfBirth { get; set; }
         public string? Status { get; set; }
         public string? PhysicalAddress { get; set; }

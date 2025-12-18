@@ -1,0 +1,20 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "Update Policy Beneficiary Cache",
+    "type": "object",
+    "properties": {
+        "succeeded": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": [ "string", "null" ]
+        },
+        "errors": {
+            "type": [ "string", "null" ]
+        },
+        "data": {
+            "type": "boolean"
+        }
+    },
+    "required": [ "succeeded", "message", "errors", "data" ]
+}

@@ -14,7 +14,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task Given_BeneficiaryDetailsData_When_UpdatePolicyBeneficiaryCacheAsync_Then()
+        public async Task Given_BeneficiaryDetailsData_When_UpdatePolicyBeneficiaryCacheAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             var json = utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "UpdatePolicyBeneficiaryCacheRequestPayloadIsValid.json");

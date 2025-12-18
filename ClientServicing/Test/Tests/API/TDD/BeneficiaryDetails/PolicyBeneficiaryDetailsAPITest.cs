@@ -15,7 +15,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        public async Task Given_PolicyBeneficiaryDetailsRequest_When_PolicyBeneficiaryDetailsAsync_Then_ExpectedResult()
+        public async Task Given_PolicyBeneficiaryDetailsRequest_When_PolicyBeneficiaryDetailsAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange            
             PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsPayloadIsValid.json"));

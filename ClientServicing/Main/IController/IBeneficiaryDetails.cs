@@ -15,5 +15,6 @@ namespace ClientServicing.Main.IController
         public Task<RestResponse> UpdatePolicyBeneficiaryCacheAsync<T>(T payload) where T : class;
         public Task<RestResponse> GetCachedBeneficiaryListAsync<T>(T payload) where T : class;
         public Task<RestResponse> SaveUpdatedBeneficiariesAsync<T>(T payload) where T : class;
+        public Task<RestResponse> GetInsuredWithBenefit<T>(T payload) where T : class;
     }
 }

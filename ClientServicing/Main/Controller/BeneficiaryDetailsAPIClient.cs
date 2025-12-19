@@ -81,6 +81,34 @@ namespace ClientServicing.Main.Controller
             }
         }
 
+        public async Task<RestResponse> GetInsuredWithBenefit<T>(T payload) where T : class
+        {
+            try { 
+                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetInsuredWithBenefit), Method.Post);
+                request.AddJsonBody(payload);
+
+                var response = await restClient.ExecuteAsync(request);
+                utilitiesHelper.LogRequestAndResponse(request, response);
+
+                if (!response.IsSuccessful)
+                {
+                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
+                }
+                return response;
+            } 
+            catch (Exception ex)
+            {
+                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
+                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
+
+                return new RestResponse
+                {
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    ErrorMessage = $"Exception occurred: {ex.Message}"
+                };
+            }
+        }
+
         public async Task<RestResponse> PolicyBeneficiaryDetailsAsync<T>(T payload) where T : class
         {
             try { 

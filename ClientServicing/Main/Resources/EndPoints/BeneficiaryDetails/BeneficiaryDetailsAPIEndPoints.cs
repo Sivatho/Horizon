@@ -15,7 +15,8 @@ namespace ClientServicing.Main.Resources.EndPoints.BeneficiaryDetails
             GetAndCachePolicyBeneficiaryDetails,
             UpdatePolicyBeneficiaryCache,
             GetCachedBeneficiaryList,
-            SaveUpdatedBeneficiaries
+            SaveUpdatedBeneficiaries,
+            GetInsuredWithBenefit
         }
         public static string GetEndPoint(EndPoints endPoint)
         {
@@ -27,6 +28,7 @@ namespace ClientServicing.Main.Resources.EndPoints.BeneficiaryDetails
                 EndPoints.UpdatePolicyBeneficiaryCache => "/api/BeneficiaryDetails/UpdatePolicyBeneficiaryCache",
                 EndPoints.GetCachedBeneficiaryList => "/api/BeneficiaryDetails/GetCachedBeneficiaryList",
                 EndPoints.SaveUpdatedBeneficiaries => "/api/BeneficiaryDetails/SaveUpdatedBeneficiaries",
+                EndPoints.GetInsuredWithBenefit => "/api/BeneficiaryDetails/GetInsuredWithBenefit",
                 _ => throw new ArgumentOutOfRangeException(nameof(endPoint), endPoint, null)
             };
         }

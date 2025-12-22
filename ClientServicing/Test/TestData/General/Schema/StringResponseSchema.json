@@ -1,0 +1,6 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "String Schema",
+    "type": "string",
+    "const": "Email has been sent successfully."
+}

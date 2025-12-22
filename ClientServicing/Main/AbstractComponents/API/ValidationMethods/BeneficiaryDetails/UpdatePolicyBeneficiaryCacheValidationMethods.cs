@@ -17,7 +17,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
         {
            Assert.Multiple(() =>
            {
-               Assert.That(updatePolicyBenefitciaryCacheResponse,Is.Not.Null, "UpdatePolicyBeneficiaryCacheResponse is null");
+               Assert.That(updatePolicyBenefitciaryCacheResponse,Is.Not.Null.Or.Empty, "UpdatePolicyBeneficiaryCacheResponse:should not be null or empty");
            });
         }
 

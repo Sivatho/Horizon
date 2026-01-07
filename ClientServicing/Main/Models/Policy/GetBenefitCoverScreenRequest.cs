@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ClientServicing.Main.Models.General
+namespace ClientServicing.Main.Models.Policy
 {
-    public class CorrectBankAccountType
+    public class GetBenefitCoverScreenRequest
     {
-        public int type { get; set; }
+        public int policyNo { get; set; }
     }
 }

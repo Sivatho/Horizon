@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.IController;
+﻿using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.GSD;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
@@ -28,7 +23,8 @@ namespace ClientServicing.Main.Controller
 
         public async Task<RestResponse> AffordabilityEnquiryAsync<T>(T payload) where T : class
         {
-            try {
+            try
+            {
                 //Arrange
                 var request = new RestRequest(GSDAPIEndPoint.GetEndPoint(EndPoints.AffordabilityEnquiry), Method.Post);
                 request.AddJsonBody(payload);

@@ -1,7 +1,7 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank;
 using ClientServicing.Main.Models.Bank;
-using ClientServicing.Main.Models.General;
+using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank

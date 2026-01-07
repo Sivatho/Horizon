@@ -1,0 +1,15 @@
+{
+    "sourceSystem": "string",
+    "policyDocumentNo": 0,
+    "policyNo": 205241,
+    "documentId": 0,
+    "processCd": 0,
+    "statusId": 0,
+    "statusDate": "2026-01-05T07:57:23.712Z",
+    "effFrom": "2026-01-05T07:57:23.712Z",
+    "effTo": "2026-01-05T07:57:23.712Z",
+    "audCreateUser": "string",
+    "audCreateDate": "2026-01-05T07:57:23.712Z",
+    "audModUser": "string",
+    "audModDate": "2026-01-05T07:57:23.712Z"
+}

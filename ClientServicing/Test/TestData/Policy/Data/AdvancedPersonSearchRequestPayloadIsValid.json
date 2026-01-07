@@ -1,0 +1,10 @@
+{
+    "encashmentNo": "string",
+    "busRegNo": "string",
+    "appFormNo": "string",
+    "emailAddress": "string",
+    "businessName": "string",
+    "fullName": "string",
+    "inspiratorNo": "1000007781NA",
+    "worksiteNo": "string"
+}

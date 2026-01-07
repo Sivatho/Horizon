@@ -16,4 +16,8 @@ namespace ClientServicing.Main.Models.Bank
         public CorrectBankAccountType correctBankAccountType { get; set; }
         public string correctBankName { get; set; }
     }
+    public class CorrectBankAccountType
+    {
+        public int type { get; set; }
+    }
 }

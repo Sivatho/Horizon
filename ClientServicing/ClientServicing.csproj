@@ -39,7 +39,7 @@
   <ItemGroup>
     <Folder Include="Test\TestData\Email\Schema\" />
     <Folder Include="Test\TestData\General\Data\" />
-    <Folder Include="Test\TestData\GSD\Schema\" />
+    <Folder Include="Test\TestData\Policy\Schema\" />
   </ItemGroup>
 
 </Project>

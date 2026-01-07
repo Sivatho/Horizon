@@ -5,7 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ClientServicing.Main.Models.General
+namespace ClientServicing.Main.Resources.Helper
 {
     public class JsonValidationRule
     {

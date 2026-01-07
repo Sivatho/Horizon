@@ -1,0 +1,14 @@
+{
+    "policyNo": "201717",
+    "legPolNo": "1000004146ZA",
+    "clientEntityNo": "string",
+    "legalRefNo": "string",
+    "claimNo": "string",
+    "cellNo": "string",
+    "emailAddress": "string",
+    "fullName": "string",
+    "inspiratorNo": "string",
+    "voucherNo": "string",
+    "partnerCD": 0,
+    "auditToken": "string"
+}

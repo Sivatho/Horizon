@@ -1,14 +1,14 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank;
 using ClientServicing.Main.Models.Bank;
-using ClientServicing.Main.Models.General;
+using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
-    public class CanChangeBankAccountIdValidationMethods : AbstractValidationMethods, ICanChangeBankAccountIdValidationMethods
+    public class CanChangeBankAccountIdValidationMethods : AbstractValidationMethods//, ICanChangeBankAccountIdValidationMethods
     {
-        public void ValidateCanChangeBankAccountResponseDataIsNotNullOrEmpty(CanChangeBankAccountResponse canChangeBankAccountResponse)
+        public void ValidateObjectReSponseDataIsNotNullorEmpty(CanChangeBankAccountResponse canChangeBankAccountResponse)
         {
             throw new NotImplementedException();
         }

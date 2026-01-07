@@ -1,0 +1,100 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "AffordabilityEnquiryResponse",
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+        "isValid": {
+            "type": "boolean",
+            "description": "Indicates whether the enquiry passed validation."
+        },
+        "errorMessage": {
+            "type": [ "string", "null" ],
+            "minLength": 1,
+            "description": "Human-readable error message when isValid is false."
+        },
+        "createdTimestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp (e.g., 2025-12-22T14:26:06.72)."
+        },
+        "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Unique request identifier."
+        },
+        "identityNumber": {
+            "type": "string",
+            "pattern": "^\\d{13}$",
+            "description": "South African ID number (13 digits)."
+        },
+        "amount": {
+            "type": "number",
+            "minimum": 0,
+            "multipleOf": 0.01,
+            "description": "Currency amount in ZAR; non-negative with two decimal places."
+        },
+        "initials": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 5,
+            "description": "Customer initials."
+        },
+        "surname": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100,
+            "description": "Customer surname."
+        },
+        "errorCodeId": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Internal error code identifier."
+        },
+        "errorCode": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "External or user-visible error code."
+        },
+        "correlationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Correlation ID for cross-service tracing."
+        },
+        "employeeNumberHash": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Hashed employee number represented as a UUID."
+        }
+    },
+    "required": [
+        "isValid",
+        "createdTimestamp",
+        "requestId",
+        "identityNumber",
+        "amount",
+        "initials",
+        "surname"
+    ],
+    "allOf": [
+        {
+            "if": { "properties": { "isValid": { "const": true } } },
+            "then": {
+                "properties": {
+                    "errorMessage": { "type": "null" },
+                    "errorCode": { "type": "integer" },
+                    "errorCodeId": { "type": "integer" }
+                }
+            },
+            "else": {
+                "required": [ "errorMessage" ],
+                "properties": {
+                    "errorMessage": {
+                        "type": "string",
+                        "minLength": 1
+                    }
+                }
+            }
+        }
+    ]
+}

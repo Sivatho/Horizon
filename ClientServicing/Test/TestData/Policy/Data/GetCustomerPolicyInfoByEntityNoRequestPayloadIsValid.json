@@ -1,0 +1,5 @@
+{
+    "entityNo": "string",
+    "partnerCd": 0,
+    "auditToken": "string"
+}

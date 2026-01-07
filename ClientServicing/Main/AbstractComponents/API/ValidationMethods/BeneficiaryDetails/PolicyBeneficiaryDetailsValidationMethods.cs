@@ -7,7 +7,7 @@ using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.BeneficiaryDetails;
 using ClientServicing.Main.Models.BeneficiaryDetails;
-using ClientServicing.Main.Models.General;
+using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.BeneficiaryDetails

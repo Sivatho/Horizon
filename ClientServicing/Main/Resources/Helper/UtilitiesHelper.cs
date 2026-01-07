@@ -128,19 +128,14 @@ namespace ClientServicing.Main.Resources.Helper
                 if (str.Equals("Y", StringComparison.OrdinalIgnoreCase)) return true;
                 if (str.Equals("N", StringComparison.OrdinalIgnoreCase)) return false;
             }
-
             return null;
-
         }
         public int? ReadInt32Nullable(JsonElement element)
         {
-
             if (element.ValueKind == JsonValueKind.Null) return null;
-
             // 1) Integer token
             if (element.ValueKind == JsonValueKind.Number && element.TryGetInt32(out int i))
                 return i;
-
             // 2) Numeric token but not an integer (e.g., 100.0000)
             if (element.ValueKind == JsonValueKind.Number)
             {
@@ -166,7 +161,6 @@ namespace ClientServicing.Main.Resources.Helper
                     return null; // not integral
                 }
             }
-
             // 3) String token "100.0000" or "100"
             if (element.ValueKind == JsonValueKind.String)
             {
@@ -183,9 +177,7 @@ namespace ClientServicing.Main.Resources.Helper
                         return (int)dec2;
                 }
             }
-
             return null;
-
 
         }
         public string? ReadStringNullable(JsonElement element)

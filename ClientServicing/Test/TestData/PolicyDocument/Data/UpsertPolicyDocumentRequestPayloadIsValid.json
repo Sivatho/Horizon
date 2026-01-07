@@ -1,0 +1,33 @@
+{
+    "sourceSystem": "string",
+    "policyDocumentNo": 0,
+    "policyNo": 205241,
+    "documentId": 0,
+    "documentTypeCD": 0,
+    "processCd": 0,
+    "statusId": 0,
+    "statusDate": "2026-01-06T09:32:05.807Z",
+    "effFrom": "2026-01-06T09:32:05.807Z",
+    "effTo": "2026-01-06T09:32:05.807Z",
+    "audCreateUser": "string",
+    "audCreateDate": "2026-01-06T09:32:05.807Z",
+    "audModUser": "string",
+    "audModDate": "2026-01-06T09:32:05.807Z",
+    "fileDetails": {
+        "fileId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "referenceId": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+        "fileName": "string",
+        "fileCreatedDate": "2026-01-06T09:32:05.807Z",
+        "base64FileContents": "string",
+        "fileExtension": "string",
+        "tags": [
+            "string"
+        ],
+        "properties": [
+            {
+                "key": "string",
+                "value": "string"
+            }
+        ]
+    }
+}

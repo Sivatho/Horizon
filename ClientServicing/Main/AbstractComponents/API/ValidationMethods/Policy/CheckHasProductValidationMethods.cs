@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Policy;
 using ClientServicing.Main.Models.Policy;
+using ClientServicing.Main.Models.PolicyDocument;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
@@ -31,7 +32,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
         {
             Assert.Multiple(() => {
                 Assert.That(checkHasProductResponse.executionOutcome,   Is.Not.Null.Or.Empty,   "CheckHasProductResponse: <executionOutcome> Should not be null or empty");
-                Assert.That(checkHasProductResponse.data,               Is.TypeOf<bool>(),      "CheckHasProductResponse: <data> Should be a boolean value");
+                Assert.That(checkHasProductResponse.data, Is.Not.Null.Or.Empty,                 "CheckPolicyDocumentExistResponse: <data> Should not be null");
             });
             TestContext.Out.WriteLine("Validated: <CheckHasProductResponse> is not be null or empty");
         }

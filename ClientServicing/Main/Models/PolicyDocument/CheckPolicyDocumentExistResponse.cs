@@ -10,6 +10,6 @@ namespace ClientServicing.Main.Models.PolicyDocument
     public class CheckPolicyDocumentExistResponse
     {
         public ExecutionOutcome executionOutcome { get; set; }
-        public bool data { get; set; }
+        public bool? data { get; set; }
     }
 }

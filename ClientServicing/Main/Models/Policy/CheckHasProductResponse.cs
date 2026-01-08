@@ -10,6 +10,6 @@ namespace ClientServicing.Main.Models.Policy
     public class CheckHasProductResponse
     {
         public ExecutionOutcome executionOutcome { get; set; }
-        public bool data { get; set; }
+        public bool? data { get; set; }
     }
 }

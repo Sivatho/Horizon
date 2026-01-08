@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.PolicyDocument;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Models.Policy;
@@ -14,13 +15,13 @@ using RestSharp;
 namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
 {
     [TestFixture]
-    public class CheckPolicyDocumentExistAPITests
+    public class CheckPolicyDocumentExistAPITests : CheckPolicyDocumentExistValidationMethods
     {
         PolicyDocumentAPIClient policyDocumentAPIClient = new PolicyDocumentAPIClient();
         UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         [Test]
-        [Ignore("Test data needs to be updated output data is not as expected: Validations need to be added")]
+        //[Ignore("Test data needs to be updated output data is not as expected: Validations need to be added")]
         public async Task Given_CheckPolicyDocumentExistRequestPayloadIsValid_When_CheckPolicyDocumentExistAsync_Then_() {
             //Arrange
             var request = JsonSerializer.Deserialize<CheckPolicyDocumentExistRequest>
@@ -29,6 +30,11 @@ namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
             var response = await policyDocumentAPIClient.CheckPolicyDocumentExistAsync(request);
             var checkPolicyDocumentExistResponse = populateCheckPolicyDocumentExistResponse(response);
             //Assert
+            ValidationAssertionHeading();
+            ValidateResponseStatusCodeOK(response);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidateCheckPolicyDocumentExistResponseIsNotNullOrEmpty(checkPolicyDocumentExistResponse);
+
         }
         private CheckPolicyDocumentExistResponse populateCheckPolicyDocumentExistResponse(RestResponse response)
         {

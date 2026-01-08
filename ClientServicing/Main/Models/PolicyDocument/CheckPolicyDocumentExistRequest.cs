@@ -14,12 +14,12 @@ namespace ClientServicing.Main.Models.PolicyDocument
         public int documentId { get; set; }
         public int processCd { get; set; }
         public int statusId { get; set; }
-        public DateTime statusDate { get; set; }
-        public DateTime effFrom { get; set; }
-        public DateTime effTo { get; set; }
+        public DateTime? statusDate { get; set; }
+        public DateTime? effFrom { get; set; }
+        public DateTime? effTo { get; set; }
         public string audCreateUser { get; set; }
-        public DateTime audCreateDate { get; set; }
+        public DateTime? audCreateDate { get; set; }
         public string audModUser { get; set; }
-        public DateTime audModDate { get; set; }
+        public DateTime? audModDate { get; set; }
     }
 }

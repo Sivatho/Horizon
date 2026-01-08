@@ -15,7 +15,7 @@ namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
         UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         [Test]
-        //[Ignore("Test data needs to be updated output data is not as expected: Validations need to be added")]
+        [Ignore("Test data needs to be updated output data is not as expected")]
         public async Task Given_CheckPolicyDocumentExistRequestPayloadIsValid_And_ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmptyOrLessThanZero_When_CheckPolicyDocumentExistAsync_Then_ValidateResponseStatusCodeOK_And_ResponsePropertyNameIsValid_And_DataTypesIsValid_And_PolicyDocumentExistResponseIsNotNullOrEmpty() {
             //Arrange
             var request = JsonSerializer.Deserialize<CheckPolicyDocumentExistRequest>

@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.PolicyDo
 {
     public class CheckPolicyDocumentExistValidationMethods : AbstractValidationMethods, ICheckPolicyDocumentExistValidationMethods
     {
-        public void ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmpty(CheckPolicyDocumentExistRequest checkPolicyDocumentExistRequest)
+        public void ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmptyOrLessThanZero(CheckPolicyDocumentExistRequest checkPolicyDocumentExistRequest)
         {
             Assert.Multiple(() => {
                 Assert.That(checkPolicyDocumentExistRequest.sourceSystem, Is.Not.Null.Or.Empty,     "CheckPolicyDocumentExistRequest: <sourceSystem> Should not be null or empty");

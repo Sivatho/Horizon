@@ -4,7 +4,7 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.PolicyD
 {
     public interface ICheckPolicyDocumentExistValidationMethods
     {
-        public void ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmpty(CheckPolicyDocumentExistRequest checkPolicyDocumentExistRequest);
+        public void ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmptyOrLessThanZero(CheckPolicyDocumentExistRequest checkPolicyDocumentExistRequest);
         public void ValidateCheckPolicyDocumentExistResponseIsNotNullOrEmpty(CheckPolicyDocumentExistResponse checkPolicyDocumentExistResponse);
     }
 }

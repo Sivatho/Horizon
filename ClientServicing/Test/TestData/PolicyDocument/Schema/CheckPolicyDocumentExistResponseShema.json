@@ -1,0 +1,24 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+        "succeeded": {
+            "type": "boolean",
+            "description": "Indicates whether the operation succeeded."
+        },
+        "message": {
+            "type": [ "string", "null" ],
+            "description": "Optional message returned by the operation."
+        },
+        "errors": {
+            "type": [ "string", "array", "null" ],
+            "description": "Error details, if any."
+        },
+        "data": {
+            "type": [ "boolean", "object", "array", "string", "null", "number" ],
+            "description": "Data returned by the operation. Has flexible type depending on the API.",
+            "default": null
+        }
+    },
+    "required": [ "succeeded", "data" ]
+}

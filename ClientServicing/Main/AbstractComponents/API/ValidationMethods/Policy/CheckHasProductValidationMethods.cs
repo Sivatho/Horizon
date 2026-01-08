@@ -14,7 +14,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
 {
     public class CheckHasProductValidationMethods : AbstractValidationMethods, ICheckHasProductValidationMethods
     {
-        public void ValidateCheckHasProductRequestDataIsNotNullOrEmpty(CheckHasProductRequest checkHasProductRequest)
+        public void ValidateCheckHasProductRequestDataIsNotNullOrEmptyOrLessThanZero(CheckHasProductRequest checkHasProductRequest)
         {
             using (Assert.EnterMultipleScope())
             {
@@ -25,7 +25,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
                 Assert.That(checkHasProductRequest.planCD,      Is.Not.LessThan(0),     "CheckHasProductRequest: <planCD> Should be a positive integer");
                 Assert.That(checkHasProductRequest.schemeDescr, Is.Not.Null.Or.Empty,   "CheckHasProductRequest: <schemeDescr> Should not be null or empty");
             }
-            TestContext.Out.WriteLine("Validated: <CheckHasProductRequest> is not be null or empty");
+            TestContext.Out.WriteLine("Validated: <CheckHasProductRequest> properties are not null or empty or not less than zero");
         }
 
         public void ValidateCheckHasProductResponseDataIsNotNullOrEmpty(CheckHasProductResponse checkHasProductResponse)

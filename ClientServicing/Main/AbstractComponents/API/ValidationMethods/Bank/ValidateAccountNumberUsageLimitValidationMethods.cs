@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateAccountNumberUsageLimitValidationMethods : AbstractValidationMethods, IValidateAccountNumberUsageLimitValidationMethods
     {
-        public void ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }
@@ -51,7 +51,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             TestContext.Out.WriteLine("Response: content data types are valid.");
         }
 
-        public void ValidateResponseIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
+        public void ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
         {
             Assert.Multiple(() =>
             {
@@ -62,11 +62,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 );
             });
             TestContext.Out.WriteLine("Response: ValidateAccountNumberUsageLimitResponse is not null or empty.");
-        }
-
-        public void ValidateResponseIsNullOrWhiteSpace(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
-        {
-            throw new NotImplementedException();
         }
     }
 }

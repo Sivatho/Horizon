@@ -9,8 +9,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank
 {
     public interface IValidateBankAccountResponseValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse);
-        public void ValidateResponseIsNullOrWhiteSpace(ValidateBankAccountResponse validateBankAccountResponse);
         public void ValidateValidateBankAccountResponseDataIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse);
     }
 }

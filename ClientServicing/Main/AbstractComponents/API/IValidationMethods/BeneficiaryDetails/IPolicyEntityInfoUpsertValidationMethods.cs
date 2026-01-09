@@ -4,8 +4,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Benefic
 {
     internal interface IPolicyEntityInfoUpsertValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse);
-        //public void ValidateResponseIsNullOrWhiteSpace(PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse);
         public void ValidatePolicyEntityInfoUpsertResponseDataIsNotNullOrEmpty(PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse);
     }
 }

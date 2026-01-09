@@ -13,12 +13,9 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
 {
     public class UpdatePolicyBeneficiaryCacheValidationMethods : AbstractValidationMethods, IUpdatePolicyBeneficiaryCacheValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
-           Assert.Multiple(() =>
-           {
-               Assert.That(updatePolicyBenefitciaryCacheResponse,Is.Not.Null.Or.Empty, "UpdatePolicyBeneficiaryCacheResponse:should not be null or empty");
-           });
+            throw new NotImplementedException();
         }
 
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
@@ -53,10 +50,10 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
             JsonValidationRule.ValidateJson(jsonDoc.RootElement, rules);
             TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
         }
-
         public void ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(UpdatePolicyBenefitciaryResponse updatePolicyBenefitciaryCacheResponse)
         {
-            throw new NotImplementedException();
+            Assert.That(updatePolicyBenefitciaryCacheResponse, Is.Not.Null.Or.Empty, "UpdatePolicyBeneficiaryCacheResponse: Response should not be null or empty");
+            TestContext.Out.WriteLine("Validated: <UpdatePolicyBeneficiaryCacheResponse> is not null or empty.");
         }
     }
 }

@@ -4,8 +4,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Benefic
 {
     public interface IPolicyBeneficiaryDetailsValidationMethods 
     {
-        public void ValidateResponseIsNotNullOrEmpty(PolicyBeneficiaryDetailsResponse policyBeneficiaryDetailsResponse);
-        //public void ValidateResponseIsNullOrWhiteSpace(PolicyBeneficiaryDetailsResponse policyBeneficiaryDetailsResponse);
-        public void ValidatePolicyBeneficiaryDetailsDataIsNotNullOrEmpty(PolicyBeneficiaryDetailsResponse policyBeneficiaryDetailsResponse);
+        public void ValidateResponseIsNotNullOrEmpty(PolicyBeneficiaryDetailsResponse policyBeneficiaryDetailsResponse);        
     }
 }

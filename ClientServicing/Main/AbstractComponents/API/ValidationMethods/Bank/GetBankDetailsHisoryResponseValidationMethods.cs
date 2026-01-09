@@ -50,27 +50,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
             TestContext.Out.WriteLine("Response: All contents and data types are valid as expected.");
         }
-        public void ValidateBankDetailHistoryDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
-        {
-            Assert.Multiple(() =>
-            {
-                Assert.That(getBankDetailHistoryResponse.executionOutcome.succeeded, Is.True, "GetBankDetailHistory Response: Succeeded should be null or empty");
-                foreach (var bankDetailHistoryData in getBankDetailHistoryResponse.data)
-                {
-                    Assert.That(bankDetailHistoryData.bankAccHolder,    Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Bank Account Holder should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankName,         Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Bank Name should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankAccTypeDescr, Is.Null.Or.Empty,           "GetBankDetailHistory Response: Bank Account Type Description should be null or empty");
-                    Assert.That(bankDetailHistoryData.branchCode,       Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Branch Code should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankAccNo,        Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Bank Account Number should be null or empty");
-                    Assert.That(bankDetailHistoryData.effFrom,          Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Effective From should be null or empty");
-                    Assert.That(bankDetailHistoryData.effTo,            Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Effective To should be null or empty");
-                    Assert.That(bankDetailHistoryData.audModifyDate,    Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Audit Modify Date should be null or empty");
-                    Assert.That(bankDetailHistoryData.audModifyUser,    Is.Not.Null.And.Not.Empty,  "GetBankDetailHistory Response: Audit Modify User should be null or empty");
-                }
-            });
-            TestContext.Out.WriteLine("Response: All Bank Detail History data fields are not null or empty as expected.");
-        }
-        public void ValidateResponseIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
+        public void ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
         {
             Assert.Multiple(() =>
             {
@@ -80,27 +60,9 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             
             TestContext.Out.WriteLine("Response: ExecutionOutcome and Data are not null or empty as expected.");
         }
-        public void ValidateResponseIsNullOrWhiteSpace(GetBankDetailHistoryResponse getBankDetailHistoryResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
-            Assert.Multiple(() =>
-            {
-                Assert.That(getBankDetailHistoryResponse.executionOutcome.message,  Is.Null.Or.Empty, "GetBankDetailHistory Response: Message should be null or empty");
-                Assert.That(getBankDetailHistoryResponse.executionOutcome.errors,   Is.Null.Or.Empty, "GetBankDetailHistory Response: Errors should be null or empty");
-
-                foreach (var bankDetailHistoryData in getBankDetailHistoryResponse.data)
-                {
-                    Assert.That(bankDetailHistoryData.bankAccHolder,    Is.Null.Or.Empty, "GetBankDetailHistory Response: Bank Account Holder should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankName,         Is.Null.Or.Empty, "GetBankDetailHistory Response: Bank Name should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankAccTypeDescr, Is.Null.Or.Empty, "GetBankDetailHistory Response: Bank Account Type Description should be null or empty");
-                    Assert.That(bankDetailHistoryData.branchCode,       Is.Null.Or.Empty, "GetBankDetailHistory Response: Branch Code should be null or empty");
-                    Assert.That(bankDetailHistoryData.bankAccNo,        Is.Null.Or.Empty, "GetBankDetailHistory Response: Bank Account Number should be null or empty");
-                    Assert.That(bankDetailHistoryData.effFrom,          Is.Null.Or.Empty, "GetBankDetailHistory Response: Effective From should be null or empty");
-                    Assert.That(bankDetailHistoryData.effTo,            Is.Null.Or.Empty, "GetBankDetailHistory Response: Effective To should be null or empty");
-                    Assert.That(bankDetailHistoryData.audModifyDate,    Is.Null.Or.Empty, "GetBankDetailHistory Response: Audit Modify Date should be null or empty");
-                    Assert.That(bankDetailHistoryData.audModifyUser,    Is.Null.Or.Empty, "GetBankDetailHistory Response: Audit Modify User should be null or empty");
-                }
-            });
-            TestContext.Out.WriteLine("Response: All fields are null or empty as expected.");
+            throw new NotImplementedException();
         }
     }
 }

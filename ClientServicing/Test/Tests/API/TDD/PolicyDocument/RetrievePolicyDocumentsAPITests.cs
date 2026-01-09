@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.Models.PolicyDocument;
 using ClientServicing.Main.Resources.Helper;
 
 namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
@@ -20,7 +21,7 @@ namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
         public async Task Given_GetPolicyDocumentRequestPayloadIsValid_When_RetrievePolicyDocumentsAsync_Then_()
         {
             //Arrange 
-            var request = JsonSerializer.Deserialize<Object>(
+            var request = JsonSerializer.Deserialize<CheckPolicyDocumentExistRequest>(
                 utilitiesHelper.ReadTestDataJson("PolicyDocument/Data", "GetPolicyDocumentRequestPayloadIsValid.json"));
             //Act
             var response = await policyDocumentAPIClient.RetrievePolicyDocumentsAsync(request);

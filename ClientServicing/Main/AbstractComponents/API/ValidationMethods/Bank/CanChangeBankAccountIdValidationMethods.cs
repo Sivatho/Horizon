@@ -6,23 +6,17 @@ using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
-    public class CanChangeBankAccountIdValidationMethods : AbstractValidationMethods//, ICanChangeBankAccountIdValidationMethods
+    public class CanChangeBankAccountIdValidationMethods : AbstractValidationMethods, ICanChangeBankAccountIdValidationMethods
     {
-        public void ValidateObjectReSponseDataIsNotNullorEmpty(CanChangeBankAccountResponse canChangeBankAccountResponse)
+        public void ValidateCanChangeBankAccountResponseDataIsNotNullOrEmpty(CanChangeBankAccountResponse canChangeBankAccountResponse)
         {
             throw new NotImplementedException();
         }
 
-        public void ValidateResponseIsNotNullOrEmpty(CanChangeBankAccountResponse canChangeBankAccountResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }
-
-        public void ValidateResponseIsNullOrWhiteSpace(CanChangeBankAccountResponse canChangeBankAccountResponse)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {

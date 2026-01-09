@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Policy;
-using ClientServicing.Main.Models.BeneficiaryDetails;
 using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
@@ -21,11 +15,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
             throw new NotImplementedException();
         }
 
-        public void ValidateAdvancedPersonSearchResponseDataIsNotNull(AdvancedPersonSearchResponse advancedPersonSearchResponse)
+        public void ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(AdvancedPersonSearchResponse advancedPersonSearchResponse)
         {
-            Assert.Multiple(() => {
+            Assert.Multiple(() =>
+            {
                 Assert.That(advancedPersonSearchResponse.executionOutcome, Is.Not.Null.Or.Not.Empty, "Execution Outcome is Null or Empty.");
-                //Assert.That(advancedPersonSearchResponse.data, Is.Not.Null.Or.Not.Empty, "Execution Outcome is Null or Empty.");
+                Assert.That(advancedPersonSearchResponse.data, Is.Not.Null.Or.Not.Empty, "Execution Outcome is Null or Empty.");
             });
         }
 
@@ -59,7 +54,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
             JsonValidationRule.ValidateJson(jsonDoc.RootElement, rules);
             TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
         }
-        public   AdvancedPersonSearchResponse populateAdvancedPersonSearchResponse(RestResponse restResponse)
+        public AdvancedPersonSearchResponse populateAdvancedPersonSearchResponse(RestResponse restResponse)
         {
 
             using JsonDocument jsonDoc = JsonDocument.Parse(restResponse.Content);
@@ -92,5 +87,9 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
             return advancedPersonSearchResponse;
         }
 
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

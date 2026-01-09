@@ -28,7 +28,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "ValidateBankAccountQAVSRResponseSchema.json");
-            
+            ValidateValidateBankAccountQAVSRResponsetResponseDataIsNotNullOrEmptyOrLessThanZero(validateBankAccountQAVSRResponse);
+
+
         }
         private ValidateBankAccountQAVSRResponse populateValidateBankAccountQAVSRResponse(RestResponse response)
         {

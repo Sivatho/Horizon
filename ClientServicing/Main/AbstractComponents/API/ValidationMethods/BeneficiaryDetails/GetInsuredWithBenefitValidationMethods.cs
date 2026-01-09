@@ -23,6 +23,11 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
             TestContext.WriteLine("Validated: Response is not null or Empty.");
         }
 
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
                 var rules = new List<JsonValidationRule>

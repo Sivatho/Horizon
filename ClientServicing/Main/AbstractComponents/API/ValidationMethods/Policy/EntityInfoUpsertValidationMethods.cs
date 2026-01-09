@@ -61,5 +61,10 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
             TestContext.Out.WriteLine("Validated: Response Contects and data types are valid");
         }
+
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

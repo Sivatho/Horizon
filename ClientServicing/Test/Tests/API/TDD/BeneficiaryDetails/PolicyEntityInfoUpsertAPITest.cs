@@ -31,8 +31,8 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(policyBeneficiaryDetailsResponse);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "PolicyEntityDetailInfoUpertResponseSchema.json");
+            ValidatePolicyEntityInfoUpsertResponseDataIsNotNullOrEmpty(policyBeneficiaryDetailsResponse);            
         }
 
         private PolicyEntityInfoUpsertResponse populatePolicyEntityInfoUpsert(RestResponse restResponse)

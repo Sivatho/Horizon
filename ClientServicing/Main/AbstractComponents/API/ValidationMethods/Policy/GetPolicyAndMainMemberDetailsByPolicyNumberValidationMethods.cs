@@ -31,6 +31,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
                 Assert.That(getPolicyAndMainMemberDetailsByPolicyNumberResponse.data, Is.Not.Null.Or.Empty, "GetPolicyAndMainMemberDetailsByPolicyNumberResponse: <data> Should not be null or empty");
             });
         }
+
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {

@@ -9,8 +9,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank
 {
     public interface IValidateAccountNumberUsageLimitValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse);
-        public void ValidateResponseIsNullOrWhiteSpace(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse);
         public void ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse);
     }
 }

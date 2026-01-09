@@ -24,7 +24,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(validateAccountNumberUsageLimitResponse);
+            ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(validateAccountNumberUsageLimitResponse);
         }
         private ValidateAccountNumberUsageLimitResponse populateValidateAccountNumberUsageLimitResponse(RestResponse response)
         {

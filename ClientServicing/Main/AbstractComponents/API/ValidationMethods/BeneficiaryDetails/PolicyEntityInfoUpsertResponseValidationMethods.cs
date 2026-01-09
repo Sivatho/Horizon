@@ -22,7 +22,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
             });
         }
 
-        public void ValidateResponseIsNotNullOrEmpty(PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }

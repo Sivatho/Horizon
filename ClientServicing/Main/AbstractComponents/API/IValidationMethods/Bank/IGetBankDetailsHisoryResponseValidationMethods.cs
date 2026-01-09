@@ -12,8 +12,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Respons
 {
     public interface IGetBankDetailsHisoryResponseValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse);
-        public void ValidateResponseIsNullOrWhiteSpace(GetBankDetailHistoryResponse getBankDetailHistoryResponse);
-        public void ValidateBankDetailHistoryDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse);
+        public void ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(GetBankDetailHistoryResponse getBankDetailHistoryResponse);
     }
 }

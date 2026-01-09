@@ -1,0 +1,15 @@
+{
+    "sourceSystem": "PollyC",
+    "policyDocumentNo": 1,
+    "policyNo": 194455,
+    "documentId": 1,
+    "processCd": null,
+    "statusId": 1,
+    "statusDate": "2024-06-29T00:00:00",
+    "effFrom": "2024-06-29T00:00:00",
+    "effTo": "9999-12-31T00:00:00",
+    "audCreateUser": "sbadat",
+    "audCreateDate": "2024-06-29T11:52:35.347",
+    "audModUser": "sbadat",
+    "audModDate": "2024-06-29T11:52:35.347"
+}

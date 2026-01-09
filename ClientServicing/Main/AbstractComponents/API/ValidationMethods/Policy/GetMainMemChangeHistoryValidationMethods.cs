@@ -31,6 +31,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
             });
             TestContext.Out.WriteLine("Validated: <GetMainMemChangeHistoryResponse> is not be null or empty");
         }
+
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {

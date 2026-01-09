@@ -13,6 +13,11 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateBankAccountResponseValidationMethods : AbstractValidationMethods, IValidateBankAccountResponseValidationMethods
     {
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
@@ -117,8 +122,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
             TestContext.Out.WriteLine("ValidateBankAccountResponse content and data types are valid.");
         }
-
-        public void ValidateResponseIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse)
+        public void ValidateValidateBankAccountResponseDataIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse)
         {
             Assert.Multiple(() =>
             {
@@ -130,16 +134,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 
             });
             TestContext.Out.WriteLine("ValidateBankAccountResponse and its nested objects are not null.");
-        }
-
-        public void ValidateResponseIsNullOrWhiteSpace(ValidateBankAccountResponse validateBankAccountResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateValidateBankAccountResponseDataIsNotNullOrEmpty(ValidateBankAccountResponse validateBankAccountResponse)
-        {
-            throw new NotImplementedException();
         }
     }
 }

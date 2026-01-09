@@ -8,6 +8,10 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateBankAccountQAVSRValidationMethods : AbstractValidationMethods, IValidateBankAccountQAVSRValidationMethods
     {
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
@@ -118,20 +122,21 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             JsonValidationRule.ValidateJson(doc.RootElement, rules);
             TestContext.Out.WriteLine("Response: content and data types are valid.");
         }
-
-        public void ValidateResponseIsNotNullOrEmpty(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)
+        public void ValidateValidateBankAccountQAVSRResponsetResponseDataIsNotNullOrEmptyOrLessThanZero(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)
         {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateResponseIsNullOrWhiteSpace(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateValidateBankAccountQAVSRResponsetResponseDataIsNotNullOrEmpty(ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse)
-        {
-            throw new NotImplementedException();
+            Assert.Multiple(() =>
+            {
+                //Assert.That(validateBankAccountQAVSRResponse.isValid, Is.Not.Null.Or.Empty, "ValidateBankAccountQAVSRResponse: <isValid> Should not be null or empty");
+                //Assert.That(validateBankAccountQAVSRResponse.shouldUpdateAccountType, Is.Not.Null.Or.Empty, "ValidateBankAccountQAVSRResponse: <shouldUpdateAccountType> Should not be null or empty");
+                //Assert.That(validateBankAccountQAVSRResponse.overrideIsValid, Is.Not.Null.Or.Empty, "ValidateBankAccountQAVSRResponse: <overrideIsValid> Should not be null or empty");
+                Assert.That(validateBankAccountQAVSRResponse.message, Is.Not.Null.Or.Empty, "ValidateBankAccountQAVSRResponse: <message> Should not be null or empty");
+                Assert.That(validateBankAccountQAVSRResponse.fraudsterFailure, Is.Not.LessThan(0), "ValidateBankAccountQAVSRResponse: <fraudsterFailure> Should not be less than zero");
+                Assert.That(validateBankAccountQAVSRResponse.softyCompResult, Is.Not.Null, "ValidateBankAccountQAVSRResponse: <softyCompResult> Should not be null");
+                Assert.That(validateBankAccountQAVSRResponse.fraudsterResult, Is.Not.Null, "ValidateBankAccountQAVSRResponse: <fraudsterResult> Should not be null");
+                Assert.That(validateBankAccountQAVSRResponse.d3BlackListResult, Is.Not.Null, "ValidateBankAccountQAVSRResponse: <d3BlackListResult> Should not be null");
+                Assert.That(validateBankAccountQAVSRResponse.avsrResult, Is.Not.Null, "ValidateBankAccountQAVSRResponse: <avsrResult> Should not be null");
+                //Assert.That(validateBankAccountQAVSRResponse.correctBankAccountType.type, Is.Not.LessThan(0), "ValidateBankAccountQAVSRResponse: <correctBankAccountType> Should not be nullShould not be less than zero");
+            });
         }
     }
 }

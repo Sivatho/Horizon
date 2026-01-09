@@ -15,18 +15,20 @@ namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
         UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         [Test]
-        [Ignore("Test data needs to be updated output data is not as expected")]
+        //[Ignore("Test data needs to be updated output data is not as expected")]
         public async Task Given_CheckPolicyDocumentExistRequestPayloadIsValid_And_ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmptyOrLessThanZero_When_CheckPolicyDocumentExistAsync_Then_ValidateResponseStatusCodeOK_And_ResponsePropertyNameIsValid_And_DataTypesIsValid_And_PolicyDocumentExistResponseIsNotNullOrEmpty() {
             //Arrange
             var request = JsonSerializer.Deserialize<CheckPolicyDocumentExistRequest>
                 (utilitiesHelper.ReadTestDataJson("PolicyDocument/Data", "GetPolicyDocumentRequestPayloadIsValid.json"));
-            ValidateCheckPolicyDocumentExistRequestIsNotNullOrEmptyOrLessThanZero(request);
+            ValidateObjectRequestDataIsNotNullOrEmptyOrLessThanZero(request);
             //Act 
             var response = await policyDocumentAPIClient.CheckPolicyDocumentExistAsync(request);
             var checkPolicyDocumentExistResponse = populateCheckPolicyDocumentExistResponse(response);
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponseFieldParametersIsValid(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "PolicyDocument/Schema", "CheckPolicyDocumentExistResponseShema.json");
             ValidateCheckPolicyDocumentExistResponseIsNotNullOrEmpty(checkPolicyDocumentExistResponse);            

@@ -6,13 +6,43 @@ namespace ClientServicing.Main.AbstractComponents.API
 {
     public abstract class AbstractValidationMethods
     {
-        //abstract public void ValidateObjectRequestDataIsNotNullorEmpty(object objectRequest);
-        //abstract public void ValidateObjectReSponseDataIsNotNullorEmpty(object objectResponse);
-        abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
         public void ValidationAssertionHeading()
         {
             TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:\n======================================================================");
         }
+        public void ValidateResponseStatusCodeOK(RestResponse restResponse)
+        {
+            Assert.That(restResponse.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
+            TestContext.Out.WriteLine("Validated: Response Status Code is 200 OK");
+        }
+        public void ValidateResponseHeadersAreValid(RestResponse restResponse) {
+            if (restResponse.Headers.Count == 0)
+            {
+                Assert.Fail("Response Headers should not be empty");
+            }
+            else
+            {
+                restResponse.Headers.ToList().ForEach(header =>
+                {
+                    Assert.Multiple(() =>
+                    {
+                        Assert.That(header.Name, Is.Not.Null.Or.Empty, "Response Header Name should not be null or empty");
+                        Assert.That(header.Value, Is.Not.Null.Or.Empty, $"Response Header '{header.Name}' value should not be null or empty");
+                    });
+                    Assert.Multiple(() => {
+                        switch (header.Name) {
+                            case "Transfer-Encoding":           Assert.That(header.Value, Is.EqualTo("chunked")); break;
+                            case "Server":                      Assert.That(header.Value, Is.EqualTo("Microsoft-IIS/10.0")); break;
+                            case "Strict-Transport-Security":   Assert.That(header.Value, Is.EqualTo("max-age=2592000")); break;
+                            case "api-supported-versions":      Assert.That(header.Value, Is.EqualTo("1.0")); break;
+                            case "X-Powered-By":                Assert.That(header.Value, Is.EqualTo("ASP.NET")); break;
+                        }
+                    });
+                });
+                TestContext.Out.WriteLine("Validated: Response Header is valid");
+            }
+        }
+        abstract public void ValidateResponseFieldParametersIsValid(RestResponse restResponse);
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
@@ -20,10 +50,7 @@ namespace ClientServicing.Main.AbstractComponents.API
             utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
             TestContext.Out.WriteLine("Validated: Response JsonSchema content matches the expected JSON schema and is valid.");
         }
-        public void ValidateResponseStatusCodeOK(RestResponse restResponse)
-        {
-            Assert.That(restResponse.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-            TestContext.Out.WriteLine("Validated: Response Status Code is 200 OK");
-        }      
+        abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
+
     }
 }

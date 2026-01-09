@@ -10,7 +10,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Email
 {
     public interface ISendInternalEmailsResponseValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse);
         public void ValidateSendInternalEmailsResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse);
     }
 }

@@ -9,8 +9,7 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank
 {
     public interface IFetchBankResponseValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse);
-        public void ValidateResponseIsNullOrWhiteSpace(FetchBanksResponse fetchBanksResponse);
-        public void ValidateFetchBankDataIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse);
+        public void ValidatFetchBanksResponseDataIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse);
+        public void ValidateFetchBanksRequestDataIsNotNullOrEmptyOrLessThanZero(FetchBanksRequest fetchBanksRequest);
     }
 }

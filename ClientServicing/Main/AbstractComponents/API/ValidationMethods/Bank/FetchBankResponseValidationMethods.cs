@@ -8,7 +8,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class FetchBankResponseValidationMethods : AbstractValidationMethods, IFetchBankResponseValidationMethods
     {
-        public void ValidateFetchBankDataIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse)
+        public void ValidateFetchBanksRequestDataIsNotNullOrEmptyOrLessThanZero(FetchBanksRequest fetchBanksRequest)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }
@@ -55,7 +60,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             TestContext.Out.WriteLine("Response: contents and data types are valid.");
         }
 
-        public void ValidateResponseIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse)
+        public void ValidatFetchBanksResponseDataIsNotNullOrEmpty(FetchBanksResponse fetchBanksResponse)
         {
             Assert.Multiple(() =>
             {
@@ -63,11 +68,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(fetchBanksResponse.data,            Is.Not.Null, "FetchBanks Response: Data should not be null");
             });
             TestContext.Out.WriteLine("Response: Message and Data are not null or empty as expected.");
-        }
-
-        public void ValidateResponseIsNullOrWhiteSpace(FetchBanksResponse fetchBanksResponse)
-        {
-            throw new NotImplementedException();
         }
     }
 }

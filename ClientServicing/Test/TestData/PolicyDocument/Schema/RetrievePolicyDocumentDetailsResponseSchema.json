@@ -1,0 +1,61 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "RetrievePolicyDocumentDetailsResponseSchema",
+    "type": "object",
+    "properties": {
+        "succeeded": { "type": "boolean" },
+        "message": { "type": [ "string", "null" ] },
+        "errors": { "type": [ "array", "null" ] },
+        "data": {
+            "type": [ "object", "null" ],
+            "properties": {
+                "sourceSystem": { "type": "string" },
+                "policyDocumentNo": { "type": "integer" },
+                "policyNo": { "type": "integer" },
+                "documentId": { "type": "integer" },
+                "documentTypeCD": { "type": "integer" },
+                "processCd": { "type": [ "string", "null" ] },
+                "statusId": { "type": "integer" },
+                "statusDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "effFrom": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "effTo": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "audCreateUser": { "type": "string" },
+                "audCreateDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "audModUser": { "type": "string" },
+                "audModDate": {
+                    "type": "string",
+                    "format": "date-time"
+                },
+                "fileDetails": { "type": [ "object", "null" ] }
+            },
+            "required": [
+                "sourceSystem",
+                "policyDocumentNo",
+                "policyNo",
+                "documentId",
+                "documentTypeCD",
+                "statusId",
+                "statusDate",
+                "effFrom",
+                "effTo",
+                "audCreateUser",
+                "audCreateDate",
+                "audModUser",
+                "audModDate"
+            ]
+        }
+    },
+    "required": [ "succeeded", "data" ]
+}

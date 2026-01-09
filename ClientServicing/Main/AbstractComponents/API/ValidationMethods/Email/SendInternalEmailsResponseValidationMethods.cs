@@ -13,7 +13,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Email
 {
     public class SendInternalEmailsResponseValidationMethods : AbstractValidationMethods, ISendInternalEmailsResponseValidationMethods
     {
-        public void ValidateResponseIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }

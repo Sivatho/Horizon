@@ -25,6 +25,11 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.GSD
             TestContext.Out.WriteLine("Validated: AffordabilityEnquiryResponse is not Null or Empty.");
         }
 
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> { 

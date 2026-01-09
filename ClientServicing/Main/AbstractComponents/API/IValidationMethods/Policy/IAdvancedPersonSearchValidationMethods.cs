@@ -10,6 +10,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Policy
     public interface IAdvancedPersonSearchValidationMethods
     {
         public void ValidateAdvancedPersonSearchRequestDataIsNotNullorEmpty(AdvancedPersonSearchRequest advancedPersonSearchRequest);
-        public void ValidateAdvancedPersonSearchResponseDataIsNotNull(AdvancedPersonSearchResponse advancedPersonSearchResponse);
+        public void ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(AdvancedPersonSearchResponse advancedPersonSearchResponse);
     }
 }

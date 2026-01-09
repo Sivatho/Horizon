@@ -28,7 +28,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
+            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
         [Test]
@@ -46,7 +46,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
+            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
 

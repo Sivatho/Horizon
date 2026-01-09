@@ -23,10 +23,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
+            ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(getBankDetailHistoryResponse);
 
         }
         [Test]
@@ -43,10 +42,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
-            ValidateResponseIsNullOrWhiteSpace(getBankDetailHistoryResponse);
+            ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(getBankDetailHistoryResponse);
         }
         public GetBankDetailHistoryResponse populateGetBankDetailHistoryResponse(RestResponse response)
         {

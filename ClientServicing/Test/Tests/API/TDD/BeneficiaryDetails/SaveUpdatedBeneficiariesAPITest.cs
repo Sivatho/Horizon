@@ -33,6 +33,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "UpdatePolicyBenefitCacheResponseSchema.json");
+            ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(saveUpdatedBeneficiaries);
         }
         private UpdatePolicyBenefitciaryResponse PopulateExecutionOutcome(RestResponse restResponse)
         {

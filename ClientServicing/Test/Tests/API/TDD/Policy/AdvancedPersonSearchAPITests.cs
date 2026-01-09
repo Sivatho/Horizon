@@ -30,7 +30,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateAdvancedPersonSearchResponseDataIsNotNull(advancedPersonSearchResponse);
+            ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(advancedPersonSearchResponse);
 
         }
     }

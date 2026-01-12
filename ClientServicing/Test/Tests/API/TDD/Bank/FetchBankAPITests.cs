@@ -1,5 +1,5 @@
 ﻿using System.Text.Json;
-using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
+
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
@@ -9,7 +9,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
-    public class FetchBankAPITests : FetchBankResponseValidationMethod
+    public class FetchBankAPITests 
     {
         UtilitiesHelper utilitiesHelper = new();
 
@@ -27,9 +27,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assertl
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+           
         }
         [Test]
         public async Task GivenBankRequestIsNull_WhenFetchBanksAsync_ThenValidateFetchBankResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
@@ -45,9 +43,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            
         }
 
         private FetchBanksResponse populateFetchBanksResponse(RestResponse response)

@@ -3,13 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyAccountHistorySummaryRequest
     {
-        public int policyNo { get; set; }
-        public String billingPeriod { get; set; } = DateTime.Now.ToString("yyMM");
+        [JsonPropertyName("policyNo")]
+        public int? PolicyNo { get; set; }
 
+        [JsonPropertyName("billingPeriod")]
+        public short? BillingPeriod { get; set; }
     }
 }

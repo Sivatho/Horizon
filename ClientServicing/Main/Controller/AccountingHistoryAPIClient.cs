@@ -1,13 +1,17 @@
 ﻿using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints;
 using ClientServicing.Main.Resources.Helper;
+using Microsoft.AspNetCore.Mvc;
 using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web.Mvc;
 using static ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints.AccountHistoryAPIEndPoints;
+using HttpPostAttribute = Microsoft.AspNetCore.Mvc.HttpPostAttribute;
 
 
 namespace ClientServicing.Main.Controller
@@ -33,7 +37,7 @@ namespace ClientServicing.Main.Controller
             restClient?.Dispose();
             GC.SuppressFinalize(this);
         }
-
+      
         public async Task<RestResponse> policyAccountingHistoryAsync<T>(T policyNo) where T : class
         {
             try
@@ -69,15 +73,16 @@ namespace ClientServicing.Main.Controller
                 };
             }
         }
-        /*
-        public async Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T policyNo)
-
+        
+        // Fixed implementation: use POST when sending a JSON payload and ensure this correctly implemented method is called by tests.
+        public async Task<RestResponse> PolicyAccountingHistorySummaryAsync<T>(T payload) where T : class
         {
             try
             {
                 //Arrange
-                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyAccountingHistorySummary), Method.Get);
-                request.AddBody(policyNo);
+                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyAcountingHistorySummary), Method.Post);
+                request.AddJsonBody(payload);
+                
 
                 //Act
                 var response = await restClient.ExecuteAsync(request);
@@ -102,16 +107,18 @@ namespace ClientServicing.Main.Controller
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                     ErrorMessage = ex.Message
                 };
-            }
-        }*/
 
-        public async Task<RestResponse> policyCashReceipt(int policyNo)
+                throw new NotImplementedException();
+            }
+        }
+        
+        public async Task<RestResponse> policyCashReceiptAsync<T>(T payload) where T : class
         {
             try
             {
                 //Arrange
-                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyCashReceipt), Method.Get);
-                request.AddUrlSegment("policyNo", policyNo);
+                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyCashReceipt), Method.Post);
+                request.AddJsonBody( payload);
 
                 //Act
                 var response = await restClient.ExecuteAsync(request);
@@ -137,7 +144,7 @@ namespace ClientServicing.Main.Controller
                 };
             }
         }
-
+        /*
         public async Task<RestResponse> GetStatementLineCD<T>(T payload) where T : class
         {
             try
@@ -174,17 +181,11 @@ namespace ClientServicing.Main.Controller
             //Act
             //Assert
             throw new NotImplementedException();
-        }
+        }*/
 
-        public Task<RestResponse> policyAcountingHistorySummaryAsync<T>(T payload) where T : class
-        {
-            throw new NotImplementedException();
-        }
+  
 
-        public Task<RestResponse> policyCashReceiptAsync<T>(T payload) where T : class
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public Task<RestResponse> GetStatementLineIDAsync<T>(T payload) where T : class
         {
@@ -211,10 +212,24 @@ namespace ClientServicing.Main.Controller
             throw new NotImplementedException();
         }
 
-        public Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T payload) where T : class
+        public async Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T payload) where T : class
         {
-            throw new NotImplementedException();
+            // Create a request using the RestClient
+            var request = new RestRequest("/accounting/history/summary", Method.Post);
+
+            // Add the payload to the request body
+            request.AddJsonBody(payload);
+
+            // Execute the request asynchronously and return the response
+            var response = await restClient.ExecuteAsync(request);
+
+            // Optionally log the request and response for debugging
+            utilitiesHelper.LogRequestAndResponse(request, response);
+
+            return response;
         }
+
+    
     }
 }
 

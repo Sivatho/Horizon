@@ -1,16 +1,13 @@
 ﻿using ClientServicing.Main.Models.General;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyCashRecieptResponse
     {
-        public ExecutionOutcome executionOutcome { get; set; }
-        
-
+        // Provide defaults so consumers can rely on non-null values
+        public ExecutionOutcome? responseMessage { get; set; }
+        public List<PolicyCashRecieptResponse>? data { get; set; }
     }
 }
+

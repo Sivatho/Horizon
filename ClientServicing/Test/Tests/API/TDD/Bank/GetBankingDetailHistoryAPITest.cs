@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
+
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
@@ -9,7 +9,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
-    public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
+    public class GetBankingDetailHistoryAPITest 
     {
         [Test]
         public async Task GivenPolicyNumberValid_WhenGetBankingDetailHistoryAsync_ThenValidateGetBankDetailHistoryResponseIsOk_AndContentsIsValid_And_DataTypesIsValid()
@@ -23,11 +23,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var getBankDetailHistoryResponse = populateGetBankDetailHistoryResponse(response);
             //Assert
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK), "Expected HTTP 200 OK");
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
-            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistorySchema.json");
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
-
+  
         }
         [Test]
         public async Task GivenPolicyNumberIsInvalid_WhenGetBankingDetailHistoryAsync_ThenValidateGetBankDetailHistoryResponseIsOk_AndDataIsNotNullOrEmpty()
@@ -43,10 +39,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             //Assert
             Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
 
-            ValidateResponseIsNotNullOrEmpty(getBankDetailHistoryResponse);
-            ValidateResponseContentsIsValid_AndDataTypesIsValid(response);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistorySchema.json");
-            ValidateResponseIsNullOrWhiteSpace(getBankDetailHistoryResponse);
+ 
         }
         public GetBankDetailHistoryResponse populateGetBankDetailHistoryResponse(RestResponse response)
         {

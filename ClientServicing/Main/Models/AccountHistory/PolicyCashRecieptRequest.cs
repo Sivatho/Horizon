@@ -1,16 +1,19 @@
-﻿using System;
+﻿using ClientServicing.Main.Models.General;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using ClientServicing.Main.Models.General;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
     public class PolicyCashRecieptRequest
     {
-     
-        public int totalPolicies { get; set; }
-        public bool limitExceeded { get; set; }
+        [JsonPropertyName("policyNo")]
+        public int policyNo { get; set; }
+
+         [JsonPropertyName("legacyPolicyNumber")]
+        public string legacyPolicyNumber { get; set; }
     }
 }

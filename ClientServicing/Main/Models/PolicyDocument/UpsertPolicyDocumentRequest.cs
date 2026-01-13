@@ -22,7 +22,7 @@ namespace ClientServicing.Main.Models.PolicyDocument
         public string audModUser { get; set; }
         public DateTime audModDate { get; set; }
         public int ? documentTypeCD { get; set; }
-        public FileDetails fileDetails { get; set; }
+        public FileDetails? fileDetails { get; set; }
     }
     public class FileDetails {
         public string fileId { get; set; }

@@ -10,8 +10,19 @@ namespace ClientServicing.Main.Models.PolicyDocument
     public class RetrievePolicyDocumentDetailsResponse
     {
         public ExecutionOutcome executionOutcome { get; set; }
-        public CheckPolicyDocumentExistRequest checkPolicyDocumentExistRequest { get; set; }
+        public CheckPolicyDocumentExistRequest data { get; set; }
         public int? documentTypeCD { get; set; }
-        public string? fileDetails { get; set; }
+        public RetrievePolicyDocumentFileDetails? fileDetails { get; set; }
+    }
+    public class RetrievePolicyDocumentFileDetails 
+    {
+        public string? fileId { get; set; }
+        public string? referenceId { get; set; }
+        public string? fileName { get; set; }
+        public DateTime? fileCreatedDate { get; set; }
+        public string? base64FileContents { get; set; }
+        public string? fileExtension { get; set; }
+        public string[]? tags { get; set; }
+        public Dictionary<string, string>[]? properties { get; set; }
     }
 }

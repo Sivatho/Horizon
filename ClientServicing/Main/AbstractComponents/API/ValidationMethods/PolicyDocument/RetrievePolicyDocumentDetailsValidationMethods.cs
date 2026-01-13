@@ -87,18 +87,18 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.PolicyDo
         {
             Assert.Multiple(() => {
                 Assert.That(retrievePolicyDocumentDetailsResponse.executionOutcome, Is.Not.Null.Or.Empty,                                   "RetrievePolicyDocumentDetailsResponse: <executionOutcome> Should not be null or empty");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.sourceSystem, Is.Not.Null.Or.Empty,       "RetrievePolicyDocumentDetailsResponse: <sourceSystem> Should not be null or empty");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.policyDocumentNo, Is.Not.LessThan(0),     "RetrievePolicyDocumentDetailsResponse: <policyDocumentNo> Should be a positive integer");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.policyNo, Is.Not.LessThan(0),             "RetrievePolicyDocumentDetailsResponse: <policyNo> Should be a positive integer");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.documentId, Is.Not.LessThan(0),           "RetrievePolicyDocumentDetailsResponse: <documentId> Should be a positive integer");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.statusId, Is.Not.LessThan(0),             "RetrievePolicyDocumentDetailsResponse: <statusId> Should be a positive integer");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.statusDate, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <statusDate> Should not be null");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.effFrom, Is.Not.Null.Or.Empty,            "RetrievePolicyDocumentDetailsResponse: <effFrom> Should not be null");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.effTo, Is.Not.Null.Or.Empty,              "RetrievePolicyDocumentDetailsResponse: <effTo> Should not be null");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.audCreateUser, Is.Not.Null.Or.Empty,      "RetrievePolicyDocumentDetailsResponse: <audCreateUser> Should not be null or empty");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.audCreateDate, Is.Not.Null.Or.Empty,      "RetrievePolicyDocumentDetailsResp onse: <audCreateDate> Should not be null");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.audModUser, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <audModUser> Should not be null or empty");
-                Assert.That(retrievePolicyDocumentDetailsResponse.checkPolicyDocumentExistRequest.audModDate, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <audModDate> Should not be null");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.sourceSystem, Is.Not.Null.Or.Empty,       "RetrievePolicyDocumentDetailsResponse: <sourceSystem> Should not be null or empty");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.policyDocumentNo, Is.Not.LessThan(0),     "RetrievePolicyDocumentDetailsResponse: <policyDocumentNo> Should be a positive integer");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.policyNo, Is.Not.LessThan(0),             "RetrievePolicyDocumentDetailsResponse: <policyNo> Should be a positive integer");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.documentId, Is.Not.LessThan(0),           "RetrievePolicyDocumentDetailsResponse: <documentId> Should be a positive integer");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.statusId, Is.Not.LessThan(0),             "RetrievePolicyDocumentDetailsResponse: <statusId> Should be a positive integer");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.statusDate, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <statusDate> Should not be null");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.effFrom, Is.Not.Null.Or.Empty,            "RetrievePolicyDocumentDetailsResponse: <effFrom> Should not be null");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.effTo, Is.Not.Null.Or.Empty,              "RetrievePolicyDocumentDetailsResponse: <effTo> Should not be null");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.audCreateUser, Is.Not.Null.Or.Empty,      "RetrievePolicyDocumentDetailsResponse: <audCreateUser> Should not be null or empty");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.audCreateDate, Is.Not.Null.Or.Empty,      "RetrievePolicyDocumentDetailsResp onse: <audCreateDate> Should not be null");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.audModUser, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <audModUser> Should not be null or empty");
+                Assert.That(retrievePolicyDocumentDetailsResponse.data.audModDate, Is.Not.Null.Or.Empty,         "RetrievePolicyDocumentDetailsResponse: <audModDate> Should not be null");
             });
             TestContext.Out.WriteLine("Validated: <RetrievePolicyDocumentDetailsResponse> properties are not null or empty or not less than zero");
         }

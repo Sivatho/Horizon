@@ -10,17 +10,17 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class ValidateBankAccountQAVSRTest : ValidateBankAccountQAVSRValidationMethods
     {
+        BankAPIClient bankAPIClient = new();
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
         public async Task GivenBankAccountQAVSRIsValid_WhenValidateBankAccountQAVSRAsync_ThenValidateResponseIsOk_AndIsNotNull_AndDataTypesIsValid()
         {
             //Arrange
-            BankAPIClient bankClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             ValidateBankAccountQAVSRRequest validateBankAccountQAVSRRequest = JsonSerializer.Deserialize<ValidateBankAccountQAVSRRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "ValidateBankAccountQAVSRRequestNotNull.json"));
 
             //Act
-            var response = await bankClient.ValidateBankAccountQAVSRAsync(validateBankAccountQAVSRRequest);
+            var response = await bankAPIClient.ValidateBankAccountQAVSRAsync(validateBankAccountQAVSRRequest);
             var validateBankAccountQAVSRResponse = populateValidateBankAccountQAVSRResponse(response);
 
             //Assert

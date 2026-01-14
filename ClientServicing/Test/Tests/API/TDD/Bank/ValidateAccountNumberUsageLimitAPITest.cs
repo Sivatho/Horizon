@@ -9,15 +9,15 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class ValidateAccountNumberUsageLimitAPITest : ValidateAccountNumberUsageLimitValidationMethods
     {
+        BankAPIClient bankAPIClient = new();
         [Test]
         public async Task Given_AccountNumberUsageLimitIsValid_When_ValidateAccountNumberUsageLimitAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty()
         {
             //Arrange
             string accountNumber = "1042631522";
-            BankAPIClient bankClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
 
             //Act
-            var response = await bankClient.ValidateAccountNumberUsageLimitAsync(accountNumber);
+            var response = await bankAPIClient.ValidateAccountNumberUsageLimitAsync(accountNumber);
             var validateAccountNumberUsageLimitResponse = populateValidateAccountNumberUsageLimitResponse(response);
 
             //Assert

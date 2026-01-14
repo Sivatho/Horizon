@@ -10,11 +10,10 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class CanChangeBankAccountAPITest : CanChangeBankAccountIdValidationMethods
     {
-
+        BankAPIClient bankAPIClient = new();
         [Test]
         public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = 20354;
 
             //Act
@@ -30,7 +29,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         [Test]
         public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = -1;
 
             //Act

@@ -14,7 +14,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
         UtilitiesHelper utilitiesHelper = new();
 
         [Test]
-        [Ignore("Error converting data type int to smallint.\\r\\n@policyMovementTypeCd\\r\\n6\\r\\n32274\"\r\n    API call failed with status code: InternalServerError and message: \"Error converting data type int to smallint.\\r\\n@policyMovementTypeCd\\r\\n6\\r\\n32274")]
+        //[Ignore("Error converting data type int to smallint.\\r\\n@policyMovementTypeCd\\r\\n6\\r\\n32274\"\r\n    API call failed with status code: InternalServerError and message: \"Error converting data type int to smallint.\\r\\n@policyMovementTypeCd\\r\\n6\\r\\n32274")]
         public async Task Given_PolicyEntityInfoUpsertRequest_When_PolicyEntityInfoUpsertAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange

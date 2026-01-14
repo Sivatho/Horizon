@@ -9,12 +9,12 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
+        BankAPIClient bankAPIClient = new();
         [Test]
         public async Task Given_PolicyNumberValid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
             int policyNumber = 164535;
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);
@@ -33,7 +33,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         {
             // Arrange
             int policyNumber = 0;
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);

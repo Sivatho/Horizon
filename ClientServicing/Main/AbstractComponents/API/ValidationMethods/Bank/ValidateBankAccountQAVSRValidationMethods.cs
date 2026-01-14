@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank;
 using ClientServicing.Main.Models.Bank;
+using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
@@ -8,6 +9,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateBankAccountQAVSRValidationMethods : AbstractValidationMethods, IValidateBankAccountQAVSRValidationMethods
     {
+        UtilitiesHelper utilitiesHelper = new();
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
@@ -138,5 +140,120 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 //Assert.That(validateBankAccountQAVSRResponse.correctBankAccountType.type, Is.Not.LessThan(0), "ValidateBankAccountQAVSRResponse: <correctBankAccountType> Should not be nullShould not be less than zero");
             });
         }
+        public ValidateBankAccountQAVSRResponse populateValidateBankAccountQAVSRResponse(RestResponse response)
+        {
+            using JsonDocument document = JsonDocument.Parse(response.Content);
+            ValidateBankAccountQAVSRResponse validateBankAccountQAVSRResponse = new()
+            {
+                softyCompResult = new TestResult(),
+                fraudsterResult = new TestResult(),
+                d3BlackListResult = new TestResult(),
+                avsrResult = new AVSRResult()
+            };
+
+            foreach (var property in document.RootElement.EnumerateObject())
+            {
+                switch (property.Name.ToLower())
+                {
+                    case "isvalid":                 validateBankAccountQAVSRResponse.isValid =                  (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
+                    case "shouldupdateaccounttype": validateBankAccountQAVSRResponse.shouldUpdateAccountType =  (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
+                    case "overrideisvalid":         validateBankAccountQAVSRResponse.overrideIsValid =          (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
+                    case "message":                 validateBankAccountQAVSRResponse.message =                  utilitiesHelper.ReadStringNullable(property.Value); break;
+                    case "fraudsterfailure":        validateBankAccountQAVSRResponse.fraudsterFailure =         (int)utilitiesHelper.ReadInt32Nullable(property.Value); break;
+                    case "softycompresult":
+                        var softyCompResult = new TestResult();
+                        foreach (var item in property.Value.EnumerateObject())
+                        {
+                            switch (item.Name)
+                            {
+                                case "wasTestResultOverridden": softyCompResult.wasTestResultOverridden =   (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "wasTestPerformed":        softyCompResult.wasTestPerformed =          (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "isValid":                 softyCompResult.isValid =                   (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "message":                 softyCompResult.message =                   utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty; break;
+                            }
+                            validateBankAccountQAVSRResponse.softyCompResult = softyCompResult;
+                        }
+                        break;
+                    case "fraudsterresult":
+                        var fraudsterResult = new TestResult();
+                        foreach (var item in property.Value.EnumerateObject())
+                        {
+                            switch (item.Name)
+                            {
+                                case "wasTestResultOverridden": fraudsterResult.wasTestResultOverridden =   (bool)utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "wasTestPerformed":        fraudsterResult.wasTestPerformed =          (bool)utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "fraudsterFailureType":    fraudsterResult.fraudsterFailureType =      (int)utilitiesHelper.ReadInt32Nullable(item.Value); break;
+                                case "isValid":                 fraudsterResult.isValid =                   (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "message":                 fraudsterResult.message =                   utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty; break;
+                            }
+                            validateBankAccountQAVSRResponse.fraudsterResult = fraudsterResult;
+                        }
+                        break;
+                    case "d3blacklistresult":
+                        var d3BlackListResult = new TestResult();
+                        foreach (var item in property.Value.EnumerateObject())
+                        {
+                            switch (item.Name)
+                            {
+                                case "wasTestResultOverridden": d3BlackListResult.wasTestResultOverridden = (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "wasTestPerformed":        d3BlackListResult.wasTestPerformed =        (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "isValid":                 d3BlackListResult.isValid =                 (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "message":                 d3BlackListResult.message =                 utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty; break;
+                            }
+                            validateBankAccountQAVSRResponse.d3BlackListResult = d3BlackListResult;
+                        }
+                        break;
+                    case "avsrresult":
+                        var avsrResult = new AVSRResult();
+                        foreach (var item in property.Value.EnumerateObject())
+                        {
+                            switch (item.Name)
+                            {
+                                case "qLinkAvsrCheckId":            avsrResult.qLinkAvsrCheckId =           utilitiesHelper.ReadStringNullable(item.Value) ?? string.Empty;  break;
+                                case "errorCode":                   avsrResult.errorCode =                  utilitiesHelper.ReadStringNullable(item.Value) ?? string.Empty; break;
+                                case "errorDescription":            avsrResult.errorDescription =           utilitiesHelper.ReadStringNullable(item.Value) ?? string.Empty; break;
+                                case "sessionId":                   avsrResult.sessionId =                  utilitiesHelper.ReadStringNullable(item.Value) ?? string.Empty; break;
+                                case "accountStatusId":             avsrResult.accountStatusId =            utilitiesHelper.ReadStringNullable(item.Value) ?? string.Empty; break;
+                                case "wasCachedResultUsed":         avsrResult.wasCachedResultUsed =        (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "wasBankAccountFound":         avsrResult.wasBankAccountFound =        (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "isBankAccountOpen":           avsrResult.isBankAccountOpen =          (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesBankAccountTypeMatch":    avsrResult.doesBankAccountTypeMatch =   (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesInitialsMatch":           avsrResult.doesInitialsMatch =          (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesIdentityNumberMatch":     avsrResult.doesIdentityNumberMatch =    (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesNameMatch":               avsrResult.doesNameMatch =              (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesAcceptsDebits":           avsrResult.doesAcceptsDebits =          (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesAcceptsCredits":          avsrResult.doesAcceptsCredits =         (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "didTimeout":                  avsrResult.didTimeout =                 (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "accountLengthMatch":          avsrResult.accountLengthMatch =         (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "missingParameter":            avsrResult.missingParameter =           (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesPhoneMatch":              avsrResult.doesPhoneMatch =             (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "doesEmailMatch":              avsrResult.doesEmailMatch =             (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "hasBankAccountBeenOpenForMoreThan3Months": avsrResult.hasBankAccountBeenOpenForMoreThan3Months = (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "responseDate":                avsrResult.responseDate =               (DateTime)utilitiesHelper.ReadDateTimeNullable(item.Value); break;
+                                case "wasTestPerformed":            avsrResult.wasTestPerformed =           (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "isValid":                     avsrResult.isValid =                    (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                                case "message":                     avsrResult.message =                    utilitiesHelper.ReadStringNullable(item.Value); break;
+                                case "isForcedSuccessResponse":     avsrResult.isForcedSuccessResponse =    (bool) utilitiesHelper.ReadBooleanNullable(item.Value); break;
+                            }
+                            validateBankAccountQAVSRResponse.avsrResult = avsrResult;
+                        }
+                        break;
+                    case "correctbankaccounttype":
+                        var correctBankAccountType = new CorrectBankAccountType();
+                        foreach (var item in property.Value.EnumerateObject())
+                        {
+                            switch (item.Name)
+                            {
+                                case "type": correctBankAccountType.type = (int)utilitiesHelper.ReadInt32Nullable(item.Value); break;
+                            }
+                        }
+                        break;
+                    case "correctbankname": validateBankAccountQAVSRResponse.correctBankName = utilitiesHelper.ReadStringNullable(property.Value) ?? string.Empty; break;
+                    default: TestContext.Out.WriteLine($"Unkown Property: {property.Name}"); break;
+                }
+            }
+            return validateBankAccountQAVSRResponse;
+        }
+
     }
 }

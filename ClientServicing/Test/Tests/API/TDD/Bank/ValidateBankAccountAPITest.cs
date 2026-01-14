@@ -42,22 +42,22 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
                 switch (property.Name.ToLower())
                 {
                     case "isvalid":
-                        validateBankAccountResponse.isValid = property.Value.GetBoolean();
+                        validateBankAccountResponse.isValid = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
                         break;
                     case "shouldupdateaccounttype":
-                        validateBankAccountResponse.shouldUpdateAccountType = property.Value.GetBoolean();
+                        validateBankAccountResponse.shouldUpdateAccountType = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
                         break;
                     case "overrideisvalid":
-                        validateBankAccountResponse.overrideIsValid = property.Value.GetBoolean();
+                        validateBankAccountResponse.overrideIsValid = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
                         break;
                     case "message":
-                        validateBankAccountResponse.message = property.Value.GetString();
+                        validateBankAccountResponse.message = utilitiesHelper.ReadStringNullable(property.Value);
                         break;
                     case "fraudsterfailure":
-                        validateBankAccountResponse.fraudsterFailure = property.Value.GetInt32();
+                        validateBankAccountResponse.fraudsterFailure = (int)utilitiesHelper.ReadInt32Nullable(property.Value);
                         break;
                     case "correctbankname":
-                        validateBankAccountResponse.correctBankName = property.Value.GetString();
+                        validateBankAccountResponse.correctBankName = utilitiesHelper.ReadStringNullable(property.Value);
                         break;
                     case "softycompresult":
                         validateBankAccountResponse.softyCompResult = populateTestResult(property);
@@ -86,16 +86,16 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
                 switch (item.Name.ToLower())
                 {
                     case "wastestresultoverridden":
-                        result.wasTestResultOverridden = item.Value.GetBoolean();
+                        result.wasTestResultOverridden = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "wastestperformed":
-                        result.wasTestPerformed = item.Value.GetBoolean();
+                        result.wasTestPerformed = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "isvalid":
-                        result.isValid = item.Value.GetBoolean();
+                        result.isValid = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "message":
-                        result.message = item.Value.GetString();
+                        result.message =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "fraudsterfailuretype":
                         result.fraudsterFailureType = item.Value.GetInt32();
@@ -116,79 +116,79 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
                 switch (itemName)
                 {
                     case "qlinkavsrcheckid":
-                        avsrResult.qLinkAvsrCheckId = item.Value.GetString();
+                        avsrResult.qLinkAvsrCheckId =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "errorcode":
-                        avsrResult.errorCode = item.Value.GetString();
+                        avsrResult.errorCode =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "errordescription":
-                        avsrResult.errorDescription = item.Value.GetString();
+                        avsrResult.errorDescription =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "sessionid":
-                        avsrResult.sessionId = item.Value.GetString();
+                        avsrResult.sessionId =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "accountstatusid":
-                        avsrResult.accountStatusId = item.Value.GetString();
+                        avsrResult.accountStatusId =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "wascachedresultused":
-                        avsrResult.wasCachedResultUsed = item.Value.GetBoolean();
+                        avsrResult.wasCachedResultUsed = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "wasbankaccountfound":
-                        avsrResult.wasBankAccountFound = item.Value.GetBoolean();
+                        avsrResult.wasBankAccountFound = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "isbankaccountopen":
-                        avsrResult.isBankAccountOpen = item.Value.GetBoolean();
+                        avsrResult.isBankAccountOpen = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesbankaccounttypematch":
-                        avsrResult.doesBankAccountTypeMatch = item.Value.GetBoolean();
+                        avsrResult.doesBankAccountTypeMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesinitialsmatch":
-                        avsrResult.doesInitialsMatch = item.Value.GetBoolean();
+                        avsrResult.doesInitialsMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesidentitynumbermatch":
-                        avsrResult.doesIdentityNumberMatch = item.Value.GetBoolean();
+                        avsrResult.doesIdentityNumberMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesnamematch":
-                        avsrResult.doesNameMatch = item.Value.GetBoolean();
+                        avsrResult.doesNameMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesacceptsdebits":
-                        avsrResult.doesAcceptsDebits = item.Value.GetBoolean();
+                        avsrResult.doesAcceptsDebits = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesacceptscredits":
-                        avsrResult.doesAcceptsCredits = item.Value.GetBoolean();
+                        avsrResult.doesAcceptsCredits = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "didtimeout":
-                        avsrResult.didTimeout = item.Value.GetBoolean();
+                        avsrResult.didTimeout = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "accountlengthmatch":
-                        avsrResult.accountLengthMatch = item.Value.GetBoolean();
+                        avsrResult.accountLengthMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "missingparameter":
-                        avsrResult.missingParameter = item.Value.GetBoolean();
+                        avsrResult.missingParameter = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesphonematch":
-                        avsrResult.doesPhoneMatch = item.Value.GetBoolean();
+                        avsrResult.doesPhoneMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "doesemailmatch":
-                        avsrResult.doesEmailMatch = item.Value.GetBoolean();
+                        avsrResult.doesEmailMatch = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "hasbankaccountbeenopenformorethan3months":
-                        avsrResult.hasBankAccountBeenOpenForMoreThan3Months = item.Value.GetBoolean();
+                        avsrResult.hasBankAccountBeenOpenForMoreThan3Months = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "responsedate":
-                        avsrResult.responseDate = item.Value.GetDateTime();
+                        avsrResult.responseDate = (DateTime)utilitiesHelper.ReadDateTimeNullable(item.Value);
                         break;
                     case "wastestperformed":
-                        avsrResult.wasTestPerformed = item.Value.GetBoolean();
+                        avsrResult.wasTestPerformed = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "isvalid":
-                        avsrResult.isValid = item.Value.GetBoolean();
+                        avsrResult.isValid = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     case "message":
-                        avsrResult.message = item.Value.GetString();
+                        avsrResult.message =  utilitiesHelper.ReadStringNullable(item.Value)?? string.Empty;
                         break;
                     case "isforcedsuccessresponse":
-                        avsrResult.isForcedSuccessResponse = item.Value.GetBoolean();
+                        avsrResult.isForcedSuccessResponse = (bool) utilitiesHelper.ReadBooleanNullable(item.Value);
                         break;
                     default:
                         TestContext.Out.WriteLine($"Unknown - AVSRResult property: {property.Name} + {property.Value}");

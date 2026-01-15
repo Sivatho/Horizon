@@ -15,14 +15,14 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         BankAPIClient bankAPIClient = new();
         UtilitiesHelper utilitiesHelper = new();
         public static IEnumerable<FetchBanksRequest> fetchBankRequestEachTestDataObject = new JsonDataLoader().LoadJsonDataObjects<FetchBanksRequest>("Bank/Data", "AvailableBanks.json");
-        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().LoadJsonDataFields("Bank/Data", "BankDetails.json");
+        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().LoadJsonDataFields("Bank/Data", "BankDetailsAreNotNull.json");
 
         [Test, Category("Positive")]
-        public async Task Given_BankRequestIsNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        public async Task Given_BankDetailsAreNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
-                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetails.json"));
+                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreNotNull.json"));
             fetchBankRequest.lastChanged = DateTime.Now.AddDays(-10);
 
             //Act
@@ -37,11 +37,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
         [Test, Category("Positive")]
-        public async Task Given_BankRequestIsNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        public async Task Given_BankDetailsAreAllNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
-                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetails.json"));
+                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreAllNull.json"));
 
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
@@ -54,6 +54,8 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
+
+
        [TestCaseSource(nameof(fetchBankRequestEachTestDataObject)), Category("Positive")]
         public async Task Given_FetchBankRequestEachAvailableBank_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(FetchBanksRequest fetchBankRequest)
         {
@@ -73,7 +75,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
         [Test, Category("Positive")]
         [TestCaseSource(nameof(fetchBankRequestEachTestDataFields))]
-        public async Task Given_FetchBankRequestEachTestDataField_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(
+        public async Task Given_BankDetailsAreNotNullRequestEachField_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(
             string fieldName, object? fieldValue)
         {
             TestContext.Out.WriteLine($"{fieldName} : {fieldValue}");

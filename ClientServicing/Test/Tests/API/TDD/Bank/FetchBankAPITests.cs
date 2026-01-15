@@ -54,8 +54,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
-
-
        [TestCaseSource(nameof(fetchBankRequestEachTestDataObject)), Category("Positive")]
         public async Task Given_FetchBankRequestEachAvailableBank_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(FetchBanksRequest fetchBankRequest)
         {
@@ -72,7 +70,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
-
         [Test, Category("Positive")]
         [TestCaseSource(nameof(fetchBankRequestEachTestDataFields))]
         public async Task Given_BankDetailsAreNotNullRequestEachField_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(

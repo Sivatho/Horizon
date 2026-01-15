@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
@@ -10,11 +11,10 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class CanChangeBankAccountAPITest : CanChangeBankAccountIdValidationMethods
     {
-
+        BankAPIClient bankAPIClient = new();
         [Test]
         public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = 20354;
 
             //Act
@@ -23,14 +23,13 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
         }
 
         [Test]
         public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
             int bankAccountId = -1;
 
             //Act
@@ -39,7 +38,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
         }
         public CanChangeBankAccountResponse populateCanChangeBankAccountResponse(RestResponse response) {

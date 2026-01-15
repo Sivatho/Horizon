@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -29,12 +30,50 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "BeneficiaryDetailsResponseSchema.json");
 
         }
+        [Test]
+        public async Task Given_PolicyBeneficiaryDetailsByPolicyNoPayloadIsValid_When_GetAndCachePolicyBeneficiaryDetailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        {
+            //Arrange
+            PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByPolicyNoPayloadIsValid.json"));
+
+            //Act
+            var response = await beneficiaryDetailsAPIClient.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
+            var getAndCachePolicyBeneficiaryDetailsResponse = populatePolicyBeneficiaryDetailsResponse(response);
+
+            //Assert
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);
+            ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "BeneficiaryDetailsResponseSchema.json");
+
+        }
+        [Test]
+        public async Task Given_PolicyBeneficiaryDetailsByLegacyPolicyNumberPayloadIsInvalid_When_GetAndCachePolicyBeneficiaryDetailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        {
+            //Arrange
+            PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByLegacyPolicyNumberPayloadIsInvalid.json"));
+
+            //Act
+            var response = await beneficiaryDetailsAPIClient.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
+            var getAndCachePolicyBeneficiaryDetailsResponse = populatePolicyBeneficiaryDetailsResponse(response);
+
+            //Assert
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.BadRequest);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);
+            ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "BeneficiaryDetailsResponseSchema.json");
+
+        }
+
+
         private PolicyBeneficiaryDetailsResponse populatePolicyBeneficiaryDetailsResponse(RestResponse restResponse)
         {
             using JsonDocument doc = JsonDocument.Parse(restResponse.Content);

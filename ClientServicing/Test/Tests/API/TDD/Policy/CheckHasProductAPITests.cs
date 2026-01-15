@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.General;
@@ -26,7 +27,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateCheckHasProductResponseDataIsNotNullOrEmpty(checkHasProductResponse);
         }

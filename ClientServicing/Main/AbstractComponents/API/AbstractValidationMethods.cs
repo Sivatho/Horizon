@@ -1,4 +1,5 @@
-﻿using ClientServicing.Main.Models.Policy;
+﻿using System.Net;
+using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
@@ -10,12 +11,38 @@ namespace ClientServicing.Main.AbstractComponents.API
         {
             TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:\n======================================================================");
         }
-        public void ValidateResponseStatusCodeOK(RestResponse restResponse)
+        public void ValidateResponseStatusCode(RestResponse restResponse, HttpStatusCode expectedStatusCode)
         {
-            Assert.That(restResponse.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Expected HTTP 200 OK");
-            TestContext.Out.WriteLine("Validated: Response Status Code is 200 OK");
+            Assert.That(restResponse, Is.Not.Null, "Response Should Not Be Null");
+            var actualStatusCode = restResponse.StatusCode;
+            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode), () => (string)BuildStatusFailureMessage(restResponse, expectedStatusCode, actualStatusCode));
+            TestContext.Out.WriteLine($"Validated: Response Status Code is {(int)actualStatusCode}: '{actualStatusCode}' as expected.");
         }
-        public void ValidateResponseHeadersAreValid(RestResponse restResponse) {
+
+        private string BuildStatusFailureMessage(RestResponse restResponse, HttpStatusCode expectedStatusCode, HttpStatusCode actualStatusCode)
+        {
+            const int maxBodyPreviewLength = 500;
+            var statusLine = $"Expected: {(int)expectedStatusCode} {expectedStatusCode} | Actual: {(int)actualStatusCode} {actualStatusCode}";
+            var uri = restResponse.ResponseUri?.ToString() ?? "Unknown URI";
+            var method = restResponse.Request?.Method.ToString() ?? "Unknown Method";
+            var contentType = restResponse.ContentType ?? "Unknown Content-Type";
+            var contentLength = restResponse.RawBytes?.Length.ToString() ?? (restResponse.Content?.Length.ToString() ?? "Unknown Length");
+            var bodyPreview = restResponse.Content;
+
+            if (!string.IsNullOrEmpty(bodyPreview) && bodyPreview.Length > maxBodyPreviewLength)
+            {
+                bodyPreview = bodyPreview.Substring(0, maxBodyPreviewLength) + "... [truncated]";
+            }
+            return $@"❌ Status Code Assertion Failed!
+      {statusLine}
+      Request: {method} {uri}
+      Content-Type: {contentType}
+      Content-Length: {contentLength}
+      Body (preview): {bodyPreview}";
+        }
+
+        public void ValidateResponseHeadersAreValid(RestResponse restResponse)
+        {
             if (restResponse.Headers.Count == 0)
             {
                 Assert.Fail("Response Headers should not be empty");
@@ -29,13 +56,15 @@ namespace ClientServicing.Main.AbstractComponents.API
                         Assert.That(header.Name, Is.Not.Null.Or.Empty, "Response Header Name should not be null or empty");
                         Assert.That(header.Value, Is.Not.Null.Or.Empty, $"Response Header '{header.Name}' value should not be null or empty");
                     });
-                    Assert.Multiple(() => {
-                        switch (header.Name) {
-                            case "Transfer-Encoding":           Assert.That(header.Value, Is.EqualTo("chunked")); break;
-                            case "Server":                      Assert.That(header.Value, Is.EqualTo("Microsoft-IIS/10.0")); break;
-                            case "Strict-Transport-Security":   Assert.That(header.Value, Is.EqualTo("max-age=2592000")); break;
-                            case "api-supported-versions":      Assert.That(header.Value, Is.EqualTo("1.0")); break;
-                            case "X-Powered-By":                Assert.That(header.Value, Is.EqualTo("ASP.NET")); break;
+                    Assert.Multiple(() =>
+                    {
+                        switch (header.Name)
+                        {
+                            case "Transfer-Encoding": Assert.That(header.Value, Is.EqualTo("chunked")); break;
+                            case "Server": Assert.That(header.Value, Is.EqualTo("Microsoft-IIS/10.0")); break;
+                            case "Strict-Transport-Security": Assert.That(header.Value, Is.EqualTo("max-age=2592000")); break;
+                            case "api-supported-versions": Assert.That(header.Value, Is.EqualTo("1.0")); break;
+                            case "X-Powered-By": Assert.That(header.Value, Is.EqualTo("ASP.NET")); break;
                         }
                     });
                 });

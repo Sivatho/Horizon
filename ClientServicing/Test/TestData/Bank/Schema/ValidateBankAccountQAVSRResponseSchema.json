@@ -1,6 +1,6 @@
 {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
-    "title":  "Validate Bank Account QAVSR Response",
+    "title": "Validate Bank Account QAVSR Response",
     "type": "object",
     "properties": {
         "isValid": { "type": "boolean" },
@@ -43,7 +43,7 @@
                 "errorCode": { "type": "string" },
                 "errorDescription": { "type": "string" },
                 "sessionId": { "type": [ "string", "null" ] },
-                "accountStatusId": { "type": [ "string", "null" ] },
+                "accountStatusId": { "type": "integer" },
                 "wasCachedResultUsed": { "type": "boolean" },
                 "wasBankAccountFound": { "type": "boolean" },
                 "isBankAccountOpen": { "type": "boolean" },

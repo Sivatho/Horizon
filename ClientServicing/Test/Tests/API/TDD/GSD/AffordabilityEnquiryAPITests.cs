@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.GSD;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.GSD;
@@ -30,7 +31,7 @@ namespace ClientServicing.Test.Tests.API.TDD.GSD
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateAffordabilityEnquiryResponseIsNotNullOrEmpty(affordabilityEnquiryResponse);
             ValidateResponseSchemaIsValid(response, "GSD/Schema", "AffordabilityEnquiryResponseSchema.json");

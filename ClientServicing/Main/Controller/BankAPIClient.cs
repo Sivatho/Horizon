@@ -11,11 +11,11 @@ namespace ClientServicing.Main.Controller
         readonly RestClient restClient;
         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
-        public BankAPIClient(string baseUrl)
+        public BankAPIClient()
         {
-            var options = new RestClientOptions(baseUrl)
+            var options = new RestClientOptions()
             {
-                BaseUrl = new Uri(baseUrl),
+                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
                 //Authenticator = new OauthAPIAuthenticator()
             };

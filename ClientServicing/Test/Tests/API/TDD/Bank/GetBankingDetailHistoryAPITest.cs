@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
@@ -9,12 +10,12 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
-        [Test]
+        BankAPIClient bankAPIClient = new();
+        [Test, Category("Positive")]
         public async Task Given_PolicyNumberValid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
             int policyNumber = 164535;
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);
@@ -22,18 +23,17 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
             ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(getBankDetailHistoryResponse);
 
         }
-        [Test]
+        [Test, Category("Positive")]
         public async Task Given_PolicyNumberIsInvalid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
-            int policyNumber = 0;
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
+            int policyNumber = -1;
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);
@@ -41,7 +41,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "GetBankDetailHistoryResponseSchema.json");
             ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(getBankDetailHistoryResponse);

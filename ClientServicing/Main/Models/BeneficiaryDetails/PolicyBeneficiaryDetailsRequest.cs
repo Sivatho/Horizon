@@ -8,8 +8,8 @@ namespace ClientServicing.Main.Models.BeneficiaryDetails
 {
     public class PolicyBeneficiaryDetailsRequest
     {
-        public required int policyNo { get; set; }
-        public required string legacyPolicyNumber { get; set; }
-        public string auditToken { get; set; }
+        public int? policyNo { get; set; }
+        public string? legacyPolicyNumber { get; set; }
+        public string? auditToken { get; set; }
     }
 }

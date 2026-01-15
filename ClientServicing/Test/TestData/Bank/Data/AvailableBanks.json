@@ -1,0 +1,56 @@
+[
+    {
+        "bankID": 1,
+        "bankName": "Standard Bank of S.A. Ltd",
+        "bankShortName": "Standard Bank",
+        "dispSeq": 1,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    },
+    {
+        "bankID": 2,
+        "bankName": "Nedbank Limited",
+        "bankShortName": "Nedbank",
+        "dispSeq": 2,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    },
+    {
+        "bankID": 3,
+        "bankName": "First National Bank",
+        "bankShortName": "FNB",
+        "dispSeq": 3,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    },
+    {
+        "bankID": 7,
+        "bankName": "African Bank",
+        "bankShortName": null,
+        "dispSeq": 4,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    },
+    {
+        "bankID": 10,
+        "bankName": "Capitec Bank Ltd",
+        "bankShortName": "Capitec",
+        "dispSeq": 5,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    },
+    {
+        "bankID": 14,
+        "bankName": "ABSA Bank",
+        "bankShortName": "Absa",
+        "dispSeq": 6,
+        "isActive": true,
+        "lastChanged": "2023-02-07T20:12:00",
+        "userID": "CLIENTELE\\SBadat"
+    }
+]

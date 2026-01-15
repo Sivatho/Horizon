@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.General;
@@ -15,7 +16,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         [Test]
-        [Ignore("Request Test data required results return are not correct")]
+        //[Ignore("Request Test data required results return are not correct")]
         public async Task Give_AdvancedPersonSearchRequestPayloadIsValid_When_AdvancedPersonSearchAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_AdvancedPersonSearchResponseDataIsNotNull()
         {
             //Arrange
@@ -28,7 +29,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response,HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(advancedPersonSearchResponse);
 

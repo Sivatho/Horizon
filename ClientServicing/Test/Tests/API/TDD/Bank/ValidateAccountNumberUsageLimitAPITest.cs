@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
@@ -9,20 +10,20 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class ValidateAccountNumberUsageLimitAPITest : ValidateAccountNumberUsageLimitValidationMethods
     {
+        BankAPIClient bankAPIClient = new();
         [Test]
         public async Task Given_AccountNumberUsageLimitIsValid_When_ValidateAccountNumberUsageLimitAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty()
         {
             //Arrange
             string accountNumber = "1042631522";
-            BankAPIClient bankClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
 
             //Act
-            var response = await bankClient.ValidateAccountNumberUsageLimitAsync(accountNumber);
+            var response = await bankAPIClient.ValidateAccountNumberUsageLimitAsync(accountNumber);
             var validateAccountNumberUsageLimitResponse = populateValidateAccountNumberUsageLimitResponse(response);
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(validateAccountNumberUsageLimitResponse);
         }

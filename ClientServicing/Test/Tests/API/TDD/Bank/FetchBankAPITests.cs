@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
@@ -8,16 +9,20 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
+    [TestFixture]
     public class FetchBankAPITests : FetchBankResponseValidationMethods
     {
+        BankAPIClient bankAPIClient = new();
         UtilitiesHelper utilitiesHelper = new();
+        public static IEnumerable<FetchBanksRequest> fetchBankRequestEachTestDataObject = new JsonDataLoader().LoadJsonDataObjects<FetchBanksRequest>("Bank/Data", "AvailableBanks.json");
+        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().LoadJsonDataFields("Bank/Data", "BankDetailsAreNotNull.json");
 
-        [Test]
-        public async Task Given_BankRequestIsNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        [Test, Category("Positive")]
+        public async Task Given_BankDetailsAreNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "FetchBanksRequestIsNotNull.json"));
+            FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
+                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreNotNull.json"));
             fetchBankRequest.lastChanged = DateTime.Now.AddDays(-10);
 
             //Act
@@ -26,17 +31,17 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assertl
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
-        [Test]
-        public async Task Given_BankRequestIsNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        [Test, Category("Positive")]
+        public async Task Given_BankDetailsAreAllNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
-            BankAPIClient bankAPIClient = new("https://horizon.clientele.co.za/horizon.clientservicing/");
-            FetchBanksRequest fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>(utilitiesHelper.ReadTestDataJson("Bank/Data", "FetchBanksRequestIsNull.json"));
+            FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
+                (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreAllNull.json"));
 
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
@@ -44,57 +49,57 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
         }
-
-        private FetchBanksResponse populateFetchBanksResponse(RestResponse response)
+       [TestCaseSource(nameof(fetchBankRequestEachTestDataObject)), Category("Positive")]
+        public async Task Given_FetchBankRequestEachAvailableBank_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(FetchBanksRequest fetchBankRequest)
         {
-            using JsonDocument doc = JsonDocument.Parse(response.Content);
+            //Arrange
+            //ValidateObjectRequestDataIsNotNullOrEmptyOrLessThanZero(fetchBankRequest);
+            //Act
+            var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
+            var fetchBanksResponse = populateFetchBanksResponse(response);
 
-            FetchBanksResponse fetchBanksResponse = new FetchBanksResponse
+            //Assertl
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
+            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+        }
+        [Test, Category("Positive")]
+        [TestCaseSource(nameof(fetchBankRequestEachTestDataFields))]
+        public async Task Given_BankDetailsAreNotNullRequestEachField_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(
+            string fieldName, object? fieldValue)
+        {
+            TestContext.Out.WriteLine($"{fieldName} : {fieldValue}");
+            //Arrange
+            var fetchBankRequest = new FetchBanksRequest();
+            switch (fieldName)
             {
-                responseMessage = new ExecutionOutcome(),
-                data = new List<FetchBanksRequest>()
-            };
-
-            foreach (var property in doc.RootElement.EnumerateObject())
-            {
-                switch (property.Name.ToLower())
-                {
-                    case "succeeded":
-                        fetchBanksResponse.responseMessage.succeeded = property.Value.GetBoolean();
-                        break;
-                    case "message":
-                        fetchBanksResponse.responseMessage.message = property.Value.GetString();
-                        break;
-                    case "errors":
-                        fetchBanksResponse.responseMessage.errors = property.Value.GetString();
-                        break;
-                    case "data":
-                        foreach (var item in property.Value.EnumerateArray())
-                        {
-                            var bank = new FetchBanksRequest
-                            {
-                                bankID =        item.GetProperty("bankID").GetInt32(),
-                                bankName =      item.GetProperty("bankName").GetString(),
-                                bankShortName = item.GetProperty("bankShortName").GetString(),
-                                dispSeq =       item.GetProperty("dispSeq").GetInt32(),
-                                isActive =      item.GetProperty("isActive").GetBoolean(),
-                                lastChanged =   item.GetProperty("lastChanged").GetDateTime(),
-                                userID =        item.GetProperty("userID").GetString()
-                            };
-                            fetchBanksResponse.data.Add(bank);
-                        }
-                        break;
-                    default:
-                        TestContext.Out.WriteLine($"Unkown property: {property.Name}");
-                        break;
-                }
+                case "bankID":          fetchBankRequest.bankID = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
+                case "bankName":        fetchBankRequest.bankName = fieldValue != null ? fieldValue.ToString() : null; break;
+                case "bankShortName":   fetchBankRequest.bankShortName = fieldValue != null ? fieldValue.ToString() : null; break;
+                case "dispSeq":         fetchBankRequest.dispSeq = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
+                case "isActive":        fetchBankRequest.isActive = fieldValue != null ? Convert.ToBoolean(fieldValue.ToString()) : null; break;
+                case "lastChanged":     fetchBankRequest.lastChanged = fieldValue != null ? Convert.ToDateTime(fieldValue.ToString()) : null; break;
+                case "userID":          fetchBankRequest.userID = fieldValue != null ? fieldValue.ToString() : null; break;
+                default: TestContext.Out.WriteLine($"Unkown property: {fieldName}"); break;
             }
-            return fetchBanksResponse;
+            //Act
+            var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
+            var fetchBanksResponse = populateFetchBanksResponse(response);
+
+            //Assertl
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
+            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
+            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            
         }
     }
 }

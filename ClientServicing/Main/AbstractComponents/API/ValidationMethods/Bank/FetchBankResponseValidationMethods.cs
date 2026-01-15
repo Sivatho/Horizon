@@ -66,7 +66,19 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
             Assert.Multiple(() =>
             {
                 Assert.That(fetchBanksResponse.responseMessage, Is.Not.Null, "Fetch Banks Response: Response Message should not be null");
-                Assert.That(fetchBanksResponse.data,            Is.Not.Null, "FetchBanks Response: Data should not be null");
+
+                Assert.That(fetchBanksResponse.data, Is.Not.Null.And.Not.Empty, "Data should not be null or empty");
+
+                // Validate all items are well-formed
+                Assert.That(
+                    fetchBanksResponse.data,
+                    Has.All.Matches<FetchBanksRequest>(b =>
+                        b.bankID.HasValue && b.bankID.Value >= 0 &&
+                        b.lastChanged.HasValue && b.lastChanged.Value != default(DateTime)
+                    ),
+                    "Each item must have bankID >= 0 and lastChanged != default"
+                );
+
             });
             TestContext.Out.WriteLine("Response: Message and Data are not null or empty as expected.");
         }

@@ -11,7 +11,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
         BankAPIClient bankAPIClient = new();
-        [Test]
+        [Test, Category("Positive")]
         public async Task Given_PolicyNumberValid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
@@ -29,11 +29,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidateBankDetailHistoryResponseDataIsNotNullOrEmpty(getBankDetailHistoryResponse);
 
         }
-        [Test]
+        [Test, Category("Positive")]
         public async Task Given_PolicyNumberIsInvalid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             // Arrange
-            int policyNumber = 0;
+            int policyNumber = -1;
 
             // Act
             var response = await bankAPIClient.GetBankingDetailHistoryAsync(policyNumber);

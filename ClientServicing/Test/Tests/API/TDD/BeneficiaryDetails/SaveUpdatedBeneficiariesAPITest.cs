@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 
             //Assert
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "UpdatePolicyBenefitCacheResponseSchema.json");
             ValidateUpdatePolicyBenefitciaryCacheResponseDataIsNotNullOrEmpty(saveUpdatedBeneficiaries);

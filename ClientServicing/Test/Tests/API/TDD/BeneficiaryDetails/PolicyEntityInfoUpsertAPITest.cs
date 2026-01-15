@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.BeneficiaryDetails;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.BeneficiaryDetails;
@@ -29,7 +30,7 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
             // Assert
             
             ValidationAssertionHeading();
-            ValidateResponseStatusCodeOK(response);
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "PolicyEntityDetailInfoUpertResponseSchema.json");
             ValidatePolicyEntityInfoUpsertResponseDataIsNotNullOrEmpty(policyBeneficiaryDetailsResponse);            

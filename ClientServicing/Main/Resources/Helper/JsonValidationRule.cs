@@ -9,11 +9,16 @@ namespace ClientServicing.Main.Resources.Helper
 {
     public class JsonValidationRule
     {
-        public string PropertyName { get; set; }
-        public JsonValueKind[] AllowedKinds { get; set; }
+        // These two must always be provided when creating a rule
+        public required string PropertyName { get; set; }
+        public required JsonValueKind[] AllowedKinds { get; set; }
+
         public bool IsRequired { get; set; } = true;
-        public Dictionary<string, JsonValueKind[]> NestedRules { get; set; }
-        public Dictionary<string, JsonValueKind[]> ArrayItemRules { get; internal set; }
+
+        // These may be absent (null) for many rules, keep them nullable
+        public Dictionary<string, JsonValueKind[]>? NestedRules { get; set; }
+        public Dictionary<string, JsonValueKind[]>? ArrayItemRules { get; internal set; }
+
         public static void ValidateJson(JsonElement root, List<JsonValidationRule> rules)
         {
             foreach (var rule in rules)

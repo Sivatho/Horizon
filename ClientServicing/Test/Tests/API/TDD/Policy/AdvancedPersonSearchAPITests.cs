@@ -24,7 +24,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
 
             //Act
             var response = await policyAPIClient.AdvancedPersonSearchAsync(advancedPersonSearchRequest);
-            var advancedPersonSearchResponse = populateAdvancedPersonSearchResponse(response);
+            var advancedPersonSearchResponse = (response);
 
             //Assert
             ValidationAssertionHeading();
@@ -32,6 +32,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(advancedPersonSearchResponse);
 
+        }
+
+        private void ValidateAdvancedPersonSearchResponseDataIsNotNullOrEmpty(RestResponse advancedPersonSearchResponse)
+        {
+            throw new NotImplementedException();
         }
     }
 }

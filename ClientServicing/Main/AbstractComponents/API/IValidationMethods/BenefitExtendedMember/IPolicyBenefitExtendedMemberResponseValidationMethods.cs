@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using ClientServicing.Main.Models.BeneficiaryDetails;
 using ClientServicing.Main.Models.Email;
 
-namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Email
+namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.BenefitExtendedMember
 {
     public interface IPolicyBenefitExtendedMemberResponseValidationMethods
     {
-        public void ValidateSendInternalEmailsResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse);
+        public void ValidatePolicyBenefitExtendedMemberResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse);
     }
 }

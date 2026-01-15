@@ -27,7 +27,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
-                new JsonValidationRule{
+                new() {
+                    PropertyName = "YourPropertyName", // Replace with the actual property name to validate
                     AllowedKinds = new[]{
                         JsonValueKind.String
                     }

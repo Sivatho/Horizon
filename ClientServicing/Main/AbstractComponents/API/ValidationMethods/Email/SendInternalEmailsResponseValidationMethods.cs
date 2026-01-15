@@ -11,7 +11,7 @@ using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Email
 {
-    public class SendInternalEmailsResponseValidationMethods : AbstractValidationMethods, ISendInternalEmailsResponseValidationMethods
+    public class SendInternalEmailsResponseValidationMethods : AbstractValidationMethods, IPolicyBenefitExtendedMemberResponseValidationMethods
     {
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
@@ -21,7 +21,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Email
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
-                new JsonValidationRule{
+                    new() {
+                        PropertyName = "Value", // Set required property
                     AllowedKinds = new[]{ 
                         JsonValueKind.String
                     }

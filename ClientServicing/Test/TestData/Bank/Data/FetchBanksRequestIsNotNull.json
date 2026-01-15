@@ -2,7 +2,7 @@
     "bankID": 2,
     "bankName": "Nedbank Limited",
     "bankShortName": "Nedbank",
-    "dispSeq": 0,
+    "dispSeq": 2,
     "isActive": true,
     "lastChanged": "2023-02-07T20:12:00",
     "userID": "CLIENTELE\\SBadat"

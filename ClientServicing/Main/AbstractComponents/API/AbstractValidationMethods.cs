@@ -34,11 +34,11 @@ namespace ClientServicing.Main.AbstractComponents.API
                 bodyPreview = bodyPreview.Substring(0, maxBodyPreviewLength) + "... [truncated]";
             }
             return $@"❌ Status Code Assertion Failed!
-                        {statusLine}
-                        Request: {method} {uri}
-                        Content-Type: {contentType}
-                        Content-Length: {contentLength}
-                        Body (preview): {bodyPreview}";
+      {statusLine}
+      Request: {method} {uri}
+      Content-Type: {contentType}
+      Content-Length: {contentLength}
+      Body (preview): {bodyPreview}";
         }
 
         public void ValidateResponseHeadersAreValid(RestResponse restResponse)

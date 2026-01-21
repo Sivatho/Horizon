@@ -1,6 +1,6 @@
 {
-    "from": "spadayachy@clientele.co.za",
-    "to": "sconjwa@clientele.co.za",
-    "subject": "What is API Test Automation?",
-    "body": "API test automation involves writing scripts or using tools to automatically test APIs"
+    "from": "SPadayachy@clientele.co.za",
+    "to": "SConjwa@clientele.co.za",
+    "subject": "SendInternalEmails API Test",
+    "body": "Good day, this is an API test for SendInternalEmails. The purpose of the SendInternalEmails API is responsible for sending email notifications to internal users within an organization. This includes operational alerts, workflow updates, automated system messages, and user‑initiated internal communications. The purpose of this test is to validate that the API:(Sends emails to valid internal recipients. Correctly handles CC/BCC functionality (if supported). Processes subject and body content accurately. Logs and tracks the status of sent emails. Enforces security/authorization rules. Correctly handles failures, invalid inputs, and throttling rules.)"
 }

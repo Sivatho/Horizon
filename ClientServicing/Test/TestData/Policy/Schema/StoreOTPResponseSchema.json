@@ -1,0 +1,44 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "title": "StoreOTPRequestSchema",
+    "type": "object",
+    "required": [
+        "succeeded",
+        "message",
+        "errors",
+        "data"
+    ],
+    "properties": {
+        "succeeded": {
+            "type": "boolean",
+            "description": "Indicates if the operation succeeded."
+        },
+        "message": {
+            "anyOf": [
+                { "type": "string" },
+                { "type": "null" }
+            ],
+            "description": "Optional informational message; may be null."
+        },
+        "errors": {
+            "anyOf": [
+                { "type": "string" },
+                { "type": "null" }
+            ],
+            "description": "Optional error details; may be null."
+        },
+        "data": {
+            "type": "integer",
+            "description": "Payload data for this response (example shows integer 0)."
+        }
+    },
+    "additionalProperties": false,
+    "examples": [
+        {
+            "succeeded": true,
+            "message": null,
+            "errors": null,
+            "data": 0
+        }
+    ]
+}

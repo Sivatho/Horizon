@@ -9,16 +9,9 @@ namespace ClientServicing.Main.AbstractComponents.API
     {
         public void ValidationAssertionHeading()
         {
-            TestContext.Out.WriteLine("\n======================================================================\nAssertion Results:\n======================================================================");
+            var text = "API Response Validation Assertions";
+            DocumentTemplate.DisplayTitle(text);    
         }
-        public void ValidateResponseStatusCode(RestResponse restResponse, HttpStatusCode expectedStatusCode)
-        {
-            Assert.That(restResponse, Is.Not.Null, "Response Should Not Be Null");
-            var actualStatusCode = restResponse.StatusCode;
-            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode), () => (string)BuildStatusFailureMessage(restResponse, expectedStatusCode, actualStatusCode));
-            TestContext.Out.WriteLine($"Validated: Response Status Code is {(int)actualStatusCode}: '{actualStatusCode}' as expected.");
-        }
-
         private string BuildStatusFailureMessage(RestResponse restResponse, HttpStatusCode expectedStatusCode, HttpStatusCode actualStatusCode)
         {
             const int maxBodyPreviewLength = 500;
@@ -41,6 +34,27 @@ namespace ClientServicing.Main.AbstractComponents.API
       Body (preview): {bodyPreview}";
         }
 
+        public void ValidateResponseStatusCode(RestResponse restResponse, HttpStatusCode expectedStatusCode)
+        {
+            Assert.That(restResponse, Is.Not.Null, "Response Should Not Be Null");
+            var actualStatusCode = restResponse.StatusCode;
+            Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode), () => (string)BuildStatusFailureMessage(restResponse, expectedStatusCode, actualStatusCode));
+            DocumentTemplate.DisplayBody($"Validated: Response Status Code: {(int)actualStatusCode}; Status Description: '{actualStatusCode}' as expected.");            
+        }
+        public void ValidateErrorrMessage(RestResponse restResponse, string expectedErrorMessage) {
+            var actualErrorMessage = restResponse?.Content ?? string.Empty;
+
+            Assert.That(
+                  actualErrorMessage,
+                  Is.EqualTo(expectedErrorMessage),
+                  "Response error message should match the expected value."
+              );
+
+
+            DocumentTemplate.DisplayBody(
+                   $"Validated: Response Error Message: {actualErrorMessage} matches Expected Error Message: {expectedErrorMessage}."
+               );
+        }
         public void ValidateResponseHeadersAreValid(RestResponse restResponse)
         {
             if (restResponse.Headers.Count == 0)
@@ -71,7 +85,6 @@ namespace ClientServicing.Main.AbstractComponents.API
                 TestContext.Out.WriteLine("Validated: Response Header is valid");
             }
         }
-        abstract public void ValidateResponseFieldParametersIsValid(RestResponse restResponse);
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
@@ -79,6 +92,8 @@ namespace ClientServicing.Main.AbstractComponents.API
             utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
             TestContext.Out.WriteLine("Validated: Response JsonSchema content matches the expected JSON schema and is valid.");
         }
+
+        abstract public void ValidateResponseFieldParametersIsValid(RestResponse restResponse);
         abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
 
     }

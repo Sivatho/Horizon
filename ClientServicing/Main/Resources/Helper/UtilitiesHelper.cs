@@ -29,6 +29,7 @@ namespace ClientServicing.Main.Resources.Helper
         }
         public void LogRequestAndResponse(RestRequest restRequest, RestResponse response)
         {
+
             // Response Logging
             Console.WriteLine("======================================================================");
             Console.WriteLine("Request:");
@@ -89,7 +90,9 @@ namespace ClientServicing.Main.Resources.Helper
             Console.WriteLine($"Status Code: {response.StatusCode}");
             // Response Body
             Console.WriteLine("Body:");
-            Console.WriteLine($"{prettyPrintJson(response.Content)}");
+            if(response.Content != null) { 
+                Console.WriteLine($"{prettyPrintJson(response.Content)}");
+            } else Console.WriteLine($"Reponse returned is {(response.Content)}");
         }
         public void ValidateJsonSchema(string jsonResponse, string schemaJson)
         {

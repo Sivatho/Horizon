@@ -18,5 +18,17 @@ namespace ClientServicing.Main.IController
         public Task<RestResponse> GetBenefitCoverScreenHospitalAsync<T>(T payload) where T : class;
         public Task<RestResponse> GetBenefitCoverScreenWealthAsync<T>(T payload) where T : class;
         public Task<RestResponse> CheckRestartEligibilityAsync<T>(T payload) where T : class;
+        public Task<RestResponse> StoreOTPAsync<T>(T payload) where T : class;
+        public Task<RestResponse> SendInternalEmailsAsync<T>(T payload) where T : class;
+        public Task<RestResponse> VerifyAndUpdateOTPAsync<T>(T payload) where T : class;
+        public Task<RestResponse> CheckRefundAvailabilityAsync<T>(T payload) where T : class;
+        public Task<RestResponse> ChangePolicyDOCAsync<T>(T payload) where T : class;
+        public Task<RestResponse> FetchPolicyStatusAsync<T>(T payload) where T : class;
+        public Task<RestResponse> InsertPolicyNoteAsync<T>(T payload) where T : class;
+        public Task<RestResponse> CheckWaitingPeriodAsync<T>(T payload) where T : class;
+        public Task<RestResponse> GetUnmentPremiumAsync(int policyNo);
+        public Task<RestResponse> ProcessRefundAndBilcoCancellationAsync<T>(T payload) where T : class;
+        public Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync<T>(T payload) where T : class;
+        public Task<RestResponse> GetPolicyProductLineAsync<T>(T payload) where T : class;
     }
 }

@@ -2,12 +2,12 @@
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy;
 using ClientServicing.Main.Controller;
-using ClientServicing.Main.Models.GSD;
 using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
 
 namespace ClientServicing.Test.Tests.API.TDD.Policy
 {
+    [TestFixture]
     public class StoreOTPAPITests : StoreOTPValidationMethods
     {
         PolicyAPIClient policyAPIClient = new();

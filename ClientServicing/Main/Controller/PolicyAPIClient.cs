@@ -32,568 +32,298 @@ namespace ClientServicing.Main.Controller
 
         public async Task<RestResponse> AdvancedPersonSearchAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.AdvancedPersonSearch), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.AdvancedPersonSearch);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;          
         }
 
         public async Task<RestResponse> ChangeMainMemberUpsertAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangeMainMemberUpsert), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangeMainMemberUpsert);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> ChangePolicyDOCAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangePolicyDOC), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangePolicyDOC);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> CheckHasProductAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckHasProduct), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckHasProduct);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckPolicyIfMainMemberOnly), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckPolicyIfMainMemberOnly);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> CheckRefundAvailabilityAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckPolicyIfMainMemberOnly), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckRefundAvailability);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> CheckRestartEligibilityAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckRestartEligibility), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckRestartEligibility);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> CheckWaitingPeriodAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckWaitingPeriod), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckWaitingPeriod);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> EntityInfoUpsertAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.EntityInfoUpsert), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.EntityInfoUpsert);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> FetchPolicyStatusAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.FetchPolicyStatus), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.FetchPolicyStatus);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetBenefitCoverScreenHospitalAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenHospital), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenHospital);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetBenefitCoverScreenWealthAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenWealth), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenWealth);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetCustomerPolicyInfoByEntityNoAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetCustomerPolicyInfoByEntityNo), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetCustomerPolicyInfoByEntityNo);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetMainMemChangeHistoryAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetMainMemChangeHistory), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetMainMemChangeHistory);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetPolicyAndMainMemberDetailsByPolicyNumberAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyAndMainMemberDetailsByPolicyNumber), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyAndMainMemberDetailsByPolicyNumber);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetPolicyProductLineAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyProductLine), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyProductLine);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetPossibleMainMembersAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPossibleMainMembers), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPossibleMainMembers);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> GetUnmentPremiumAsync(int policyNo)
         {
-            try
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetUnmentPremium);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = null;
+            IDictionary<string, string>? queryParams = null;
+            IDictionary< string, int>? urlSegment = new Dictionary<string, int>
+            {
+                ["policyNo"] = policyNo
+            };
+            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+                url,
+                method,
+                null,
+                out var stopwatch,
+                headers,
+                queryParams, urlSegment);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
+            /*try
             {
                 //Arrange
                 var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetUnmentPremium), Method.Post);
@@ -605,292 +335,143 @@ namespace ClientServicing.Main.Controller
                 HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
 
                 //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
+                DocumentTemplate.DisplayResponseEnsureSuccess(response);
                 return response;
             }
             catch (Exception ex)
             {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
+                DocumentTemplate.DisplayRequestAndResponseExceptionLogging(ex);
                 return new RestResponse
                 {
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                     ErrorMessage = $"Exception occurred: {ex.Message}"
                 };
-            }
+            }*/
         }
 
         public async Task<RestResponse> InsertPolicyNoteAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.InsertPolicyNote), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.InsertPolicyNote);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> PersonSearchAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.PersonSearch), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.PersonSearch);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> PingAsync()
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.Ping), Method.Get);
-                var stopWatch = Stopwatch.StartNew();
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.Ping);
+            Method method = Method.Get;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+                url,
+                method,
+                null,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> PrePopulateEntityInfoByIDAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.PrePopulateEntityInfoByID), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.PrePopulateEntityInfoByID);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> ProcessRefundAndBilcoCancellationAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.ProcessRefundAndBilcoCancellation), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ProcessRefundAndBilcoCancellation);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> SendInternalEmailsAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.SendInternalEmails), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.SendInternalEmails);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> StoreOTPAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.StoreOTP), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.StoreOTP);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    DocumentTemplate.DisplayTitle("API Call Failed");
-                    DocumentTemplate.DisplayFieldAndValue("Status Code:", response.StatusCode.ToString());
-                    DocumentTemplate.DisplayFieldAndValue("Message:", response.Content);
-                    DocumentTemplate.DisplayRuler();
-                }
-                return response;
-                
-            }
-            catch (Exception ex)
-            {
-                DocumentTemplate.DisplayTitle("Exception Occurred");
-                DocumentTemplate.DisplayFieldAndValue("Message:", ex.Message);
-                DocumentTemplate.DisplayFieldAndValue("Stack Trace:", ex.StackTrace);
-                DocumentTemplate.DisplayRuler();
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> VerifyAndUpdateOTPAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.VerifyAndUpdateOTP), Method.Post);
-                request.AddJsonBody(payload);
-                var stopWatch = Stopwatch.StartNew();
+            // Arrange            
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.VerifyAndUpdateOTP);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+                url, 
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
     }
+
 }

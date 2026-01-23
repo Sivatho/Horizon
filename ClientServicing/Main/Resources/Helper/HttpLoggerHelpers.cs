@@ -34,11 +34,11 @@ namespace ClientServicing.Main.Resources.Helper
             "otp",
             "id",
             "cellphone",
-            "legalReference",
-            "passportnumber"
+            "legalRefNumber",
+            "passportnumber",
+            "legalRefNo"
         };
         private static string Redact(string value) => string.IsNullOrEmpty(value) ? value : "***REDACTED***";
-
         public static void RequestaAndResponseLogging(RestRequest request, RestResponse response, string correlationId = null, Stopwatch? stopwatch = null)
         {
             //Arrange

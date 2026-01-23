@@ -12,7 +12,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
         BankAPIClient bankAPIClient = new();
-        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().LoadJsonDataFields("Bank/Data", "BankDetailsAreNotNull.json");
+        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().ReadJsonTestDataFields("Bank/Data", "BankDetailsAreNotNull.json");
         [Test, Category("Positive")]
         public async Task Given_PolicyNumberValid_When_GetBankingDetailHistoryAsync_Then_ValidateGetBankDetailHistoryResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {

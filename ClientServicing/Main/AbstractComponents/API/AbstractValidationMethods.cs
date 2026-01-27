@@ -85,6 +85,7 @@ namespace ClientServicing.Main.AbstractComponents.API
                 TestContext.Out.WriteLine("Validated: Response Header is valid");
             }
         }
+        
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();

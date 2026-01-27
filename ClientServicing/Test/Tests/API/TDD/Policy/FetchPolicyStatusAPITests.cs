@@ -40,7 +40,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateFetchPolicyStatusResponseDataIsNotNullOrEmpty(fetchPolicyStatusResponse);
-            //ValidateResponseSchemaIsValid(response, "Policy/Schema", "FetchPolicyStatusResponseSchema.json");
+            ValidateResponseSchemaIsValid(response, "Policy/Schema", "FetchPolicyStatusResponseSchema.json");
         }
     }
 }

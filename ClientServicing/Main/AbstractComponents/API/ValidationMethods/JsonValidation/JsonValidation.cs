@@ -1,0 +1,545 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
+using ClientServicing.Main.AbstractComponents.API.IValidationMethods.JsonValidation;
+using java.lang;
+using RestSharp;
+
+namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation
+{
+    #region 1) Core Schema Model(Reusable)
+    public sealed class JsonRule : IJsonRule
+    {
+        public string PropertyName { get; }
+        public bool Required { get; }
+        public ISet<JsonValueKind> AllowedKinds { get; }
+        public IJsonSchema? NestedSchema { get; }
+
+        public JsonRule(
+            string propertyName,
+            IEnumerable<JsonValueKind> allowedKinds,
+            bool required = true,
+            IJsonSchema? nestedSchema = null)
+        {
+            PropertyName = propertyName ?? throw new ArgumentNullException(nameof(propertyName));
+            AllowedKinds = new HashSet<JsonValueKind>(allowedKinds ?? throw new ArgumentNullException(nameof(allowedKinds)));
+            Required = required;
+            NestedSchema = nestedSchema;
+        }
+    }
+    public sealed class JsonSchema : IJsonSchema
+    {
+        private readonly List<IJsonRule> _rules = new();
+        public IReadOnlyList<IJsonRule> Rules => _rules;
+
+        public JsonSchema(IEnumerable<IJsonRule> rules)
+        {
+            if (rules == null) throw new ArgumentNullException(nameof(rules));
+            _rules.AddRange(rules);
+        }
+
+        // Fluent builder for clean test readability
+        public sealed class Builder
+        {
+            private readonly List<IJsonRule> _rules = new();
+
+            public Builder Property(
+                string name,
+                IEnumerable<JsonValueKind> kinds,
+                IJsonSchema? nested = null,
+                bool required = true)
+            {
+                _rules.Add(new JsonRule(name, kinds, required, nested));
+                return this;
+            }
+
+            public Builder OptionalProperty(
+                string name,
+                IEnumerable<JsonValueKind> kinds,
+                IJsonSchema? nested = null)
+                => Property(name, kinds, nested, required: false);
+
+            public JsonSchema Build() => new JsonSchema(_rules);
+        }
+    }
+    public static class JsonKinds
+    {
+        public static readonly ISet<JsonValueKind> Boolean = new HashSet<JsonValueKind>
+        {
+            JsonValueKind.True, JsonValueKind.False
+        };
+        public static ISet<JsonValueKind> Of(params JsonValueKind[] kinds)
+                => new HashSet<JsonValueKind>(kinds ?? Array.Empty<JsonValueKind>());
+
+    }
+    #endregion
+
+    #region 2) Validator + Result (Separation of Concerns)
+    public sealed class ValidationFailure
+    {
+        public string Path { get; }
+        public string Message { get; }
+        public ValidationFailure(string path, string message)
+        {
+            Path = path;
+            Message = message;
+        }
+        public override string ToString() => $"{Path}: {Message}";
+    }
+    public sealed class ValidationResult
+    {
+        public bool IsValid => Failures.Count == 0;
+        public IReadOnlyList<ValidationFailure> Failures { get; }
+
+        public ValidationResult(IEnumerable<ValidationFailure> failures)
+        {
+            Failures = failures?.ToList() ?? new List<ValidationFailure>();
+        }
+
+        public string ToFailureMessage()
+        {
+            if (IsValid) return "Validation succeeded.";
+            var sb = new StringBuilder();
+            sb.AppendLine("JSON validation failed:");
+            foreach (var f in Failures) sb.AppendLine(" - " + f);
+            return sb.ToString();
+        }
+    }
+    public sealed class JsonValidator : IJsonValidator
+    {
+        public ValidationResult Validate(JsonElement element, IJsonSchema schema, string path = "$")
+        {
+            var failures = new List<ValidationFailure>();
+
+            foreach (var rule in schema.Rules)
+            {
+                var propPath = $"{path}.{rule.PropertyName}";
+                if (!element.TryGetProperty(rule.PropertyName, out var prop))
+                {
+                    if (rule.Required)
+                        failures.Add(new ValidationFailure(propPath, "Required property missing."));
+                    continue;
+                }
+
+                if (!rule.AllowedKinds.Contains(prop.ValueKind))
+                {
+                    var expected = string.Join(", ", rule.AllowedKinds.OrderBy(k => k));
+                    failures.Add(new ValidationFailure(
+                        propPath,
+                        $"Unexpected kind '{prop.ValueKind}'. Expected: {expected}"));
+                    continue;
+                }
+
+                if (rule.NestedSchema != null)
+                {
+                    if (prop.ValueKind != JsonValueKind.Object)
+                    {
+                        failures.Add(new ValidationFailure(
+                            propPath,
+                            "Nested schema provided but value is not an object."));
+                    }
+                    else
+                    {
+                        failures.AddRange(Validate(prop, rule.NestedSchema, propPath).Failures);
+                    }
+                }
+            }
+
+            return new ValidationResult(failures);
+        }
+    }
+    #endregion
+
+    #region 3) Envelope Schema Factory (Reusability)
+    public static class ResponseSchemas {
+        ///<summary>
+        ///Method Name:StandardEnvelopeObject
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema StandardEnvelopeObject(Action<JsonSchema.Builder> dataRules)
+        {
+            if (dataRules == null) throw new ArgumentNullException(nameof(dataRules));
+
+            var dataBuilder = new JsonSchema.Builder();
+            dataRules(dataBuilder);
+            var dataSchema = dataBuilder.Build();
+                      
+
+            return new JsonSchema.Builder()
+                .Property("succeeded",  JsonKinds.Boolean)
+                .Property("message",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errors",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("data",       JsonKinds.Of(JsonValueKind.Object), nested: dataSchema)
+                .Build();
+        }
+        ///<summary>
+        ///Method Name:StandardEnvelopeAny
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema StandardEnvelopeAny(Action<JsonSchema.Builder>? objectOrItemRules = null) { 
+            var nestedBuilder = new JsonSchema.Builder();
+            objectOrItemRules?.Invoke(nestedBuilder);
+            var nestedSchema = nestedBuilder.Build();
+
+            return new JsonSchema.Builder()
+            .Property("succeeded",  JsonKinds.Boolean)
+            .Property("message",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("errors",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("data",       JsonKinds.Of(JsonValueKind.Object,
+                                                JsonValueKind.Array,
+                                                JsonValueKind.String,
+                                                JsonValueKind.Number,
+                                                JsonValueKind.True,
+                                                JsonValueKind.False,
+                                                JsonValueKind.Null), nested: nestedSchema)
+            .Build();
+        }
+        ///<summary>
+        ///Method Name: StandardEnvelopeArray
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema StandardEnvelopeArray(Action<JsonSchema.Builder> itemRules)
+        {
+            if (itemRules == null) throw new ArgumentNullException(nameof(itemRules));
+
+            var itemBuilder = new JsonSchema.Builder();
+            itemRules(itemBuilder);
+            var itemSchema = itemBuilder.Build();
+
+            // Assumption: nested: itemSchema is interpreted by your builder as the "items" schema for arrays.
+            return new JsonSchema.Builder()
+                .Property("succeeded", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errors", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("data", JsonKinds.Of(JsonValueKind.Array), nested: itemSchema)
+                .Build();
+        }
+
+        ///<summary>
+        ///Method Name: StandardEnvelopePrimitive
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema StandardEnvelopePrimitive(params JsonValueKind[] primitiveKinds)
+        {
+            if (primitiveKinds == null || primitiveKinds.Length == 0)
+                throw new ArgumentException("At least one primitive kind must be specified.", nameof(primitiveKinds));
+
+            return new JsonSchema.Builder()
+                .Property("succeeded", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errors", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("data", JsonKinds.Of(primitiveKinds))
+                .Build();
+        }
+    }
+
+    public static class PolicySchemas
+    {
+        ///<summary>
+        ///Method Name:PolicyEnvelopeStrict
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema PolicyEnvelopeStrict => ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("legacyPolicyNo", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String))
+                .Property("policyNo", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.Number))
+                .Property("status", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String))
+                .Property("statusCD", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.Number))
+                .Property("statusDate", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String));
+        });
+
+        ///<summary>
+        ///Method Name:StandardEnvelopeObject
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema PolicyStatusBody()
+        {
+            return new JsonSchema.Builder()
+                .Property("success", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("totalPolicies", JsonKinds.Of(JsonValueKind.Number))
+                .Property("limitExceeded", JsonKinds.Boolean)
+                .Build();
+        }
+    }
+    #endregion
+
+    #region 4) RestSharp Extension (Test Readability)
+    public static class RestResponseExtensions {
+        ///<summary>
+        ///Method Name:
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static void ShouldMatchSchema(this RestResponse response, IJsonSchema schema)
+        {
+            var result = ValidateAgainst(response, schema);
+            if (!result.IsValid)
+            {
+                throw new InvalidOperationException(result.ToFailureMessage());
+            }
+        }
+        ///<summary>
+        ///Method Name:
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static ValidationResult ValidateAgainst(this RestResponse response, IJsonSchema schema)
+        {
+            if (response == null) throw new ArgumentNullException(nameof(response));
+            if (schema == null) throw new ArgumentNullException(nameof(schema));
+
+            if (string.IsNullOrWhiteSpace(response.Content))
+                return new ValidationResult(new[] { new ValidationFailure("$", "Response content is empty.") });
+
+            using var doc = JsonDocument.Parse(response.Content!);
+            var validator = new JsonValidator();
+            return validator.Validate(doc.RootElement, schema);
+        }
+    }
+    #endregion
+
+    #region 5) Your Exact Schema (mirrors your original rules)
+    public static class ResponseSchemasEnvelope
+    {
+        public static JsonSchema DataFalseSchema =      ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
+        public static JsonSchema DataBooleanSchema =    ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
+        public static JsonSchema DataNumberSchema =     ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.Number);
+        public static JsonSchema EligibilitySchema =    ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("isEligibile",    JsonKinds.Boolean)
+                .Property("message",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        });
+        public static JsonSchema BankSchema =           ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("bankID", JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankName", JsonKinds.Of(JsonValueKind.String))
+                .Property("bankShortName", JsonKinds.Of(JsonValueKind.String))
+                .Property("dispSeq", JsonKinds.Of(JsonValueKind.Number))
+                .Property("isActive", JsonKinds.Boolean)
+                .Property("lastChanged", JsonKinds.Of(JsonValueKind.String))
+                .Property("userID", JsonKinds.Of(JsonValueKind.String));
+        });
+        public static JsonSchema BeneficiariesSchema =  ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("totalAllocated", JsonKinds.Of(JsonValueKind.Number))
+                .Property("beneficiaryDetailsItems", JsonKinds.Of(JsonValueKind.Array), nested:
+                    new JsonSchema.Builder()
+                        .Property("rownumber", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("entityNo", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("firstName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("surname", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("titleCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("titleDescr", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("statusCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("statusDescr", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("entityRelationId", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("relationCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("relationDescr", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("legalReferenceNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("legalReferenceNumberMasked", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("legalReferenceNumberTypeCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("percAllocation", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("dateOfBirth", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("status", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("physicalAddress", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("addressLine2", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("suburb", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("addressCity", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("addressPostCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("cellNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("cellNumberMasked", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("homeNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("workNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("emailAddress", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("fullname", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("totalPercentageAvailable", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("role", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("genderCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("auditToken", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("bankAccNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Build()
+                )
+                .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
+                .Property("auditToken", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        });
+        public static JsonSchema PolicyDetailsSchema =  ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("policy_NO",                      JsonKinds.Of(JsonValueKind.Number))
+                .Property("entityNo",                       JsonKinds.Of(JsonValueKind.Number))
+                .Property("legacy_Pol_No",                  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("annualIncrease",                 JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("dateOfCommencement",             JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("reInstatedDate",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("lapsedDate",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("venue",                          JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("salesPerson",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("campaignCode",                   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("policyFee",                      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("captureDate",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("preferedCommunicationMethod",    JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("masterContract",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("title",                          JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("titleID",                        JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("firstname",                      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("surname",                        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("legalRefNo",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("legalNumberType",                JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("dateOfBirth",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("preferredTelTypeCd",             JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("faxNumber",                      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("homeNumber",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("emailAddress",                   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("cellNumber",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("workNumber",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("alternateNumber",                JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("whatsappNumber",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalAddress1",               JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalAddress2",               JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalSuburb",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalTown",                   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalPostalCode",             JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("postalAddress1",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("postalAddress2",                 JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("postalSuburb",                   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("postalTown",                     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("postalPostalCode",               JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("genderCD",                       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("smokerCd",                       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("smokerDescr",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("lastBillingDate",                JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("lastPaidDate",                   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("nextBillingDate",                JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("policyPremiumAmount",            JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("premiumCount",                   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("paymentFrequency",               JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        });
+        public static JsonSchema BankListSchema =       ResponseSchemas.StandardEnvelopeArray(item =>
+        {
+            item.Property("bankID", JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankName", JsonKinds.Of(JsonValueKind.String))
+                .Property("bankShortName", JsonKinds.Of(JsonValueKind.String))
+                .Property("dispSeq", JsonKinds.Of(JsonValueKind.Number))
+                .Property("isActive", JsonKinds.Boolean)
+                .Property("lastChanged", JsonKinds.Of(JsonValueKind.String))
+                .Property("userID", JsonKinds.Of(JsonValueKind.String));
+        });
+        public static JsonSchema PolicyListSchema =     ResponseSchemas.StandardEnvelopeArray(item =>
+        {
+            item.Property("entityID", JsonKinds.Of(JsonValueKind.Number))
+                .Property("ifaNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("entityNo", JsonKinds.Of(JsonValueKind.Number))
+                .Property("entityName", JsonKinds.Of(JsonValueKind.String))
+                .Property("entitySurname", JsonKinds.Of(JsonValueKind.String))
+                .Property("entityDOB", JsonKinds.Of(JsonValueKind.String))
+                .Property("legalRefNo", JsonKinds.Of(JsonValueKind.String))
+                .Property("legalRefNoType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("citizenshipCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("alpha3Code", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("citizenship", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("emailAddress", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("cellphoneNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("physicalAddress1", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("legacyPolicyNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("policyNo", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("roleCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("status", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("statusCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("planTypeDescr", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("statusDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("dateOfCommencement", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("premiumAmt", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("salesPerson", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("rewardStatus", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("debiCheckStatus", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("agency", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payor", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payorLegalReferenceNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payorCellphoneNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payorEmailAddress", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("beneficiaryName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("paymentTypeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("inspiratorNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("region", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("partnerCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("partnerCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("schemeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("schemeDesc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("planCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("planDesc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("channelCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("channelDesc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("entityFullname", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        });
+        public static JsonSchema BenefitCoversSchema =  ResponseSchemas.StandardEnvelopeArray(item =>
+        {
+            item.Property("benefitID", JsonKinds.Of(JsonValueKind.Number))
+                .Property("benefitCover", JsonKinds.Of(JsonValueKind.Number));
+        });
+
+        ///<summary>
+        ///Method Name: 
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema PolicySchema => ResponseSchemas.StandardEnvelopeObject(data =>
+        {
+            data.Property("legacyPolicyNo", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String))
+                .Property("policyNo", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.Number))
+                .Property("status", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String))
+                .Property("statusCD", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.Number))
+                .Property("statusDate", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String));
+        });
+        ///<summary>
+        ///Method Name: 
+        ///Description:
+        ///Advantage:
+        ///Disadvantage:
+        ///</summary>
+        public static JsonSchema AvsValidationBody()
+        {
+            return new JsonSchema.Builder()
+                .Property("isValid", JsonKinds.Boolean)
+                .Property("shouldUpdateAccountType", JsonKinds.Boolean)
+                .Property("overrideIsValid", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("fraudsterFailure", JsonKinds.Of(JsonValueKind.Number))
+                .Property("correctBankName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("softyCompResult", JsonKinds.Of(JsonValueKind.Object))
+                .Property("fraudsterResult", JsonKinds.Of(JsonValueKind.Object))
+                .Property("d3BlackListResult", JsonKinds.Of(JsonValueKind.Object))
+                .Property("avsrResult", JsonKinds.Of(JsonValueKind.Object))
+                .Build();
+        }
+
+
+    }
+    #endregion
+
+    #region 6) Replace Your Method With This (Clean & Single Line)
+    public class JsonValidation {
+        public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse)
+        {
+            restResponse.ShouldMatchSchema(ResponseSchemasEnvelope.PolicySchema);
+        }
+    }
+    #endregion
+}

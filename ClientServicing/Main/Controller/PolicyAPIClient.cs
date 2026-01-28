@@ -143,7 +143,7 @@ namespace ClientServicing.Main.Controller
         }
 
         public async Task<RestResponse> CheckWaitingPeriodAsync<T>(T payload) where T : class
-        {
+        { ////Claims is spCheckWaitingPeriod no longer used as there is a new project in development for claims
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckWaitingPeriod);
             Method method = Method.Post;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.Policy
 {
+
+    //Claims is spCheckWaitingPeriod no longer used as there is a new project in development for claims
     public class CheckWaitingPeriodRequest
     {
         public int PolicyNumber { get; set; }

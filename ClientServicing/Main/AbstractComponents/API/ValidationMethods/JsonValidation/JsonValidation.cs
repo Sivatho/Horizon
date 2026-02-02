@@ -101,7 +101,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         public string ToFailureMessage()
         {
             if (IsValid) return "Validation succeeded.";
-            var sb = new StringBuilder();
+            var sb = new System.Text.StringBuilder();
             sb.AppendLine("JSON validation failed:");
             foreach (var f in Failures) sb.AppendLine(" - " + f);
             return sb.ToString();

@@ -39,7 +39,7 @@ namespace ClientServicing.Main.Resources.Helper
             "legalRefNo"
         };
         private static string Redact(string value) => string.IsNullOrEmpty(value) ? value : "***REDACTED***";
-        public static void RequestaAndResponseLogging(RestRequest request, RestResponse response, string correlationId = null, Stopwatch? stopwatch = null)
+        public static void RequestAndResponseLogging(RestRequest request, RestResponse response, string correlationId = null, Stopwatch? stopwatch = null)
         {
             //Arrange
             stopwatch.Stop();
@@ -59,6 +59,7 @@ namespace ClientServicing.Main.Resources.Helper
             // Request Method and URL
             DocumentTemplate.DisplayFieldAndValue("Method", request.Method.ToString());
             DocumentTemplate.DisplayFieldAndValue("Resource", request.Resource);
+            DocumentTemplate.DisplayFieldAndValue("URL Segment", request.Parameters.FirstOrDefault(p => p.Type == ParameterType.UrlSegment)?.Value?.ToString());
             // Request Headers
             DocumentTemplate.DisplaySubTitle("Headers");
             foreach (var header in request.Parameters.Where(p => p.Type == ParameterType.HttpHeader))

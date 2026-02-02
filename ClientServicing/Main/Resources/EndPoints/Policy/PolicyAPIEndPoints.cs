@@ -57,7 +57,7 @@
                 EndPoints.FetchPolicyStatus                             => "/api/Policy/FetchPolicyStatus",
                 EndPoints.InsertPolicyNote                              => "/api/Policy/InsertPolicyNote",
                 EndPoints.CheckWaitingPeriod                            => "/api/Policy/CheckWaitingPeriod",
-                EndPoints.GetUnmentPremium                              => "/api/Policy/GetUnmentPremium",
+                EndPoints.GetUnmentPremium                              => "/api/Policy/GetUnmentPremium/{PolicyNo}",
                 EndPoints.ProcessRefundAndBilcoCancellation             => "/api/Policy/ProcessRefundAndBilcoCancellation",
                 EndPoints.CheckPolicyIfMainMemberOnly                   => "/api/Policy/CheckPolicyIfMainMemberOnly/{policyNo}",
                 EndPoints.GetPolicyProductLine                          => "/api/Policy/GetPolicyProductLine",

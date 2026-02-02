@@ -179,11 +179,16 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.FetchPolicyStatus);
             Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
             var request = ApiRequestAndResponseHelper.GetRequestDetails(
                 url,
                 method,
                 payload,
-                out var stopwatch);
+                out var stopwatch,
+                headers);
 
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
@@ -305,12 +310,15 @@ namespace ClientServicing.Main.Controller
         public async Task<RestResponse> GetUnmentPremiumAsync(int policyNo)
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetUnmentPremium);
-            Method method = Method.Post;
-            IDictionary<string, string>? headers = null;
+            Method method = Method.Get;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
             IDictionary<string, string>? queryParams = null;
             IDictionary< string, int>? urlSegment = new Dictionary<string, int>
             {
-                ["policyNo"] = policyNo
+                ["PolicyNo"] = policyNo
             };
             var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
                 url,
@@ -323,30 +331,6 @@ namespace ClientServicing.Main.Controller
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
             return response;
-            /*try
-            {
-                //Arrange
-                var request = new RestRequest(PolicyAPIEndPoints.GetEndPoint(EndPoints.GetUnmentPremium), Method.Post);
-                request.AddUrlSegment("policyNo", policyNo);
-                var stopWatch = Stopwatch.StartNew();
-
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopWatch);
-
-                //Assert
-                DocumentTemplate.DisplayResponseEnsureSuccess(response);
-                return response;
-            }
-            catch (Exception ex)
-            {
-                DocumentTemplate.DisplayRequestAndResponseExceptionLogging(ex);
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }*/
         }
 
         public async Task<RestResponse> InsertPolicyNoteAsync<T>(T payload) where T : class

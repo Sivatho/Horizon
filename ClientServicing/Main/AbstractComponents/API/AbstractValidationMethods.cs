@@ -1,7 +1,9 @@
 ﻿using System.Net;
-using ClientServicing.Main.Models.Policy;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Resources.Helper;
+using Newtonsoft.Json.Schema;
 using RestSharp;
+using JsonSchema = ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation.JsonSchema;
 
 namespace ClientServicing.Main.AbstractComponents.API
 {
@@ -82,20 +84,28 @@ namespace ClientServicing.Main.AbstractComponents.API
                         }
                     });
                 });
-                TestContext.Out.WriteLine("Validated: Response Header is valid");
+                TestContext.Out.WriteLine("Validated: Response Header Is Valid");
             }
         }
-        
+        public void ValidateResponseDataShouldAcceptValidNames_And_Types(RestResponse restResponse, JsonSchema jsonSchema)
+        {
+            var schema = jsonSchema;
+            restResponse.Data_Should_Accept_Valid_Names_And_Types(schema);
+        }
+        public void ValidateResponseShouldMatchSchema(RestResponse restResponse, JsonSchema jsonSchema)
+        {
+            var schema = jsonSchema;
+            restResponse.ShouldMatchSchema(schema);
+        }
+
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
             var schemaJson = utilitiesHelper.ReadTestDataJson(folder, jsonfile);
             utilitiesHelper.ValidateJsonSchema(restResponse.Content, schemaJson);
             TestContext.Out.WriteLine("Validated: Response JsonSchema content matches the expected JSON schema and is valid.");
-        }
-
+        }       
         abstract public void ValidateResponseFieldParametersIsValid(RestResponse restResponse);
-        abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
-
+        abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse); // To be removed and all classes consuming it 
     }
 }

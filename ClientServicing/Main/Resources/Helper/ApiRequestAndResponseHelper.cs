@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reactive.Concurrency;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
+using System.Text.Json;
+using ClientServicing.Main.Models.Auth;
 using RestSharp;
 
 namespace ClientServicing.Main.Resources.Helper
@@ -113,7 +109,7 @@ namespace ClientServicing.Main.Resources.Helper
             try
             {
                 var response = await client.ExecuteAsync(request, cancellationToken).ConfigureAwait(false);
-                HttpLoggerHelpers.RequestaAndResponseLogging(request, response, null, stopwatch);
+                HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
                 stopwatch.Stop();
                 DocumentTemplate.DisplayResponseEnsureSuccess(response);
                 return response;
@@ -127,6 +123,143 @@ namespace ClientServicing.Main.Resources.Helper
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                     ErrorMessage = $"Exception occurred: {ex.Message}"
                 };
+            }
+            finally
+            {
+                if (stopwatch.IsRunning)
+                    stopwatch.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Name: AuthenticateCredentialsAsync
+        /// Description:
+        /// Executes a REST API request asynchronously while measuring execution time.
+        /// This method centralizes request execution, logging, timing, and exception handling
+        /// to ensure consistent API communication behavior across the automation framework.
+        ///
+        /// Benefits:
+        /// • Automatically logs both the request and response using HttpLoggerHelpers.
+        /// • Ensures timing consistency by stopping the stopwatch only once, even on exceptions.
+        /// • Provides unified error handling through DocumentTemplate for reporting.
+        /// • Wraps execution in a safe try/catch/finally block, returning a structured AuthResult.
+        /// • Improves reusability and reduces code duplication across tests and API clients.
+        ///
+        /// Parameters:
+        /// <param name="client">The RestClient instance used to send the request.</param>
+        /// <param name="request">The REST request object containing URL, method, headers, and payload.</param>
+        /// <param name="stopwatch">The stopwatch used to measure total API call duration.</param>
+        /// <param name="cancellationToken">Optional token for cancelling the request.</param>
+        ///
+        /// Returns:
+        /// <returns>
+        /// An AuthResult that includes the RestResponse (when available), a token if present, and success/failure info.
+        /// </returns>
+        /// </summary>
+        public static async Task<AuthResult> AuthenticateCredentialsAsync(
+                RestClient client,
+                RestRequest request,
+                Stopwatch stopwatch,
+                CancellationToken cancellationToken = default)
+        {
+            ArgumentNullException.ThrowIfNull(client);
+            ArgumentNullException.ThrowIfNull(request);
+            ArgumentNullException.ThrowIfNull(stopwatch);
+
+            RestResponse? response = null;
+            string? token = null;
+
+            try
+            {
+                // response = await client.ExecuteAsync(request, cancellationToken).ConfigureAwait(false);
+                response = await client.PostAsync(request, cancellationToken).ConfigureAwait(false);
+
+                if (response is null)
+                {
+                    DocumentTemplate.DisplayRequestAndResponseExceptionLogging(
+                        new InvalidOperationException("Null response from RestClient.PostAsync."));
+
+                    HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+                    return new AuthResult
+                    {
+                        IsSuccess = false,
+                        Error = "Null response received"
+                    };
+                }
+
+                if (!response.IsSuccessful)
+                {
+                    DocumentTemplate.DisplayRequestAndResponseExceptionLogging(
+                        new HttpRequestException($"Auth request failed with {response.StatusCode}: {response.ErrorMessage}"));
+
+                    HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+                    return new AuthResult
+                    {
+                        IsSuccess = false,
+                        Response = response,
+                        Error = $"HTTP {(int)response.StatusCode} {response.StatusCode}: {response.ErrorMessage}"
+                    };
+                }
+
+                if (!string.IsNullOrWhiteSpace(response.Content))
+                {
+                    try
+                    {
+                        var envelope = JsonSerializer.Deserialize<TokenEnvelope>(response.Content!, AuthSerialization.CaseInsensitive);
+                        token = envelope?.GetAnyToken();
+                    }
+                    catch (JsonException jx)
+                    {
+                        DocumentTemplate.DisplayRequestAndResponseExceptionLogging(jx);
+                    }
+                }
+
+                HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+
+                return new AuthResult
+                {
+                    IsSuccess = true,
+                    Token = token,
+                    Response = response
+                };
+            }
+            catch (OperationCanceledException oce) when (cancellationToken.IsCancellationRequested)
+            {
+                DocumentTemplate.DisplayRequestAndResponseExceptionLogging(oce);
+                HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+
+                return new AuthResult
+                {
+                    IsSuccess = false,
+                    Error = "Operation was cancelled."
+                };
+            }
+            catch (TaskCanceledException tce)
+            {
+                DocumentTemplate.DisplayRequestAndResponseExceptionLogging(tce);
+                HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+
+                return new AuthResult
+                {
+                    IsSuccess = false,
+                    Error = "Request timed out or was cancelled."
+                };
+            }
+            catch (Exception ex)
+            {
+                DocumentTemplate.DisplayRequestAndResponseExceptionLogging(ex);
+                HttpLoggerHelpers.RequestAndResponseLogging(request, response, null, stopwatch);
+
+                return new AuthResult
+                {
+                    IsSuccess = false,
+                    Error = $"Exception occurred: {ex.Message}"
+                };
+            }
+            finally
+            {
+                if (stopwatch.IsRunning)
+                    stopwatch.Stop();
             }
         }
     }

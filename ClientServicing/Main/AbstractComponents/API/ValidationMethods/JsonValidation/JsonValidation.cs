@@ -4,8 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.JsonValidation;
+using ClientServicing.Main.Models.Policy;
+using ClientServicing.Main.Resources.Helper;
 using java.lang;
+using org.omg.CORBA.DynAnyPackage;
 using RestSharp;
+using static com.sun.net.httpserver.Authenticator;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation
 {
@@ -134,19 +138,34 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
 
                 if (rule.NestedSchema != null)
                 {
-                    if (prop.ValueKind != JsonValueKind.Object)
-                    {
-                        failures.Add(new ValidationFailure(
+                    switch (prop.ValueKind) {
+
+                        case JsonValueKind.Object:
+                            failures.AddRange(Validate(prop, rule.NestedSchema, propPath).Failures);
+                            break;
+
+                        case JsonValueKind.Array:
+                            int idx = 0;
+                            foreach (var item in prop.EnumerateArray()) {
+                                var itemPath = $"{propPath}[{idx}]";
+                                if (item.ValueKind != JsonValueKind.Object)
+                                {
+                                    failures.Add(new ValidationFailure(itemPath, "Array item not an object"));
+                                }
+                                else { 
+                                    failures.AddRange(Validate(item, rule.NestedSchema, itemPath).Failures);
+                                }
+                                idx++;
+                            }
+                            break;
+                        default: failures.Add(new ValidationFailure(
                             propPath,
-                            "Nested schema provided but value is not an object."));
-                    }
-                    else
-                    {
-                        failures.AddRange(Validate(prop, rule.NestedSchema, propPath).Failures);
+                            "Nested schema provided but value is not an object or array."));
+                            break;
+
                     }
                 }
             }
-
             return new ValidationResult(failures);
         }
     }
@@ -241,6 +260,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("data", JsonKinds.Of(primitiveKinds))
                 .Build();
         }
+
     }
 
     public static class PolicySchemas
@@ -288,11 +308,26 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         ///</summary>
         public static void ShouldMatchSchema(this RestResponse response, IJsonSchema schema)
         {
+            bool isValid = false;
+            var result = ValidateAgainst(response, schema);
+            if (!result.IsValid)
+            {
+                throw new InvalidOperationException(result.ToFailureMessage());
+            }          
+            isValid = result.IsValid;
+            DocumentTemplate.DisplayFieldAndValue("Validated: Response Should Match Schema ", isValid.ToString());
+        }
+        public static void Data_Should_Accept_Valid_Names_And_Types(this RestResponse response, IJsonSchema schema) {
+            bool isValid = false;
+
             var result = ValidateAgainst(response, schema);
             if (!result.IsValid)
             {
                 throw new InvalidOperationException(result.ToFailureMessage());
             }
+            isValid = result.IsValid;
+            Assert.That(result.IsValid, Is.True, result.ToFailureMessage());
+            DocumentTemplate.DisplayFieldAndValue("Validated: Data Should Accept Valid Names And Types ", isValid.ToString());
         }
         ///<summary>
         ///Method Name:
@@ -316,6 +351,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
     #endregion
 
     #region 5) Your Exact Schema (mirrors your original rules)
+    #region Policy    
     public static class ResponseSchemasEnvelope
     {
         public static JsonSchema DataFalseSchema =      ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
@@ -494,6 +530,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("benefitCover", JsonKinds.Of(JsonValueKind.Number));
         });
 
+        
         ///<summary>
         ///Method Name: 
         ///Description:
@@ -529,9 +566,33 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("avsrResult", JsonKinds.Of(JsonValueKind.Object))
                 .Build();
         }
+        public static JsonSchema GetUnmetPremiumResponseSchema() {
 
+            var totalUnmetPremiumResultItem = new JsonSchema.Builder()
+                .Property("numberOfMonths",     JsonKinds.Of(JsonValueKind.Number))
+                .Property("totalAmountMissed",  JsonKinds.Of(JsonValueKind.Number))
+                .Property("description",        JsonKinds.Of(JsonValueKind.String))
+                .Build();
+            var unmetPremiumSummaryItem = new JsonSchema.Builder()
+                .Property("policyNo",           JsonKinds.Of(JsonValueKind.Number))
+                .Property("legacy_Pol_No",      JsonKinds.Of(JsonValueKind.String))
+                .Property("month",              JsonKinds.Of(JsonValueKind.Number))
+                .Property("paymentDate",        JsonKinds.Of(JsonValueKind.String))
+                .Property("trackingDays",       JsonKinds.Of(JsonValueKind.Number))
+                .Property("paymentType",        JsonKinds.Of(JsonValueKind.String))
+                .Property("description",        JsonKinds.Of(JsonValueKind.String))
+                .Property("premiumAmount",      JsonKinds.Of(JsonValueKind.Number))
+                .Property("amountPaid",         JsonKinds.Of(JsonValueKind.Number))
+                .Build();
+            return ResponseSchemas.StandardEnvelopeAny(data =>
+            {
+                data.Property("totalUnmetPremiumResult",    JsonKinds.Of(JsonValueKind.Array), nested: totalUnmetPremiumResultItem)
+                    .Property("unmetPremiumSummary",   JsonKinds.Of(JsonValueKind.Array), nested: unmetPremiumSummaryItem);
+            });
+        }
 
     }
+    #endregion
     #endregion
 
     #region 6) Replace Your Method With This (Clean & Single Line)

@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.GSD;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.GSD;
 using ClientServicing.Main.Resources.Helper;
@@ -19,11 +20,11 @@ namespace ClientServicing.Test.Tests.API.TDD.GSD
         {
             //Arrange
             Guid newGuid = Guid.NewGuid();
-            AffordabilityEnquiryRequest? affordabilityEnquiryRequest = JsonSerializer.Deserialize
-                <AffordabilityEnquiryRequest>
+            AffordabilityEnquiryRequest? affordabilityEnquiryRequest = JsonSerializer.Deserialize<AffordabilityEnquiryRequest>
                 (utilitiesHelper.ReadTestDataJson("GSD/Data",
                 "AffordabilityEnquiryRequestPayloadIsValid.json"));
             affordabilityEnquiryRequest.requestId = newGuid.ToString();
+            var schema = ResponseSchemasEnvelope.AffordabilityEnquirySchema();
 
             //Act
             var response = await gsdAPIClient.AffordabilityEnquiryAsync(affordabilityEnquiryRequest);
@@ -32,9 +33,10 @@ namespace ClientServicing.Test.Tests.API.TDD.GSD
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
             ValidateAffordabilityEnquiryResponseIsNotNullOrEmpty(affordabilityEnquiryResponse);
-            ValidateResponseSchemaIsValid(response, "GSD/Schema", "AffordabilityEnquiryResponseSchema.json");
         }
         private AffordabilityEnquiryResponse populateAffordabilityEnquiryResponse(RestResponse response) { 
             var affordabilityEnquiryResponse = new AffordabilityEnquiryResponse();

@@ -22,11 +22,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         //[Ignore("API is still in development. Could not find stored procedure 'polmaspr.spGetUnmentPremium'.")]
         public async Task Given_GetUnmentPremiumRequestPayloadIsValid_When_GetUnmentPremiumAsync_Then_ValidateGetUnmentPremiumResponseIsOk()
         {
-            // Arrange
-            var schema = ResponseSchemasEnvelope.GetUnmetPremiumResponseSchema();
+            // Arrange           
             var policyNoRequest = JsonSerializer.Deserialize<PolicyNoRequest>(
                 utilitiesHelper.ReadTestDataJson("General/Data", "ListOfPolicyNo.json"));
-            int firstPolicyNo = policyNoRequest.policyNoList[0];           
+            int firstPolicyNo = policyNoRequest.policyNoList[0];
+            var schema = ResponseSchemasEnvelope.GetUnmetPremiumResponseSchema();
 
             // Act
             var response = await policyAPIClient.GetUnmentPremiumAsync(firstPolicyNo);

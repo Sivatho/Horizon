@@ -20,18 +20,19 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         UtilitiesHelper utilitiesHelper = new();
         [Test]
         //[Ignore("API is still in development. Could not find stored procedure 'polmaspr.spGetUnmentPremium'.")]
-        public async Task Given_GetUnmentPremiumRequestPayloadIsValid_When_GetUnmentPremiumAsync_Then_ValidateGetUnmentPremiumResponseIsOk()
+        public async Task Given_GetUnmentPremiumRequestPayloadIsValid_When_GetUnmentPremiumAsync_Then_ValidateGetUnmentPremiumResponseIsOk_And_DataIsNotNullOrEmpty_And_IsNotLessThanZero_And_DateTimeIsNotEqualToDefault()
         {
             // Arrange           
             var policyNoRequest = JsonSerializer.Deserialize<PolicyNoRequest>(
                 utilitiesHelper.ReadTestDataJson("General/Data", "ListOfPolicyNo.json"));
             int firstPolicyNo = policyNoRequest.policyNoList[0];
-            var schema = ResponseSchemasEnvelope.GetUnmetPremiumResponseSchema();
+            
 
             // Act
             var response = await policyAPIClient.GetUnmentPremiumAsync(firstPolicyNo);
             var getUnmentPremiumResponse = populateGetUnmentPremiumResponse(response);
-            
+            var schema = ResponseSchemasEnvelope.GetUnmetPremiumResponseSchema();
+
             // Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);

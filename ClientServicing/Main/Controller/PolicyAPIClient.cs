@@ -94,16 +94,26 @@ namespace ClientServicing.Main.Controller
             return response;
         }
 
-        public async Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync<T>(T payload) where T : class
+        public async Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync(int policyNo)
         {
-            // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckPolicyIfMainMemberOnly);
-            Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            Method method = Method.Get;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            IDictionary<string, string>? queryParams = null;
+            IDictionary<string, int>? urlSegment = new Dictionary<string, int>
+            {
+                ["policyNo"] = policyNo
+            };
+            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
                 url,
                 method,
-                payload,
-                out var stopwatch);
+                null,
+                out var stopwatch,
+                headers,
+                queryParams, urlSegment);
 
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);

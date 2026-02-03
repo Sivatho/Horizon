@@ -66,7 +66,7 @@ namespace ClientServicing.Main.Resources.Helper
                     request.AddUrlSegment(kv.Key, kv.Value);
             }
             // Only attach body for methods that support it
-            if (method is Method.Post or Method.Put or Method.Patch or Method.Delete)
+            if (method is Method.Post or Method.Put or Method.Patch or Method.Delete && payload != null)
             {
                 request.AddJsonBody(payload);
             }

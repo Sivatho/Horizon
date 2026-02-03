@@ -28,7 +28,7 @@ namespace ClientServicing.Main.IController
         public Task<RestResponse> CheckWaitingPeriodAsync<T>(T payload) where T : class;
         public Task<RestResponse> GetUnmentPremiumAsync(int policyNo);
         public Task<RestResponse> ProcessRefundAndBilcoCancellationAsync<T>(T payload) where T : class;
-        public Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync<T>(T payload) where T : class;
+        public Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync(int policyNo);
         public Task<RestResponse> GetPolicyProductLineAsync<T>(T payload) where T : class;
     }
 }

@@ -65,7 +65,6 @@ namespace ClientServicing.Main.Resources.Helper
         /// parameters and uses a dynamically constructed test name for clarity.
         /// </returns>
         /// </summary>
-
         public IEnumerable<TestCaseData> ReadJsonTestDataFields(string parentFolderName, string fileNameAndExt)
         {
             string jsonString = utilitiesHelper.ReadTestDataJson(parentFolderName, fileNameAndExt);

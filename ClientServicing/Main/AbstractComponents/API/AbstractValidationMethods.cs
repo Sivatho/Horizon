@@ -41,20 +41,7 @@ namespace ClientServicing.Main.AbstractComponents.API
             Assert.That(restResponse, Is.Not.Null, "Response Should Not Be Null");
             var actualStatusCode = restResponse.StatusCode;
             Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode), () => (string)BuildStatusFailureMessage(restResponse, expectedStatusCode, actualStatusCode));
-            DocumentTemplate.DisplayBody($"Validated: Response Status Code: {(int)actualStatusCode}; Status Description: '{actualStatusCode}' as expected.");            
-        }
-            var actualErrorMessage = restResponse?.Content ?? string.Empty;
-
-            Assert.That(
-                  actualErrorMessage,
-                  Is.EqualTo(expectedErrorMessage),
-                  "Response error message should match the expected value."
-              );
-
-
-            DocumentTemplate.DisplayBody(
-                   $"Validated: Response Error Message: {actualErrorMessage} matches Expected Error Message: {expectedErrorMessage}."
-               );
+            DocumentTemplate.DisplayBody($"Validated: Response Status Code {(int)actualStatusCode} '{actualStatusCode}': As Expected.");            
         }
         public void ValidateResponseHeadersAreValid(RestResponse restResponse)
         {
@@ -83,7 +70,7 @@ namespace ClientServicing.Main.AbstractComponents.API
                         }
                     });
                 });
-                TestContext.Out.WriteLine("Validated: Response Header Is Valid");
+                TestContext.Out.WriteLine("Validated: Response Header Should Be Valid And Data Should Match : True");
             }
         }
         public void ValidateResponseDataShouldAcceptValidNames_And_Types(RestResponse restResponse, JsonSchema jsonSchema)
@@ -95,6 +82,22 @@ namespace ClientServicing.Main.AbstractComponents.API
         {
             var schema = jsonSchema;
             restResponse.ShouldMatchSchema(schema);
+        }
+
+        public void ValidateErrorrMessage(RestResponse restResponse, string expectedErrorMessage)
+        {
+            var actualErrorMessage = restResponse?.Content ?? string.Empty;
+
+            Assert.That(
+                  actualErrorMessage,
+                  Is.EqualTo(expectedErrorMessage),
+                  "Response error message should match the expected value."
+              );
+
+
+            DocumentTemplate.DisplayBody(
+                   $"Validated: Response Error Message: {actualErrorMessage} matches Expected Error Message: {expectedErrorMessage}."
+               );
         }
 
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)

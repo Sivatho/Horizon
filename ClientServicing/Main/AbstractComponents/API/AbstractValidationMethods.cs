@@ -43,7 +43,6 @@ namespace ClientServicing.Main.AbstractComponents.API
             Assert.That(actualStatusCode, Is.EqualTo(expectedStatusCode), () => (string)BuildStatusFailureMessage(restResponse, expectedStatusCode, actualStatusCode));
             DocumentTemplate.DisplayBody($"Validated: Response Status Code: {(int)actualStatusCode}; Status Description: '{actualStatusCode}' as expected.");            
         }
-        public void ValidateErrorrMessage(RestResponse restResponse, string expectedErrorMessage) {
             var actualErrorMessage = restResponse?.Content ?? string.Empty;
 
             Assert.That(

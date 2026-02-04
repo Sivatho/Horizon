@@ -89,7 +89,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
         {
             using (Assert.EnterMultipleScope())
             {
-                Assert.That(getUnmentPremiumResponse.executionOutcome,                      Is.Not.Null.Or.Empty,   "Execution Model Properties must not be null");
+                Assert.That(getUnmentPremiumResponse.executionOutcome,                      Is.Not.Null.Or.Empty,   "Execution Model Properties Must Not Be Null");
                 Assert.That(getUnmentPremiumResponse.data,                                  Is.Not.Null.Or.Empty,   "Data Property Should Not Be Null or Empty");
                 Assert.That(getUnmentPremiumResponse.data.UnmetPremiumSummary.Count,        Is.GreaterThan(0),      "UnmetPremiumSummary Count Should Be Greater Than Zero");
                 Assert.That(getUnmentPremiumResponse.data.TotalUnmetPremiumResult.Count,    Is.GreaterThan(0),      "TotalUnmetPremiumResult Count Should Be Greater Than Zero");

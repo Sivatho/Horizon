@@ -35,7 +35,7 @@ namespace ClientServicing.Main.Resources.Helper
         /// and JSON body (when applicable), ready for execution.
         /// </returns>
         /// </summary>
-        public static RestRequest GetRequestDetails<T>(
+        public static RestRequest BuildRequest<T>(
         string url,
         Method method,
         T? payload,
@@ -76,6 +76,7 @@ namespace ClientServicing.Main.Resources.Helper
 
 
         /// <summary>
+        /// Name: ExecuteAsync
         /// Description:
         /// Executes a REST API request asynchronously while measuring execution time.
         /// This method centralizes request execution, logging, timing, and exception handling

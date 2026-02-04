@@ -35,7 +35,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.AdvancedPersonSearch);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -51,7 +51,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangeMainMemberUpsert);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -67,7 +67,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ChangePolicyDOC);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -83,7 +83,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckHasProduct);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -107,7 +107,7 @@ namespace ClientServicing.Main.Controller
             {
                 ["policyNo"] = policyNo
             };
-            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
                 url,
                 method,
                 null,
@@ -125,7 +125,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckRefundAvailability);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -141,7 +141,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckRestartEligibility);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -157,7 +157,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.CheckWaitingPeriod);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -173,7 +173,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.EntityInfoUpsert);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -193,7 +193,7 @@ namespace ClientServicing.Main.Controller
             {
                 { "Accept", "*/*" }
             };
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -210,7 +210,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenHospital);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -226,7 +226,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetBenefitCoverScreenWealth);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -242,7 +242,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetCustomerPolicyInfoByEntityNo);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -258,7 +258,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetMainMemChangeHistory);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -274,7 +274,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyAndMainMemberDetailsByPolicyNumber);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -290,7 +290,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPolicyProductLine);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -306,7 +306,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.GetPossibleMainMembers);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -330,7 +330,7 @@ namespace ClientServicing.Main.Controller
             {
                 ["PolicyNo"] = policyNo
             };
-            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
                 url,
                 method,
                 null,
@@ -348,7 +348,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.InsertPolicyNote);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -364,7 +364,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.PersonSearch);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -379,7 +379,7 @@ namespace ClientServicing.Main.Controller
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.Ping);
             Method method = Method.Get;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
                 url,
                 method,
                 null,
@@ -394,7 +394,7 @@ namespace ClientServicing.Main.Controller
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.PrePopulateEntityInfoByID);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -409,7 +409,7 @@ namespace ClientServicing.Main.Controller
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ProcessRefundAndBilcoCancellation);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -424,7 +424,7 @@ namespace ClientServicing.Main.Controller
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.SendInternalEmails);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -440,7 +440,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.StoreOTP);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -456,7 +456,7 @@ namespace ClientServicing.Main.Controller
             // Arrange            
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.VerifyAndUpdateOTP);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url, 
                 method,
                 payload,

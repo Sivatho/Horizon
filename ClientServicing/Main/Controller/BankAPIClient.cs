@@ -33,7 +33,7 @@ namespace ClientServicing.Main.Controller
              {
                  ["bankAccountId"] = bankAccountId
              };
-             var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+             var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
                  url,
                  method,
                  null,
@@ -51,7 +51,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = BankAPIEndPoints.GetEndPoint(EndPoints.FetchBank);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
@@ -71,7 +71,7 @@ namespace ClientServicing.Main.Controller
             {
                 ["policyNo"] = policyNo
             };
-            var request = ApiRequestAndResponseHelper.GetRequestDetails<object?>(
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
                 url,
                 method,
                 null,
@@ -148,7 +148,7 @@ namespace ClientServicing.Main.Controller
             // Arrange
             var url = BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccountQAVSR);
             Method method = Method.Post;
-            var request = ApiRequestAndResponseHelper.GetRequestDetails(
+            var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,

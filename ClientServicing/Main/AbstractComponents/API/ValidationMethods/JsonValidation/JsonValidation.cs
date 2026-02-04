@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.JsonValidation;
-using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
-using java.lang;
-using org.omg.CORBA.DynAnyPackage;
 using RestSharp;
-using static com.sun.net.httpserver.Authenticator;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation
 {
@@ -537,7 +529,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             item.Property("benefitID", JsonKinds.Of(JsonValueKind.Number))
                 .Property("benefitCover", JsonKinds.Of(JsonValueKind.Number));
         });
-
         
         ///<summary>
         ///Method Name: 

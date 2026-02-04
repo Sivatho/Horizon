@@ -1,4 +1,4 @@
-﻿namespace ClientServicing.Main.Models.Bank
+﻿namespace ClientServicing.Main.Models.General
 {
     public class PolicyIdentifierRequest
     {

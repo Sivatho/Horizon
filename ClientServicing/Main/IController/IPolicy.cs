@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using OpenQA.Selenium.DevTools.V140.DOM;
+using RestSharp;
 
 namespace ClientServicing.Main.IController
 {
@@ -30,5 +31,6 @@ namespace ClientServicing.Main.IController
         public Task<RestResponse> ProcessRefundAndBilcoCancellationAsync<T>(T payload) where T : class;
         public Task<RestResponse> CheckPolicyIfMainMemberOnlyAsync(int policyNo);
         public Task<RestResponse> GetPolicyProductLineAsync<T>(T payload) where T : class;
+        public Task<RestResponse> ReversePolicyStatusAsync<T>(T payload) where T : class;
     }
 }

@@ -29,7 +29,8 @@
             GetUnmentPremium,
             ProcessRefundAndBilcoCancellation,
             CheckPolicyIfMainMemberOnly,
-            GetPolicyProductLine
+            GetPolicyProductLine,
+            ReversePolicyStatus
         }
         public static string GetEndPoint(EndPoints endPoints)
         {
@@ -61,6 +62,7 @@
                 EndPoints.ProcessRefundAndBilcoCancellation             => "/api/Policy/ProcessRefundAndBilcoCancellation",
                 EndPoints.CheckPolicyIfMainMemberOnly                   => "/api/Policy/CheckPolicyIfMainMemberOnly/{policyNo}",
                 EndPoints.GetPolicyProductLine                          => "/api/Policy/GetPolicyProductLine",
+                EndPoints.ReversePolicyStatus                           => "/api/Policy/ReversePolicyStatus",
                 _ => throw new ArgumentOutOfRangeException(nameof(endPoints), endPoints, null)
             };
         }

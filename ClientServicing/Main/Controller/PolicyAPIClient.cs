@@ -420,6 +420,21 @@ namespace ClientServicing.Main.Controller
             return response;
         }
 
+        public async Task<RestResponse> ReversePolicyStatusAsync<T>(T payload) where T : class
+        {
+            var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.ReversePolicyStatus);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
+        }
+
         public async Task<RestResponse> SendInternalEmailsAsync<T>(T payload) where T : class
         {
             var url = PolicyAPIEndPoints.GetEndPoint(EndPoints.SendInternalEmails);

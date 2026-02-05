@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
-using javax.xml.crypto;
 
 namespace ClientServicing.Test.Tests.API.TDD.Policy
 {
@@ -25,7 +19,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             //Arrange
             var reversePolicyStatusRequest = JsonSerializer.Deserialize<ReversePolicyStatusRequest>(
                 utilitiesHelper.ReadTestDataJson("Policy/Data", "ReversePolicyStatusRequestPayloadIsValid.json"));
-            ValidationReversePolicyStatusRequest(reversePolicyStatusRequest);
+            ValidationReversePolicyStatusRequestIsNotNullOrEmptyAndIsNotLessThanZero(reversePolicyStatusRequest);
 
             //Act
             var response = await policyAPIClient.ReversePolicyStatusAsync(reversePolicyStatusRequest);
@@ -39,6 +33,26 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
             ValidationReversePolicyStatusResponseIsNotNullOrEmpty(reversePolicyStatusResponse);
+        }
+
+        [Test, Category("Negative")]
+        [Ignore("The response is incorrect as the status returned is incorrect and the response content is not formated correctly and policy number is not validated if it exists or not")]
+        public async Task Give_ReversePolicyStatusRequestPayloadIsValid_And_PolicyNoStatusIsInforce_When_ReversePolicyStatusAsync_Then_ValidationReversePolicyStatusRespone() {
+            //Arrange
+            var reversePolicyStatusRequest = JsonSerializer.Deserialize<ReversePolicyStatusRequest>(
+                utilitiesHelper.ReadTestDataJson("Policy/Data", "ReversePolicyStatusRequestPayloadIsValid.json"));
+            ValidationReversePolicyStatusRequestIsNotNullOrEmptyAndIsNotLessThanZero(reversePolicyStatusRequest);
+
+            //Act
+            var response = await policyAPIClient.ReversePolicyStatusAsync(reversePolicyStatusRequest);
+            var schema = ResponseSchemasEnvelope.DataBooleanSchema;
+
+            //Arrange
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.InternalServerError);
+            ValidateResponseHeadersAreValid(response);
+            //ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
+            //ValidateResponseShouldMatchSchema(response, schema);
         }
     }
 }

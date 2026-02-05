@@ -10,7 +10,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
     public class GetPolicyProductLineValidationMethods : AbstractValidationMethods, IGetPolicyProductLineValidationMethods
     {
         UtilitiesHelper utilitiesHelper = new();
-        public void ValidateGetPolicyProductLineRequestDataIsNotNullOrEmpty_NotLessThanZero(PolicyIdentifierRequest getPolicyProductLineRequest)
+        public void ValidateGetPolicyProductLineRequestDataIsNotNullOrEmpty_NotLessThanZero(PolicyNoAndLegacyPolicyNumberRequest getPolicyProductLineRequest)
         {
             using (Assert.EnterMultipleScope()) {
                 Assert.That(getPolicyProductLineRequest.policyNo, Is.Not.LessThan(0), "PolicyNo Should Not Be Less Than Zero");

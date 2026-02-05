@@ -10,7 +10,7 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Policy
 {
     public interface IGetPolicyProductLineValidationMethods
     {
-        public void ValidateGetPolicyProductLineRequestDataIsNotNullOrEmpty_NotLessThanZero(PolicyIdentifierRequest GetPolicyProductLineRequest);
+        public void ValidateGetPolicyProductLineRequestDataIsNotNullOrEmpty_NotLessThanZero(PolicyNoAndLegacyPolicyNumberRequest GetPolicyProductLineRequest);
         public void ValidateGetPolicyProductLineResponseDataIsNotNullOrEmpty_NotLessThanZero(GetPolicyProductLineResponse getPolicyProductLineResponse);
     }
 }

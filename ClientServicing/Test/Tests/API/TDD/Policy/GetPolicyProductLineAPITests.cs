@@ -22,7 +22,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         [Test, Category("Positive")]
         public async Task Given_GetPolicyProductLineRequestIsValid_When_GetPolicyProductLineAsync_Then_Then_ValidateGetPolicyProductLineResponseIsOk_And_DataIsNotNullOrEmpty_And_IsNotLessThanZero() {
             //Arrange
-            var getPolicyProductLineRequest = JsonSerializer.Deserialize<PolicyIdentifierRequest>(
+            var getPolicyProductLineRequest = JsonSerializer.Deserialize<PolicyNoAndLegacyPolicyNumberRequest>(
                 utilitiesHelper.ReadTestDataJson("Policy/Data", "GetPolicyAndMainMemberDetailsByPolicyNumberRequestPayload.json"));
             ValidateGetPolicyProductLineRequestDataIsNotNullOrEmpty_NotLessThanZero(getPolicyProductLineRequest);
 

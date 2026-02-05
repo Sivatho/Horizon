@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.Models.General;
+﻿using ClientServicing.Main.Models.General;
 
 namespace ClientServicing.Main.Models.Payer
 {
     public class GetPayerDetailsByPolicyNumberResponse
     {
         public ExecutionOutcome executionOutcome { get; set; }
-
+        public PayerDetailsByPolicyNumber data { get;set; }
     }
     public class PayerDetailsByPolicyNumber
     {
@@ -18,8 +13,9 @@ namespace ClientServicing.Main.Models.Payer
         public string? policyNumber { get; set; }
         public int? productCategory { get; set; }
         public int productCategoryId { get; set; }
-        public string? title { get; set; }
+        public string? employeeDepartmenttitle { get; set; }
         public int? titleCd { get; set; }
+        public string? title { get; set; }
         public string firstName { get; set; }
         public string surname { get; set; }
         public string initials { get; set; }

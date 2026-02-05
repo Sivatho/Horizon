@@ -1,7 +1,6 @@
 ﻿using System.Net;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Resources.Helper;
-using Newtonsoft.Json.Schema;
 using RestSharp;
 using JsonSchema = ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation.JsonSchema;
 

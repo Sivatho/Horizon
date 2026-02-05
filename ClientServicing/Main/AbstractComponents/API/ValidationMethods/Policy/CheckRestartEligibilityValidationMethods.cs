@@ -63,7 +63,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Policy
                             }
                         }
                         break;
-                    default: TestContext.Out.WriteLine($"Unknown property: {property.Name}"); break;
+                    default: DocumentTemplate.DisplayFieldAndValue("Unknown property:", property.Name); break;
                 }
             }
             return checkRestartEligibilityResponse;

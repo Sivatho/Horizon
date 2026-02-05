@@ -543,8 +543,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("productLineCD",          JsonKinds.Of(JsonValueKind.Number))
             .Property("productLineDescription", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
-        });
-        // Add inside: public static class ResponseSchemasEnvelope
+        });       
         public static JsonSchema PayerDetailsEnvelopeSchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
             data.Property("payerEntityNo",      JsonKinds.Of(JsonValueKind.Number))

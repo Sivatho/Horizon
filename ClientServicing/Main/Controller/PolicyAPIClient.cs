@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net.Security;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.IController;
-using ClientServicing.Main.Resources.EndPoints.Bank;
-using ClientServicing.Main.Resources.EndPoints.GSD;
+﻿using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;

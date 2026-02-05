@@ -1,6 +1,6 @@
 ﻿namespace ClientServicing.Main.Models.General
 {
-    public class PolicyIdentifierRequest
+    public class PolicyNoAndLegacyPolicyNumberRequest
     {
         public int policyNo { get; set; }
         public string? legacyPolicyNumber { get; set; }

@@ -1,0 +1,61 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "CheckStatusResponse",
+  "type": "object",
+  "properties": {
+    "success": {
+      "type": "boolean"
+    },
+    "didError": {
+      "type": "boolean"
+    },
+    "result": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "didError": {
+            "type": "boolean"
+          },
+          "message": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "data": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {}
+              },
+              {
+                "type": "object",
+                "additionalProperties": true
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "success",
+          "didError",
+          "message",
+          "data"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "success",
+    "didError",
+    "result"
+  ],
+  "additionalProperties": false
+}

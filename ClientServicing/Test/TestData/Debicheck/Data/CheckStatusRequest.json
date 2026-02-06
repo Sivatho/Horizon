@@ -1,5 +1,15 @@
-{
-  "policyNumber": "204801",
-
-  "sourceSystemId": 18
-}
+[
+  {
+    "policyNumber": "204801",
+    "identityNumber": "string",
+    "cellPhoneNumber": "string",
+    "accountNumber": "string",
+    "branchCode": "string",
+    "accountType": "string",
+    "bankName": "string",
+    "surnameOrCompanyName": "string",
+    "initials": "string",
+    "amount": 0,
+    "sourceSystemId": 18
+  }
+]

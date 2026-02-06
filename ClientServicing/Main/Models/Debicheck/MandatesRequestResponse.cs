@@ -1,12 +1,13 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using ClientServicing.Main.Models.General;
+using System.Collections.Generic;
 
-//namespace ClientServicing.Main.Models.Debicheck
-//{
-//    internal class CheckStatus
-//    {
-//    }
-//}
+namespace ClientServicing.Main.Models.Debicheck
+{
+    public class MandatesRequestResponse
+    {
+        public bool success { get; set; }
+        public bool? diderror { get; set; }
+        public ExecutionOutcome? responseMessage { get; set; }
+        public List<MandatesRequest>? result { get; set; }
+    }
+}

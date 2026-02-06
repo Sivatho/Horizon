@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using ClientServicing.Main.Models.Debicheck;
 using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
@@ -80,6 +81,21 @@ namespace ClientServicing.Main.AbstractComponents.API
             TestContext.Out.WriteLine("Validated: Response JsonSchema content matches the expected JSON schema and is valid.");
         }
         abstract public void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse);
+
+        public void ValidateMandateRequestResponseDataIsNotNullOrEmpty(MandatesRequestResponse mandaterequestresponse)
+        {
+            if (mandaterequestresponse == null)
+            {
+                throw new ArgumentNullException(nameof(mandaterequestresponse), "MandatesRequestResponse cannot be null.");
+            }
+
+            if (!mandaterequestresponse.success ||
+                mandaterequestresponse.diderror == null ||
+                mandaterequestresponse.result == null)
+            {
+                throw new ArgumentException("MandatesRequestResponse properties cannot be empty or null.", nameof(mandaterequestresponse));
+            }
+        }
 
     }
 }

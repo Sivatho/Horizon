@@ -1,45 +1,45 @@
 ﻿using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck;
+using ClientServicing.Main.Models.BenefitExtendedMember;
 using ClientServicing.Main.Models.Debicheck;
 using ClientServicing.Main.Models.Email;
+using ClientServicing.Main.Models.General;
+using ClientServicing.Main.Models.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using System.Text.Json;
+using System.Threading.Tasks;
+using ClientServicing.Main.Resources.EndPoints.Debicheck;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debicheck
 {
-    public class CheckStatusResponseValidationMethods :AbstractValidationMethods, ICheckStatusResponseValidationMethods
+    public class MandateRequestResponseValidationMethods : AbstractValidationMethods, IMandateRequestResponseValidationMethods
     {
         UtilitiesHelper UtilitiesHelper = new UtilitiesHelper();
 
         // Implemented: delegate to the main validator to avoid duplication
-        public void ValidateCheckStatusResponseDataIsNotNullOrEmpty(CheckStatusResponse checkStatusResponse)
+        public void ValidateCheckStatusRequesteDataIsNotNullOrEmpty(MandatesRequest mandaterequest)
         {
-            ValidateCheckStatusResponsePayload(checkStatusResponse);
+           throw new NotImplementedException();
         }
 
-        public void ValidatePolicyBenefitExtendedMemberResponseDataIsNotNullOrEmpty(CheckStatusRequest checkstatusrequest)
+        public void ValidatePMandatesRequestResponseDataIsNotNullOrEmpty(MandatesRequestResponse mandateresponse)
         {
-            throw new NotImplementedException();
-        }
-
-        // Main validator for CheckStatusResponse payloads
-        public void ValidatePolicyBenefitExtendedMemberResponseDataIsNotNullOrEmpty(CheckStatusResponse checkstatusresponse)
-        {
-            ValidateCheckStatusResponsePayload(checkstatusresponse);
-        }
-
-        private void ValidateCheckStatusResponsePayload(CheckStatusResponse checkstatusresponse)
-        {
+            
+     
             Assert.Multiple(() =>
             {
-                Assert.That(checkstatusresponse, Is.Not.Null, "CheckStatusResponse: response object should not be null");
+                Assert.That(mandateresponse, Is.Not.Null, "mandaterequestresponse: response object should not be null");
 
                 // message may be null in some payloads; ensure property exists (allow null)
-                Assert.That(checkstatusresponse.message, Is.Not.Null, "CheckStatusResponse: <message> should not be null (may be empty)");
+                Assert.That(mandateresponse.result, Is.Not.Null, "mandaterequestresponse: <message> should not be null (may be empty)");
 
                 // result must be present and contain at least one item
-                Assert.That(checkstatusresponse.result, Is.Not.Null, "CheckStatusResponse: <result> should not be null");
-                Assert.That(checkstatusresponse.result.Count, Is.GreaterThanOrEqualTo(1), "CheckStatusResponse: <result> should not be empty");
+                Assert.That(mandateresponse.result, Is.Not.Null, "mandaterequestresponse: <result> should not be null");
+                Assert.That(mandateresponse.result.Count, Is.GreaterThanOrEqualTo(1), "CheckStatusResponse: <result> should not be empty");
             });
         }
 
@@ -90,93 +90,57 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
             TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
         }
 
-        public CheckStatusResponse populatefetchCheckStatusResponse(RestResponse restResponse)
+        public MandatesRequestResponse populatefetchMandateRequestResponse(RestResponse restResponse)
         {
-            if (restResponse == null)
-                throw new ArgumentNullException(nameof(restResponse));
-
-            var content = restResponse.Content;
-            if (string.IsNullOrWhiteSpace(content))
+            using JsonDocument jsonDoc = JsonDocument.Parse(restResponse.Content);
+            var mandatesrequestresponse = new MandatesRequestResponse
             {
-                return new CheckStatusResponse
-                {
-                    success = false,
-                    message = "Empty response",
-                    result = new List<CheckStatusRequest>()
-                };
-            }
-
-            using JsonDocument JsonDoc = JsonDocument.Parse(content);
-            var response = new CheckStatusResponse
-            {
-                result = new List<CheckStatusRequest>()
+                responseMessage = new ExecutionOutcome()
             };
 
-            foreach (var property in JsonDoc.RootElement.EnumerateObject())
+            // Fix: EnumerateObject() gives JsonProperty, which has .Name and .Value
+            foreach (var property in jsonDoc.RootElement.EnumerateObject())
             {
                 switch (property.Name)
                 {
-                   
-                    case "success":
-                        response.success = UtilitiesHelper.ReadBooleanNullable(property.Value) ?? false;
-                        break;
+                    case "succeeded":
+                        mandatesrequestresponse.responseMessage.succeeded = (bool)UtilitiesHelper.ReadBooleanNullable(property.Value); break;
                     case "message":
-                        response.message = UtilitiesHelper.ReadStringNullable(property.Value) ?? string.Empty;
-                        break;
-                    case "result":
+                        mandatesrequestresponse.responseMessage.message = UtilitiesHelper.ReadStringNullable(property.Value); break;
+                    case "errors":
+                        mandatesrequestresponse.responseMessage.errors = UtilitiesHelper.ReadStringNullable(property.Value); break;
                     case "data":
-                        // Support either an array of items or a single object representing one item.
-                        if (property.Value.ValueKind == JsonValueKind.Array)
+                        var dataValue = property.Value.ValueKind;
+                        switch (dataValue)
                         {
-                            foreach (var item in property.Value.EnumerateArray())
-                            {
-                                if (item.ValueKind == JsonValueKind.Object)
-                                {
-                                    var req = MapJsonElementToCheckStatusRequest(item);
-                                    response.result.Add(req);
-                                }
-                            }
-                        }
-                        else if (property.Value.ValueKind == JsonValueKind.Object)
-                        {
-                            var obj = property.Value;
-
-                            // The object may contain an inner "data" array (per sample)
-                            if (obj.TryGetProperty("data", out var innerData) && innerData.ValueKind == JsonValueKind.Array)
-                            {
-                                foreach (var innerItem in innerData.EnumerateArray())
-                                {
-                                    if (innerItem.ValueKind == JsonValueKind.Object)
-                                    {
-                                        var req = MapJsonElementToCheckStatusRequest(innerItem);
-                                        response.result.Add(req);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                // Treat the object itself as a single data item
-                                var req = MapJsonElementToCheckStatusRequest(obj);
-                                response.result.Add(req);
-                            }
-                        }
-                        else if (property.Value.ValueKind == JsonValueKind.Null)
-                        {
-                            TestContext.Out.WriteLine("Result property is null.");
-                        }
-                        else
-                        {
-                            TestContext.Out.WriteLine($"Unexpected result ValueKind: {property.Value.ValueKind}");
+                            case JsonValueKind.Array:
+                                TestContext.Out.WriteLine("Data: data type is array");
+                                break;
                         }
                         break;
-                    default:
-                        TestContext.Out.WriteLine($"Unknown property: {property.Name}");
-                        break;
+                    default: TestContext.Out.WriteLine($"Unknown property: {property.Name}"); break;
                 }
             }
-            return response;
+            return mandatesrequestresponse;
         }
 
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ValidateMandateRequestResponseDataIsNotNullOrEmpty(MandatesRequestResponse mandaterequestresponse)
+        {
+            throw new NotImplementedException();
+        }
+    
+
+            
+
+
+
+
+          
         // Map a JSON object representing a data item into CheckStatusRequest
         private CheckStatusRequest MapJsonElementToCheckStatusRequest(JsonElement item)
         {
@@ -247,16 +211,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
             }
 
             return req;
-        }
-
-        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidatePolicyBenefitExtendedMemberResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse)
-        {
-            throw new NotImplementedException();
         }
     }
 }

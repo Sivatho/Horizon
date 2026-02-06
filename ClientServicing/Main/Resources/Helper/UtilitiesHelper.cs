@@ -24,8 +24,8 @@ namespace ClientServicing.Main.Resources.Helper
                 throw new FileNotFoundException($"File not found at path: {path}");
             }
 
-            string jsonString = File.ReadAllText(path);
-            return jsonString;
+            string jsonString = File.ReadAllText(path);     
+            return jsonString;      
         }
         public void LogRequestAndResponse(RestRequest restRequest, RestResponse response)
         {

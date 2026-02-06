@@ -25,7 +25,7 @@ namespace ClientServicing.Main.Controller
             };
             restClient = new RestClient(options);
         }
-        public async Task<RestResponse> DebicheckAPIClientAsync<T>(T payload) where T : class
+        public async Task<RestResponse> DebicheckCheckStatusAPIClientAsync<T>(T payload) where T : class
         {
             try
             {
@@ -57,6 +57,44 @@ namespace ClientServicing.Main.Controller
                     ErrorMessage = ex.Message
                 };
             }
+        }
+        public async Task<RestResponse> DebicheckMandateRequestAPIClientAsync<T>(T payload) where T : class
+        {
+            try
+            {
+                //Arrange
+                var request = new RestRequest(DebicheckAPIEndPoints.GetEndPoint(EndPoints.MandatesRequest), Method.Post);
+                request.AddJsonBody(payload);
+                request.AddHeader("Accept", "application/json");
+                //Act
+                var response = await restClient.ExecuteAsync(request);
+                utilitiesHelper.LogRequestAndResponse(request, response);
+                //Assert
+                if (!response.IsSuccessful)
+                {
+                    TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Response failed. Status:" +
+                        $" {response.StatusCode}," +
+                        $" {response.ErrorMessage}");
+                }
+                return response;
+            }
+            catch (Exception ex)
+            {
+                //Log Exception
+                TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Exception occurred: {ex.Message}");
+                TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Stack Trace: {ex.StackTrace}");
+                //Return a failed response
+                return new RestResponse
+                {
+                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
+                    ErrorMessage = ex.Message
+                };
+            }
+        }
+
+        internal async Task DebicheckMandateAPIClientAsync<T>(T mandaterequest)
+        {
+            throw new NotImplementedException();
         }
     }
 }

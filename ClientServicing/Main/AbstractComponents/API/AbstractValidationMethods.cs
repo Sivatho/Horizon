@@ -72,7 +72,7 @@ namespace ClientServicing.Main.AbstractComponents.API
                 TestContext.Out.WriteLine("Validated: Response Header Should Be Valid And Data Should Match : True");
             }
         }
-        public void ValidateResponseDataShouldAcceptValidNames_And_Types(RestResponse restResponse, JsonSchema jsonSchema)
+        public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse, JsonSchema jsonSchema)
         {
             var schema = jsonSchema;
             restResponse.Data_Should_Accept_Valid_Names_And_Types(schema);

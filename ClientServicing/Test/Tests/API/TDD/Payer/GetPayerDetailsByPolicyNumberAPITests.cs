@@ -29,7 +29,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Payer
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
-            ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
             ValidateGetPayerDetailsByPolicyNumberResponseIsNotNUllOrEmpt_And_IsNotLessThanZero_And_IsNotEqualToDefaultDateTime(getPayerDetailsByPolicyNumberResponse);
         }

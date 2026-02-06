@@ -21,7 +21,7 @@
     "paymentFreqCD": 0,
     "deductDay": 0,
     "firstDebitDate": "2026-02-05T10:32:24.905Z",
-    "paymentRefId": "NULL",
+    "paymentRefId": null,
     "bankAccTypeCD": 1,
     "bankId": 2,
     "bankName": "Nedbank Limited",

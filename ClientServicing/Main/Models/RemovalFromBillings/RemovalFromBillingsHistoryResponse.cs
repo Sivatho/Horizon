@@ -15,6 +15,7 @@ namespace ClientServicing.Main.Models.RemovalFromBillings
     public class RemovalFromBillingHistory {
         public int removeID { get; set; }
         public int policyNo { get; set; }
+        public int removeCD { get; set; }
         public DateTime removalDate { get; set; }
         public double premiumAmt { get; set; }
         public DateTime effDate { get; set; }

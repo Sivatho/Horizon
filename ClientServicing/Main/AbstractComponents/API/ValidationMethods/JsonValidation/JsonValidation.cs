@@ -604,7 +604,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("csdCompanyName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("csdCompanyCd",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
         });
-        public static JsonSchema RemovalFromBillingHistory = ResponseSchemas.StandardEnvelopeArray(item => {
+        public static JsonSchema RemovalFromBillingHistorySchema = ResponseSchemas.StandardEnvelopeArray(item => {
             item.Property("removeID",       JsonKinds.Of(JsonValueKind.Number))
                 .Property("policyNo",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
                 .Property("removeCD",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))

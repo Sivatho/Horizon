@@ -13,6 +13,7 @@ namespace ClientServicing.Test.Tests.API.TDD.RemovalFromBillings
     {
         RemovalFromBillingsAPIClient removalFromBillingsAPIClient = new();
         UtilitiesHelper utilitiesHelper = new();
+
         [Test]
         public async Task Given_CancelRemovalFromBillingsRequestPayloadIsValid_When_CancelRemovalFromBillingsAsync_Then_ValidateRespondeStatusIsOK_AND_ResponseDataIsNotNullOrEmpty() {
             //Arrange

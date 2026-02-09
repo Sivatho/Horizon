@@ -11,12 +11,12 @@ namespace ClientServicing.Test.Tests.API.TDD.RemovalFromBillings
     [TestFixture]
     public class RemoveFromBillingsAPITests : RemovalFromBillingsValidationMethods
     {
+        RemovalFromBillingsAPIClient removalFromBillingsAPIClient = new();
+        UtilitiesHelper utilitiesHelper = new();
+
         [Test]
         public async Task Given_CancelRemovalFromBillingsRequestPayloadIsValid_When_RemoveFromBillingsAsync_Then_ValidateRespondeStatusIsOK_AND_ResponseDataIsNotNullOrEmpty()
-        {
-            RemovalFromBillingsAPIClient removalFromBillingsAPIClient = new();
-            UtilitiesHelper utilitiesHelper = new();
-
+        {           
             //Arrange
             var request = JsonSerializer.Deserialize<RemovalFromBillingsRequest>(utilitiesHelper.ReadTestDataJson("RemovalFromBillings/Data", "RemovalFromBillingsRequestPayloadIsValid.json"));
             ValidateRemovalFromBillingsRequestIsNotNullOrEmpty_And_IntegerIsNotLessThanZero_And_DateTimeIsNotEqualToDefault(request);

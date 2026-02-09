@@ -23,7 +23,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.RemovalF
             DocumentTemplate.DisplayBody("RemovalFromBillingsRequest Is Not Null Or Empty And Integer Is Not Less Than Zero And DateTime Is Not Equal To Default");
         }
 
-        public void ValidateRemovalFromBillingsRespondeIsNotNullOrEmpty_And_IntegerIsNotLessThanZero_And_DateTimeIsNotEqualToDefault(RemovalFromBillingsHistoryResponse removalFromBillingsHistoryResponse)
+        public void ValidateRemovalFromBillingsHistoryRespondeIsNotNullOrEmpty_And_IntegerIsNotLessThanZero_And_DateTimeIsNotEqualToDefault(RemovalFromBillingsHistoryResponse removalFromBillingsHistoryResponse)
         {
             using (Assert.EnterMultipleScope())
             {
@@ -43,9 +43,18 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.RemovalF
                     Assert.That(item.s_Desc,        Is.Not.Null.Or.Empty,               "S_Desc Should Not Be Null Or Empty");
                     Assert.That(item.comments,      Is.Not.Null.Or.Empty,               "Comments Should Not Be Null Or Empty");
                     Assert.That(item.audModUser,    Is.Not.Null.Or.Empty,               "AudModUser Should Not Be Null Or Empty");
-                }
-                DocumentTemplate.DisplayBody("RemovalFromBillingsHistoryResponse Is Not Null Or Empty And Integer Is Not Less Than Zero And DateTime Is Not Equal To Default");
+                }                
             }
+            DocumentTemplate.DisplayBody("Validated: RemovalFromBillingsHistoryResponse: Is Not Null Or Empty And Integer Is Not Less Than Zero And DateTime Is Not Equal To Default");
+        }
+
+        public void ValidateRemovalFromBillingsResponseIsNotNullOrEmpty(ExecutionOutcomeAndDataBooleanResponse removalFromBillingsResponse)
+        {
+            using (Assert.EnterMultipleScope()) {
+                Assert.That(removalFromBillingsResponse.executionOutcome,   Is.Not.Null.Or.Empty, "ExecutionOutcome Should Not Be Null Or Empty");
+                Assert.That(removalFromBillingsResponse.data,               Is.Not.Null.Or.Empty, "Data Should Not Be Null Or Empty");
+            }
+            DocumentTemplate.DisplayBody("Validated: RemovalFromBillingsResponse: Is Not Null Or Empty"); 
         }
 
         public RemovalFromBillingsHistoryResponse populateRemovalFromBillingsHistoryResponse(RestResponse response) {
@@ -80,15 +89,37 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.RemovalF
                                     case "s_Desc":      removalFromBillingHistory.s_Desc =      utilitiesHelper.ReadStringNullable(item.Value); break;
                                     case "comments":    removalFromBillingHistory.comments =    utilitiesHelper.ReadStringNullable(item.Value); break;
                                     case "audModUser":  removalFromBillingHistory.audModUser =  utilitiesHelper.ReadStringNullable(item.Value); break;
+                                    default: DocumentTemplate.DisplayBody($"{item.Name} Property Item Does Not Exist"); break;
                                 }
                             }
                             items.Add(removalFromBillingHistory);
                         }
                         removalFromBillingsHistoryResponse.data = items.ToArray();
                         break;
+                    default: DocumentTemplate.DisplayBody($"{property.Name} Property Does Not Exist"); break;
                 }                
             }
             return removalFromBillingsHistoryResponse;
+        }
+        public ExecutionOutcomeAndDataBooleanResponse PopulateRemovalFromBillingsResponse(RestResponse response)
+        {
+            using JsonDocument jsDoc = JsonDocument.Parse(response.Content);
+            var removalFromBillingsResponse = new ExecutionOutcomeAndDataBooleanResponse
+            {
+                executionOutcome = new ExecutionOutcome()
+            };
+            foreach (var property in jsDoc.RootElement.EnumerateObject())
+            {
+                switch (property.Name)
+                {
+                    case "succeeded":   removalFromBillingsResponse.executionOutcome.succeeded =    (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
+                    case "message":     removalFromBillingsResponse.executionOutcome.message =      utilitiesHelper.ReadStringNullable(property.Value); break;
+                    case "errors":      removalFromBillingsResponse.executionOutcome.errors =       utilitiesHelper.ReadStringNullable(property.Value); break;
+                    case "data":        removalFromBillingsResponse.data =                          (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
+                    default: DocumentTemplate.DisplayBody($"{property.Name} Property Does Not Exist"); break;
+                }
+            }
+            return removalFromBillingsResponse;
         }
 
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
@@ -100,5 +131,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.RemovalF
         {
             throw new NotImplementedException();
         }
+
     }
 }

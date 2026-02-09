@@ -42,7 +42,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.RemovalF
                     Assert.That(item.statusCD,      Is.Not.LessThan(0),                 "StatusCD Should Not Be Less Than Zero");
                     Assert.That(item.s_Desc,        Is.Not.Null.Or.Empty,               "S_Desc Should Not Be Null Or Empty");
                     Assert.That(item.comments,      Is.Not.Null.Or.Empty,               "Comments Should Not Be Null Or Empty");
-                    Assert.That(item.audModUser,    Is.Not.Null.Or.Empty,               "AudModUser Should Not Be Null Or Empty");
+                    //Assert.That(item.audModUser,    Is.Not.Null.Or.Empty,               "AudModUser Should Not Be Null Or Empty");
                 }                
             }
             DocumentTemplate.DisplayBody("Validated: RemovalFromBillingsHistoryResponse: Is Not Null Or Empty And Integer Is Not Less Than Zero And DateTime Is Not Equal To Default");

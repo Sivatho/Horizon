@@ -22,7 +22,7 @@ namespace ClientServicing.Test.Tests.API.TDD.RemovalFromBillings
             //Act
             var response = await removalFromBillingsAPIClient.RemovalFromBillingsHistoryAsync(request);
             var removalFromBillingsHistoryResponse = populateRemovalFromBillingsHistoryResponse(response);
-            var schema = ResponseSchemasEnvelope.RemovalFromBillingHistory;
+            var schema = ResponseSchemasEnvelope.RemovalFromBillingHistorySchema;
 
             //Assert
             ValidationAssertionHeading();
@@ -30,7 +30,7 @@ namespace ClientServicing.Test.Tests.API.TDD.RemovalFromBillings
             ValidateResponseHeadersAreValid(response);
             ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
-            ValidateRemovalFromBillingsRespondeIsNotNullOrEmpty_And_IntegerIsNotLessThanZero_And_DateTimeIsNotEqualToDefault(removalFromBillingsHistoryResponse);
+            ValidateRemovalFromBillingsHistoryRespondeIsNotNullOrEmpty_And_IntegerIsNotLessThanZero_And_DateTimeIsNotEqualToDefault(removalFromBillingsHistoryResponse);
 
         }
     }

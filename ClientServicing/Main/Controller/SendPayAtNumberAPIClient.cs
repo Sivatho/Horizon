@@ -11,6 +11,16 @@ namespace ClientServicing.Main.Controller
         readonly RestClient restClient;
         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
+        public SendPayAtNumberAPIClient()
+        {
+            var options = new RestClientOptions()
+            {
+                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
+                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
+            };
+            restClient = new RestClient(options);
+        }
+
         public async Task<RestResponse> Send_Text_MessageAsync<T>(T payload) where T : class
         {
             // Arrange

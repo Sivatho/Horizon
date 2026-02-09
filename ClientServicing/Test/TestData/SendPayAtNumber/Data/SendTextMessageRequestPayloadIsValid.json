@@ -1,0 +1,17 @@
+{
+    "mobileTelephoneNumber": "0845026012",
+    "subAffiliateCode": "021",
+    "textMessageContent": "Test send text message",
+    "variables": [
+        {
+            "key": "Pay",
+            "value": "Now"
+        }
+    ],
+    "platform": "Test",
+    "brand": "Record",
+    "optionalReason": "Need Mula",
+    "optionalBusinessHoursOnly": true,
+    "optionalCostCode": "987",
+    "responseGuid": "e6cbc5a2-7948-40b9-a610-6df0f4437145"
+}

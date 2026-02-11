@@ -1,4 +1,5 @@
-﻿using ClientServicing.Main.IController;
+﻿using ClientServicing.Main.AbstractComponents.API.Base;
+using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.SendPayAtNumber;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
@@ -8,17 +9,13 @@ namespace ClientServicing.Main.Controller
 {
     public class SendPayAtNumberAPIClient : ISendPayAtNumber
     {
-        readonly RestClient restClient;
+        private readonly RestClient _restClient;
         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         public SendPayAtNumberAPIClient()
         {
-            var options = new RestClientOptions()
-            {
-                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-            };
-            restClient = new RestClient(options);
+            var restLibrary = new RestLibrary();
+            _restClient = restLibrary.restClient;
         }
 
         public async Task<RestResponse> SendTextMessageAsync<T>(T payload) where T : class
@@ -33,7 +30,7 @@ namespace ClientServicing.Main.Controller
                 out var stopwatch);
 
             // Act
-            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
             return response;
         }
     }

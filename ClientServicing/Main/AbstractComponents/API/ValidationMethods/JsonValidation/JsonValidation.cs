@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.JsonValidation;
 using ClientServicing.Main.Resources.Helper;
+using Newtonsoft.Json.Schema;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation
@@ -12,7 +13,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         public bool Required { get; }
         public ISet<JsonValueKind> AllowedKinds { get; }
         public IJsonSchema? NestedSchema { get; }
-
         public JsonRule(
             string propertyName,
             IEnumerable<JsonValueKind> allowedKinds,
@@ -29,18 +29,14 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
     {
         private readonly List<IJsonRule> _rules = new();
         public IReadOnlyList<IJsonRule> Rules => _rules;
-
         public JsonSchema(IEnumerable<IJsonRule> rules)
         {
             if (rules == null) throw new ArgumentNullException(nameof(rules));
             _rules.AddRange(rules);
         }
-
-        // Fluent builder for clean test readability
         public sealed class Builder
         {
             private readonly List<IJsonRule> _rules = new();
-
             public Builder Property(
                 string name,
                 IEnumerable<JsonValueKind> kinds,
@@ -50,13 +46,11 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 _rules.Add(new JsonRule(name, kinds, required, nested));
                 return this;
             }
-
             public Builder OptionalProperty(
                 string name,
                 IEnumerable<JsonValueKind> kinds,
                 IJsonSchema? nested = null)
                 => Property(name, kinds, nested, required: false);
-
             public JsonSchema Build() => new JsonSchema(_rules);
         }
     }
@@ -68,7 +62,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         };
         public static ISet<JsonValueKind> Of(params JsonValueKind[] kinds)
                 => new HashSet<JsonValueKind>(kinds ?? Array.Empty<JsonValueKind>());
-
     }
     #endregion
 
@@ -93,7 +86,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         {
             Failures = failures?.ToList() ?? new List<ValidationFailure>();
         }
-
         public string ToFailureMessage()
         {
             if (IsValid) return "Validation succeeded.";
@@ -184,7 +176,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             dataRules(dataBuilder);
             var dataSchema = dataBuilder.Build();
 
-
             return new JsonSchema.Builder()
                 .Property("succeeded", JsonKinds.Boolean)
                 .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
@@ -239,7 +230,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("data", JsonKinds.Of(JsonValueKind.Array), nested: itemSchema)
                 .Build();
         }
-
         ///<summary>
         ///Method Name: StandardEnvelopePrimitive
         ///Description:
@@ -258,9 +248,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("data", JsonKinds.Of(primitiveKinds))
                 .Build();
         }
-
     }
-
     public static class PolicySchemas
     {
         ///<summary>
@@ -277,7 +265,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("statusCD", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.Number))
                 .Property("statusDate", JsonKinds.Of(JsonValueKind.Null, JsonValueKind.String));
         });
-
         ///<summary>
         ///Method Name:StandardEnvelopeObject
         ///Description:
@@ -617,7 +604,20 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("csdCompanyName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("csdCompanyCd",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
         });
-
+        public static JsonSchema RemovalFromBillingHistorySchema = ResponseSchemas.StandardEnvelopeArray(item => {
+            item.Property("removeID",       JsonKinds.Of(JsonValueKind.Number))
+                .Property("policyNo",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("removeCD",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("removalDate",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("premiumAmt",     JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("effDate",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("endDate",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("months",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("statusCD",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("s_Desc",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("comments",       JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("audModUser",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        });
         ///<summary>
         ///Method Name: 
         ///Description:

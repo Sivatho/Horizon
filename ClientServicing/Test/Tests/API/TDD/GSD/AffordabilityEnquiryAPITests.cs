@@ -34,7 +34,7 @@ namespace ClientServicing.Test.Tests.API.TDD.GSD
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
-            ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
             ValidateAffordabilityEnquiryResponseIsNotNullOrEmpty(affordabilityEnquiryResponse);
         }

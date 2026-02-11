@@ -25,6 +25,7 @@ namespace ClientServicing.Test.Tests.API.TDD.PolicyDocument
             //Act 
             var response = await policyDocumentAPIClient.CheckPolicyDocumentExistAsync(request);
             var checkPolicyDocumentExistResponse = populateCheckPolicyDocumentExistResponse(response);
+            
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);

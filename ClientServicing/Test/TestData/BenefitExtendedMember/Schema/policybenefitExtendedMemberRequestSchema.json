@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Policy Benefit Extended Member Response",
+  "type": "object",
+  "properties": {
+    "succeeded": {
+      "type": "boolean",
+      "description": "Indicates whether the request succeeded."
+    },
+    "message": {
+      "type": [ "string", "null" ],
+      "description": "Optional informational message."
+    },
+    "errors": {
+      "type": [ "string", "null" ],
+      "description": "Optional error message or details."
+    },
+    "data": {
+      "type": [ "object", "null" ],
+      "properties": {
+        "totalPremium": {
+          "type": [ "number", "integer" ],
+          "description": "Total premium amount."
+        },
+        "benefitExtendedMemberResultItems": {
+          "type": "array",
+          "description": "List of benefit extended member result items.",
+          "items": {
+            "type": "object",
+            "properties": {
+              "benefit": { "type": "integer" },
+              "benefitTypeCd": { "type": "integer" },
+              "benefitDescr": { "type": [ "string", "null" ] },
+              "doc": {
+                "type": [ "string", "null" ],
+                "format": "date-time"
+              },
+              "premium": { "type": [ "number", "integer" ] },
+              "sumAssured": { "type": [ "string", "null" ] },
+              "titleDescr": { "type": [ "string", "null" ] },
+              "entityNo": { "type": "integer" },
+              "firstName": { "type": [ "string", "null" ] },
+              "surname": { "type": [ "string", "null" ] },
+              "genderCD": { "type": "integer" },
+              "genderDescr": { "type": [ "string", "null" ] },
+              "cellNumber": { "type": [ "string", "null" ] },
+              "roleCd": { "type": "integer" },
+              "roleDescr": { "type": [ "string", "null" ] },
+              "relationCd": { "type": [ "integer", "null" ] },
+              "relationDescr": { "type": [ "string", "null" ] },
+              "legalRefNoTypeCD": { "type": [ "integer", "null" ] },
+              "legalRefNoType": { "type": [ "string", "null" ] },
+              "idNumber": { "type": [ "string", "null" ] },
+              "citizenshipCd": { "type": [ "integer", "null" ] },
+              "citizenshipDescr": { "type": [ "string", "null" ] },
+              "coveredAmount": { "type": [ "number", "integer" ] },
+              "premiumAmount": { "type": [ "number", "integer" ] },
+              "waitingPeriod": { "type": [ "string", "null" ] },
+              "dob": {
+                "type": [ "string", "null" ],
+                "format": "date-time"
+              },
+              "statusCd": { "type": [ "integer", "null" ] },
+              "ofd": {
+                "type": [ "string", "null" ],
+                "format": "date-time"
+              },
+              "isCovered": { "type": [ "integer", "null" ] },
+              "isStudent": { "type": [ "integer", "null" ] },
+              "isFree": { "type": [ "integer", "null" ] },
+              "status": { "type": [ "string", "null" ] },
+              "fullName": { "type": [ "string", "null" ] },
+              "idNumberMasked": { "type": [ "string", "null" ] },
+              "titleCD": { "type": [ "integer", "null" ] }
+            },
+            "required": [
+              "benefit",
+              "benefitTypeCd",
+              "entityNo",
+              "firstName",
+              "surname",
+              "genderCD",
+              "roleCd",
+              "idNumber"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [ "totalPremium", "benefitExtendedMemberResultItems" ],
+      "additionalProperties": false
+    }
+  },
+  "required": [ "succeeded", "message", "errors", "data" ],
+  "additionalProperties": false
+}

@@ -36,7 +36,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         }
 
         [Test, Category("Negative")]
-        [Ignore("The response is incorrect as the status returned is incorrect and the response content is not formated correctly and policy number is not validated if it exists or not")]
+        [Ignore("The response is incorrect as the status returned is incorrect and the response content is not formated correctly, policy number is not validated if it exists or not")]
         public async Task Give_ReversePolicyStatusRequestPayloadIsValid_And_PolicyNoStatusIsInforce_When_ReversePolicyStatusAsync_Then_ValidationReversePolicyStatusRespone() {
             //Arrange
             var reversePolicyStatusRequest = JsonSerializer.Deserialize<ReversePolicyStatusRequest>(

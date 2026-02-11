@@ -15,7 +15,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         UtilitiesHelper utilitiesHelper = new();
 
         [Test, Category("Positive")]
-        public async Task Given_ReversePolicyStatusRequestPayloadIsValid_When_ReversePolicyStatusAsync_Then_ValidationReversePolicyStatusResponseOK_And_HeadersAreValid_And_ShouldAcceptValidNamesAndTypes_And_ShouldMatchSchema_And_IsNotNullOrEmpty() {
+         public async Task Given_ReversePolicyStatusRequestPayloadIsValid_When_ReversePolicyStatusAsync_Then_ValidationReversePolicyStatusResponseOK_And_HeadersAreValid_And_ShouldAcceptValidNamesAndTypes_And_ShouldMatchSchema_And_IsNotNullOrEmpty() {
             //Arrange
             var reversePolicyStatusRequest = JsonSerializer.Deserialize<ReversePolicyStatusRequest>(
                 utilitiesHelper.ReadTestDataJson("Policy/Data", "ReversePolicyStatusRequestPayloadIsValid.json"));

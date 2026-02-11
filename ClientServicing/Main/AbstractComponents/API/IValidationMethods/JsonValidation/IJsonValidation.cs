@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
-using Newtonsoft.Json.Schema;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.JsonValidation
 {

@@ -24,10 +24,7 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             //Act
             var response = await sendPayAtNumberAPIClient.SendTextMessageAsync(request);
             var schema = ResponseSchemasEnvelope.BooleanResponse;
-            //var responseBody = response.Content;
 
-            //JsonNode json = JsonNode.Parse(responseBody);
-            //var reult = schema.Validate(json);
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);

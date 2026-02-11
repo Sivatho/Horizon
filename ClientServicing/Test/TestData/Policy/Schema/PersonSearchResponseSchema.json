@@ -1,0 +1,119 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Policy Status Response",
+    "type": "object",
+    "properties": {
+        "succeeded": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": [ "string", "null" ]
+        },
+        "errors": {
+            "type": [ "string", "null" ]
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "entityID": { "type": "integer" },
+                    "ifaNo": { "type": [ "string", "null" ] },
+                    "entityNo": { "type": "integer" },
+                    "entityName": { "type": "string" },
+                    "entitySurname": { "type": "string" },
+                    "entityDOB": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "legalRefNo": { "type": "string" },
+                    "legalRefNoType": { "type": "string" },
+                    "citizenshipCD": { "type": "integer" },
+                    "alpha3Code": { "type": "string" },
+                    "citizenship": { "type": "string" },
+                    "emailAddress": { "type": [ "string", "null" ] },
+                    "cellphoneNumber": { "type": "string" },
+                    "physicalAddress1": { "type": "string" },
+                    "legacyPolicyNo": { "type": "string" },
+                    "policyNo": { "type": "integer" },
+                    "roleCd": { "type": "integer" },
+                    "status": { "type": "string" },
+                    "statusCD": { "type": "integer" },
+                    "planTypeDescr": { "type": "string" },
+                    "statusDate": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "dateOfCommencement": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "premiumAmt": { "type": "number" },
+                    "salesPerson": { "type": "string" },
+                    "rewardStatus": { "type": "string" },
+                    "debiCheckStatus": { "type": "string" },
+                    "agency": { "type": "string" },
+                    "payor": { "type": "string" },
+                    "payorLegalReferenceNumber": { "type": "string" },
+                    "payorCellphoneNumber": { "type": "string" },
+                    "payorEmailAddress": { "type": [ "string", "null" ] },
+                    "beneficiaryName": { "type": "string" },
+                    "paymentTypeCD": { "type": "integer" },
+                    "inspiratorNo": { "type": "string" },
+                    "region": { "type": "string" },
+                    "partnerCD": { "type": "integer" },
+                    "partnerCode": { "type": "string" },
+                    "schemeCD": { "type": "integer" },
+                    "schemeDesc": { "type": "string" },
+                    "planCD": { "type": "integer" },
+                    "planDesc": { "type": "string" },
+                    "channelCD": { "type": [ "integer", "null" ] },
+                    "channelDesc": { "type": [ "string", "null" ] },
+                    "entityFullname": { "type": "string" }
+                },
+                "required": [
+                    "entityID",
+                    "entityNo",
+                    "entityName",
+                    "entitySurname",
+                    "entityDOB",
+                    "legalRefNo",
+                    "legalRefNoType",
+                    "citizenshipCD",
+                    "alpha3Code",
+                    "citizenship",
+                    "cellphoneNumber",
+                    "physicalAddress1",
+                    "legacyPolicyNo",
+                    "policyNo",
+                    "roleCd",
+                    "status",
+                    "statusCD",
+                    "planTypeDescr",
+                    "statusDate",
+                    "dateOfCommencement",
+                    "premiumAmt",
+                    "salesPerson",
+                    "rewardStatus",
+                    "debiCheckStatus",
+                    "agency",
+                    "payor",
+                    "payorLegalReferenceNumber",
+                    "payorCellphoneNumber",
+                    "beneficiaryName",
+                    "paymentTypeCD",
+                    "inspiratorNo",
+                    "region",
+                    "partnerCD",
+                    "partnerCode",
+                    "schemeCD",
+                    "schemeDesc",
+                    "planCD",
+                    "planDesc",
+                    "entityFullname"
+                ]
+            }
+        }
+    },
+    "required": [ "succeeded", "data" ]
+}

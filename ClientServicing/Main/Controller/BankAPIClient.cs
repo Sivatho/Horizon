@@ -1,5 +1,6 @@
 ﻿using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.Bank;
+using ClientServicing.Main.Resources.EndPoints.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 using static ClientServicing.Main.Resources.EndPoints.Bank.BankAPIEndPoints;
@@ -24,103 +25,65 @@ namespace ClientServicing.Main.Controller
 
         public async Task<RestResponse> CanChangeBankAccountAsync(int bankAccountId)
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.CanChangeBankAccount), Method.Get);
-                request.AddUrlSegment("bankAccountId", bankAccountId);
-                
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
+            //Arrange
+            var url = BankAPIEndPoints.GetEndPoint(EndPoints.CanChangeBankAccount);
+             Method method = Method.Get;
+             IDictionary<string, string>? headers = null;
+             IDictionary<string, int>? urlSegment = new Dictionary<string, int>
+             {
+                 ["bankAccountId"] = bankAccountId
+             };
+             var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
+                 url,
+                 method,
+                 null,
+                 out var stopwatch,
+                 null,
+                 null,
+                 urlSegment);
 
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"CanChangeBankAccount > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+             // Act
+             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+             return response;
         }
-
-        public void Dispose()
-        {
-            restClient?.Dispose();
-            GC.SuppressFinalize(this);
-        }
-
         public async Task<RestResponse> FetchBanksAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.FetchBank),Method.Post);
-                request.AddJsonBody(payload);
-                
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"FetchBank > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tFetchBank > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tFetchBank > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }
+            // Arrange
+            var url = BankAPIEndPoints.GetEndPoint(EndPoints.FetchBank);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
+        }
         public async Task<RestResponse> GetBankingDetailHistoryAsync(int policyNo)
         {
-            try
+            //Arrange
+            var url = BankAPIEndPoints.GetEndPoint(EndPoints.GetBankingDetailHistory);
+            Method method = Method.Get;
+            IDictionary<string, string>? headers = null;
+            IDictionary<string, int>? urlSegment = new Dictionary<string, int>
             {
-                //Arrange
-                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.GetBankingDetailHistory), Method.Get);
-                request.AddUrlSegment("policyNo", policyNo);            
-                
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
+                ["policyNo"] = policyNo
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
+                url,
+                method,
+                null,
+                out var stopwatch,
+                null,
+                null,
+                urlSegment);
 
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"GetBankingDetailHistory > Response failed. Status: {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            } 
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tGetBankingDetailHistory > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tGetBankingDetailHistory > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> ValidateAccountNumberUsageLimitAsync(string accountNumber)
         {
             try
@@ -152,18 +115,17 @@ namespace ClientServicing.Main.Controller
                 };
             }
         }
-
         public async Task<RestResponse> ValidateBankAccountAsync<T>(T payload) where T : class
         {
             try {
-                //Arrange
+                // Arrange
                 var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccount),Method.Post);
                 request.AddJsonBody(payload);
                 //Act
                 var response = await restClient.ExecuteAsync(request);
                 utilitiesHelper.LogRequestAndResponse(request, response);
 
-                //Assert
+                // Assert
                 if (!response.IsSuccessful) {
                     TestContext.Out.WriteLine($"ValidateBankAccount > Response failed. Status:" +
                         $" {response.StatusCode}," +
@@ -181,38 +143,26 @@ namespace ClientServicing.Main.Controller
                 };
             }
         }
-
         public async Task<RestResponse> ValidateBankAccountQAVSRAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccountQAVSR), Method.Post);
-                request.AddJsonBody(payload);
+            // Arrange
+            var url = BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccountQAVSR);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"ValidateBankAccountQAVSR > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"\tValidateBankAccountQAVSR > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tValidateBankAccountQAVSR > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-            throw new NotImplementedException();
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
+        public void Dispose()
+        {
+            restClient?.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
     }
 }

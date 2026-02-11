@@ -80,7 +80,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 );
 
             });
-            TestContext.Out.WriteLine("Response: Message and Data are not null or empty as expected.");
+            TestContext.Out.WriteLine("FetchBanksResponse: data is not null or empty or is greater or equal to zero as expected.");
         }
 
         public FetchBanksResponse populateFetchBanksResponse(RestResponse response)

@@ -30,6 +30,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidatePersonSearchResponseDataIsNotNullOrEmpty(personSearchDetails);
+            ValidateResponseSchemaIsValid(response, "Policy/Schema", "PersonSearchResponseSchema.json");
         }
         private PersonSearchResponse populatePersonSearch(RestResponse response)
         {

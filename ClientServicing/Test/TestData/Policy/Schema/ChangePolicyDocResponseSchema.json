@@ -1,0 +1,89 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Change Policy Doc Response Schema",
+    "type": "object",
+    "properties": {
+        "succeeded": {
+            "type": "boolean"
+        },
+        "message": {
+            "type": [ "string", "null" ]
+        },
+        "errors": {
+            "type": [ "array", "null" ],
+            "items": {}
+        },
+        "data": {
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "policy_History_ID": { "type": "integer" },
+                    "policy_NO": { "type": "integer" },
+                    "parentPolicyNO": { "type": [ "integer", "null" ] },
+                    "date_of_Commencement": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "plan_CD": { "type": "integer" },
+                    "status_CD": { "type": "integer" },
+                    "status_Date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "eff_From": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "eff_To": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "exp_Date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "deduct_Day": { "type": [ "integer", "null" ] },
+                    "bankAccountID": { "type": [ "integer", "null" ] },
+                    "paymentTypeCD": { "type": "integer" },
+                    "paymentFreqCD": { "type": [ "integer", "null" ] },
+                    "payAtNo": { "type": [ "string", "null" ] },
+                    "aud_Create_User": { "type": "string" },
+                    "aud_Create_Date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "aud_Mod_User": { "type": "string" },
+                    "aud_Mod_Date": {
+                        "type": "string",
+                        "format": "date-time"
+                    },
+                    "earlyTracking": { "type": "boolean" }
+                },
+                "required": [
+                    "policy_History_ID",
+                    "policy_NO",
+                    "date_of_Commencement",
+                    "plan_CD",
+                    "status_CD",
+                    "status_Date",
+                    "eff_From",
+                    "eff_To",
+                    "exp_Date",
+                    "paymentTypeCD",
+                    "aud_Create_User",
+                    "aud_Create_Date",
+                    "aud_Mod_User",
+                    "aud_Mod_Date",
+                    "earlyTracking"
+                ]
+            }
+        }
+    },
+    "required": [
+        "succeeded",
+        "message",
+        "errors",
+        "data"
+    ]
+}

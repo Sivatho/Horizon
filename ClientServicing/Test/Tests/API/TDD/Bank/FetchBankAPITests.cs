@@ -14,8 +14,8 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
     {
         BankAPIClient bankAPIClient = new();
         UtilitiesHelper utilitiesHelper = new();
-        public static IEnumerable<FetchBanksRequest> fetchBankRequestEachTestDataObject = new JsonDataLoader().LoadJsonDataObjects<FetchBanksRequest>("Bank/Data", "AvailableBanks.json");
-        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().LoadJsonDataFields("Bank/Data", "BankDetailsAreNotNull.json");
+        public static IEnumerable<FetchBanksRequest> fetchBankRequestEachTestDataObject = new JsonDataLoader().ReadJsonTestDataList<FetchBanksRequest>("Bank/Data", "AvailableBanks.json");
+        public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().ReadJsonTestDataFields("Bank/Data", "BankDetailsAreNotNull.json");
 
         [Test, Category("Positive")]
         public async Task Given_BankDetailsAreNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
@@ -80,13 +80,13 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             var fetchBankRequest = new FetchBanksRequest();
             switch (fieldName)
             {
-                case "bankID":          fetchBankRequest.bankID = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
-                case "bankName":        fetchBankRequest.bankName = fieldValue != null ? fieldValue.ToString() : null; break;
-                case "bankShortName":   fetchBankRequest.bankShortName = fieldValue != null ? fieldValue.ToString() : null; break;
-                case "dispSeq":         fetchBankRequest.dispSeq = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
-                case "isActive":        fetchBankRequest.isActive = fieldValue != null ? Convert.ToBoolean(fieldValue.ToString()) : null; break;
-                case "lastChanged":     fetchBankRequest.lastChanged = fieldValue != null ? Convert.ToDateTime(fieldValue.ToString()) : null; break;
-                case "userID":          fetchBankRequest.userID = fieldValue != null ? fieldValue.ToString() : null; break;
+                case "bankID":          fetchBankRequest.bankID         = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
+                case "bankName":        fetchBankRequest.bankName       = fieldValue != null ? fieldValue.ToString() : null; break;
+                case "bankShortName":   fetchBankRequest.bankShortName  = fieldValue != null ? fieldValue.ToString() : null; break;
+                case "dispSeq":         fetchBankRequest.dispSeq        = fieldValue != null ? Convert.ToInt32(fieldValue.ToString()) : null; break;
+                case "isActive":        fetchBankRequest.isActive       = fieldValue != null ? Convert.ToBoolean(fieldValue.ToString()) : null; break;
+                case "lastChanged":     fetchBankRequest.lastChanged    = fieldValue != null ? Convert.ToDateTime(fieldValue.ToString()) : null; break;
+                case "userID":          fetchBankRequest.userID         = fieldValue != null ? fieldValue.ToString() : null; break;
                 default: TestContext.Out.WriteLine($"Unkown property: {fieldName}"); break;
             }
             //Act
@@ -99,7 +99,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
             ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
-            
         }
     }
 }

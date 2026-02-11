@@ -26,8 +26,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             var request = await policyAPIClient.GetBenefitCoverScreenWealthAsync (getBenefitCoverScreenWealthRequest);
             //var  getBenefitCoverScreenWealthResponse = populateGetBenefitCoverScreenWealthResponse(response);
             
-            // Assert
-           
+            // Assert           
             /*
             ValidationAssertionHeading();
             ValidateResponseStatusCodeOK(response);

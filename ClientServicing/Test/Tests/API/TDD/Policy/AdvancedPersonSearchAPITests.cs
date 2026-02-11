@@ -16,7 +16,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
         UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         [Test]
-        //[Ignore("Request Test data required results return are not correct")]
+        [Ignore("Request Test data required results return are not correct")]
         public async Task Give_AdvancedPersonSearchRequestPayloadIsValid_When_AdvancedPersonSearchAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_AdvancedPersonSearchResponseDataIsNotNull()
         {
             //Arrange

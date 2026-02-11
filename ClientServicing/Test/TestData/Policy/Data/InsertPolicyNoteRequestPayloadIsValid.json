@@ -1,0 +1,11 @@
+{
+    "testYN": "string",
+    "noteId": 0,
+    "levelCd": 0,
+    "policyNo": 0,
+    "benefitId": 0,
+    "entityNo": 0,
+    "noteText": "string",
+    "effDate": "2026-02-02T20:22:34.925Z",
+    "expDate": "2026-02-02T20:22:34.925Z"
+}

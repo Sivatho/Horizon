@@ -11,7 +11,7 @@ namespace ClientServicing.Main.Models.SendPayAtNumber
         public string? mobileTelephoneNumber { get; set; }
         public string? subAffiliateCode { get; set; }
         public string? textMessageContent { get; set; }
-        public VariableDto<string, string>? variables { get; set; }
+        public VariableDto<string, string>[]? variables { get; set; }
         public string? platform { get; set; }
         public string? brand { get; set; }
         public string? optionalReason { get; set; }

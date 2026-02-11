@@ -21,7 +21,7 @@ namespace ClientServicing.Main.Controller
             restClient = new RestClient(options);
         }
 
-        public async Task<RestResponse> Send_Text_MessageAsync<T>(T payload) where T : class
+        public async Task<RestResponse> SendTextMessageAsync<T>(T payload) where T : class
         {
             // Arrange
             var url = SendPayAtNumberAPIEndPoints.GetEndPoint(EndPoints.send_text_message);

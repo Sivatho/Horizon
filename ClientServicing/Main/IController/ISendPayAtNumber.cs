@@ -9,6 +9,6 @@ namespace ClientServicing.Main.IController
 {
     public interface ISendPayAtNumber
     {
-        Task<RestResponse> Send_Text_MessageAsync<T>(T payload) where T : class;
+        Task<RestResponse> SendTextMessageAsync<T>(T payload) where T : class;
     }
 }

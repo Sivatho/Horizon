@@ -1,9 +1,4 @@
-﻿using ClientServicing.Test.Tests.API.TDD;
-using ClientServicing.Test.Tests.API.TDD.Bank;
-using NBomber.Contracts.Stats;
-using NBomber.CSharp;
-
-namespace ClientServicing.Test.Tests.Performance.TDD.Bank
+﻿namespace ClientServicing.Test.Tests.Performance.TDD.Bank
 {
     
     public class FetchBankPerformanceTest

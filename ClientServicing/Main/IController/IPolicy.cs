@@ -1,5 +1,4 @@
-﻿using OpenQA.Selenium.DevTools.V140.DOM;
-using RestSharp;
+﻿using RestSharp;
 
 namespace ClientServicing.Main.IController
 {

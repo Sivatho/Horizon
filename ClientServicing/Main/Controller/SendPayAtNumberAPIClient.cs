@@ -12,10 +12,9 @@ namespace ClientServicing.Main.Controller
         private readonly RestClient _restClient;
         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
-        public SendPayAtNumberAPIClient()
+        public SendPayAtNumberAPIClient(IRestLibrary sharedRestLibrary)
         {
-            var restLibrary = new RestLibrary();
-            _restClient = restLibrary.restClient;
+            _restClient = sharedRestLibrary.RestClient;
         }
 
         public async Task<RestResponse> SendTextMessageAsync<T>(T payload) where T : class

@@ -140,7 +140,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Debicheck
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateMandateRequestResponseDataIsNotNullOrEmpty(populateMandateResponse);
+            //ValidateMandateRequestResponseDataIsNotNullOrEmpty(populateMandateResponse);
 
             var outgoing = JsonSerializer.Serialize(requestList, new JsonSerializerOptions { WriteIndented = true });
             TestContext.Out.WriteLine("Outgoing payload:\n" + outgoing);

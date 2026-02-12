@@ -4,7 +4,7 @@ namespace ClientServicing.Test.Tests.API
 {
 
 
-    // <summary>
+    /// <summary>
     /// Method Name: GlobalRestLibrarySetup
     /// Description:
     ///     Provides a single, shared instance of RestLibrary for all tests

@@ -12,8 +12,15 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
     [TestFixture]
     public class SendTextMessagAPITests : SendTextMesageValidationMethods
     {
-        SendPayAtNumberAPIClient sendPayAtNumberAPIClient = new();
+        SendPayAtNumberAPIClient sendPayAtNumberAPIClient;
         UtilitiesHelper utilitiesHelper = new();
+        
+        [SetUp]
+        public void SetUp()
+        {
+            sendPayAtNumberAPIClient = new SendPayAtNumberAPIClient(GlobalRestLibrarySetup.SharedRestLibrary);
+        }      
+        
 
         [Test]
         public async Task Given_When_SendTextMessageAsync_Then() {

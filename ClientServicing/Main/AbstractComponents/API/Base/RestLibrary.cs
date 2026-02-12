@@ -8,7 +8,7 @@ using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.Base
 {
-    public class RestLibrary
+    public class RestLibrary : IRestLibrary
     {        
         protected UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
         public RestLibrary()
@@ -18,8 +18,8 @@ namespace ClientServicing.Main.AbstractComponents.API.Base
                 BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
-            restClient = new RestClient(options);
+            RestClient = new RestClient(options);
         }
-        public RestClient restClient { get; }
+        public RestClient RestClient { get; }
     }
 }

@@ -1,25 +1,31 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.Resources.Helper;
+﻿using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
 namespace ClientServicing.Main.AbstractComponents.API.Base
 {
-    public class RestLibrary : IRestLibrary
-    {        
-        protected UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+
+    public class RestLibrary : IRestLibrary, IDisposable
+    {
+        private readonly UtilitiesHelper _utilitiesHelper = new UtilitiesHelper();
+
+        // Expose a fully initialized client
+        public RestClient RestClient { get; }
+
         public RestLibrary()
         {
-            var options = new RestClientOptions()
+            var options = new RestClientOptions
             {
-                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
+                BaseUrl = new Uri(_utilitiesHelper.GetApiBaseUrl()),
                 RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
             };
+
             RestClient = new RestClient(options);
         }
-        public RestClient RestClient { get; }
+
+        public void Dispose()
+        {
+            RestClient?.Dispose();
+        }
     }
+
 }

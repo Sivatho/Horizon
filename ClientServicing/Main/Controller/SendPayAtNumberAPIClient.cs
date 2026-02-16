@@ -14,7 +14,7 @@ namespace ClientServicing.Main.Controller
 
         public SendPayAtNumberAPIClient(IRestLibrary sharedRestLibrary)
         {
-            _restClient = sharedRestLibrary.RestClient;
+            _restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
         }
 
         public async Task<RestResponse> SendTextMessageAsync<T>(T payload) where T : class

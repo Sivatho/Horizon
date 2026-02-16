@@ -4,23 +4,34 @@ using System.Text.Json.Nodes;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.SendPayNumber;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.SendPayAtNumber;
 using ClientServicing.Main.Resources.Helper;
+using ClientServicing.Main.Resources.Shared;
+using com.sun.tools.javac.comp;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
 {
     [TestFixture]
     public class SendTextMessagAPITests : SendTextMesageValidationMethods
     {
-        SendPayAtNumberAPIClient sendPayAtNumberAPIClient;
-        UtilitiesHelper utilitiesHelper = new();
+
+        private SendPayAtNumberAPIClient? sendPayAtNumberAPIClient = null;
+        private UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
+
         
         [SetUp]
         public void SetUp()
         {
-            sendPayAtNumberAPIClient = new SendPayAtNumberAPIClient(GlobalRestLibrarySetup.SharedRestLibrary);
-        }      
-        
+            // Use the shared REST client from the global setup (initialized once per assembly)
+            sendPayAtNumberAPIClient = new SendPayAtNumberAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            // Resolve IDataAccess from the global DI container
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
+        }
+
 
         [Test]
         public async Task Given_When_SendTextMessageAsync_Then() {
@@ -28,17 +39,30 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             var request = JsonSerializer.Deserialize<SendTextMessageRequest>(utilitiesHelper.ReadTestDataJson("SendPayAtNumber/Data", "SendTextMessageRequestPayloadIsValid.json"));
             ValidateSendTextMessageRequestIsNotNullOrEmpty(request);
 
+            var expectedId = 123;
+            var expectedValue = "ExpectedValue";
+
             //Act
             var response = await sendPayAtNumberAPIClient.SendTextMessageAsync(request);
             var schema = ResponseSchemasEnvelope.BooleanResponse;
 
-            //Assert
+            // Query database to validate API side effects or state
+            var dbResults = await _dataAccess.QueryAsync<Object>(
+                "SELECT TOP (1) * FROM Polly_C.polmas.m_policy ");
+
+
+            //Assert HTTPS
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
             Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response body should not be null or empty.");
             Assert.That(response.Content, Is.EqualTo("true").Or.EqualTo("false"), "Response body should be either 'true' or 'false'.");
             //ValidateResponseShouldMatchSchema(response, schema);
+
+            //Assert DB
+            var dbData = dbResults.FirstOrDefault();
+
+
         }
     }
 }

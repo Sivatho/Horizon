@@ -56,7 +56,9 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
             Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response body should not be null or empty.");
+            DocumentTemplate.DisplayBody($"Validated: response: {response.Content} is not null or empty ");
             Assert.That(response.Content, Is.EqualTo("true").Or.EqualTo("false"), "Response body should be either 'true' or 'false'.");
+            DocumentTemplate.DisplayBody($"Validated: response: {response.Content} is either 'true' or 'false'.");
             //ValidateResponseShouldMatchSchema(response, schema);
 
             //Assert DB

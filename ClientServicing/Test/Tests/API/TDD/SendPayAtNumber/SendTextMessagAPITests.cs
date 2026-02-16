@@ -1,16 +1,17 @@
-﻿using System.Net;
-using System.Text.Json;
-using System.Text.Json.Nodes;
-using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
+﻿using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.SendPayNumber;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
+using ClientServicing.Main.Models.Policy.DBModels;
 using ClientServicing.Main.Models.SendPayAtNumber;
 using ClientServicing.Main.Resources.Helper;
 using ClientServicing.Main.Resources.Shared;
 using com.sun.tools.javac.comp;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net;
+using System.Text.Json;
+using System.Text.Json.Nodes;
 
 namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
 {
@@ -47,7 +48,7 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             var schema = ResponseSchemasEnvelope.BooleanResponse;
 
             // Query database to validate API side effects or state
-            var dbResults = await _dataAccess.QueryAsync<Object>(
+            var dbResults = await _dataAccess.QueryAsync<PolicyTable>(
                 "SELECT TOP (1) * FROM Polly_C.polmas.m_policy ");
 
 

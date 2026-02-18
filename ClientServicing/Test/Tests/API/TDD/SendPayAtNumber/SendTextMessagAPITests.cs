@@ -27,9 +27,7 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
         [SetUp]
         public void SetUp()
         {
-            // Use the shared REST client from the global setup (initialized once per assembly)
             sendPayAtNumberAPIClient = new SendPayAtNumberAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
-            // Resolve IDataAccess from the global DI container
             _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
         }
 
@@ -48,8 +46,7 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             var schema = ResponseSchemasEnvelope.BooleanResponse;
 
             // Query database to validate API side effects or state
-            var dbResults = await _dataAccess.QueryAsync<PolicyTable>(
-                "SELECT TOP (1) * FROM Polly_C.polmas.m_policy ");
+            var dbResults = await _dataAccess.QueryAsync<PolicyTable>("SELECT TOP (1) * FROM Polly_C.polmas.m_policy ");
 
 
             //Assert HTTPS
@@ -57,13 +54,12 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
             Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response body should not be null or empty.");
-            DocumentTemplate.DisplayBody($"Validated: response: {response.Content} is not null or empty ");
             Assert.That(response.Content, Is.EqualTo("true").Or.EqualTo("false"), "Response body should be either 'true' or 'false'.");
-            DocumentTemplate.DisplayBody($"Validated: response: {response.Content} is either 'true' or 'false'.");
+            DocumentTemplate.DisplayBody($"Validated: response: '{response.Content}' is not null or empty and is either 'true' or 'false'.");
             //ValidateResponseShouldMatchSchema(response, schema);
 
             //Assert DB
-            var dbData = dbResults.FirstOrDefault();
+            //var dbData = dbResults.FirstOrDefault();
 
 
         }

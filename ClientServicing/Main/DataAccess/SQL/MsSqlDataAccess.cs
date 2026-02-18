@@ -3,60 +3,112 @@ using Microsoft.Data.SqlClient;
 
 namespace ClientServicing.Main.DataAccess.SQL
 {
+    /// <summary>
+    /// SQL Server data access implementation using Windows Authentication.
+    /// Provides async query and execute operations for database interactions.
+    /// </summary>
     public class MsSqlDataAccess : IDataAccess
     {
         private readonly string _connectionString;
+        private const int CommandTimeoutSeconds = 30;
 
         public MsSqlDataAccess(string connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<bool> ExecuteAsync(string query, SqlParameter[]? parameters = null)
+        /// <summary>
+        /// Executes a query and maps results to objects of type T.
+        /// </summary>
+        public async Task<IEnumerable<T>> QueryAsync<T>(string query, SqlParameter[]? parameters = null)
+            where T : class, new()
         {
-            using (var connection = new SqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
-                {
-                    command.CommandTimeout = 30;
-                    if (parameters?.Length > 0)
-                    {
-                        command.Parameters.AddRange(parameters);
-                    }
-                    return await command.ExecuteNonQueryAsync() > 0;
-                }
-            }
-        }
+            if (string.IsNullOrWhiteSpace(query))
+                throw new ArgumentException("Query cannot be null or empty", nameof(query));
 
-        public async Task<IEnumerable<T>> QueryAsync<T>(string query, SqlParameter[]? parameters = null) where T : class, new()
-        {
             var results = new List<T>();
 
-            using (var connection = new SqlConnection(_connectionString))
+            try
             {
-                await connection.OpenAsync();
-                using (var command = new SqlCommand(query, connection))
+                using (var connection = new SqlConnection(_connectionString))
                 {
-                    command.CommandTimeout = 30;
+                    await connection.OpenAsync();
 
-                    if (parameters?.Length > 0)
+                    using (var command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddRange(parameters);
-                    }
+                        command.CommandTimeout = CommandTimeoutSeconds;
 
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
+                        if (parameters?.Length > 0)
                         {
-                            var obj = new T();
-                            SqlDataMapper.MapReaderToObject(reader, obj);
-                            results.Add(obj);
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        using (var reader = await command.ExecuteReaderAsync())
+                        {
+                            while (await reader.ReadAsync())
+                            {
+                                var obj = new T();
+                                SqlDataMapper.MapReaderToObject(reader, obj);
+                                results.Add(obj);
+                            }
                         }
                     }
                 }
             }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(
+                    $"Database query failed. Ensure Windows Authentication is enabled and your user has permissions. " +
+                    $"Error: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Unexpected error executing query: {ex.Message}", ex);
+            }
+
             return results;
+        }
+
+        /// <summary>
+        /// Executes a non-query command (INSERT, UPDATE, DELETE).
+        /// </summary>
+        public async Task<bool> ExecuteAsync(string query, SqlParameter[]? parameters = null)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                throw new ArgumentException("Query cannot be null or empty", nameof(query));
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.CommandTimeout = CommandTimeoutSeconds;
+
+                        if (parameters?.Length > 0)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                throw new InvalidOperationException(
+                    $"Database execute failed. Ensure Windows Authentication is enabled and your user has permissions. " +
+                    $"Error: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new InvalidOperationException(
+                    $"Unexpected error executing command: {ex.Message}", ex);
+            }
         }
     }
 }

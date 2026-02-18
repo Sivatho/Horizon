@@ -67,3 +67,8 @@ obj/
 
 # debug information files
 *.dwo
+
+# User secrets
+**/secrets.json
+**/appsettings.*.json
+.vscode/

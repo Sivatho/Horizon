@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.Policy.DBModels
 {
-    internal class PolicyTable
+    public class PolicyTable
     {
         public int Policy_ID { get; set; }
         public int Policy_NO { get; set; }

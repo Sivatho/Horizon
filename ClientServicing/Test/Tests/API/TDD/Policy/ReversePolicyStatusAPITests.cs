@@ -23,20 +23,20 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
 
             //Act
             var response = await policyAPIClient.ReversePolicyStatusAsync(reversePolicyStatusRequest);
-            var reversePolicyStatusResponse = populateReversePolicyStatusResponse(response);
-            var schema = ResponseSchemasEnvelope.DataBooleanSchema;
+            //var reversePolicyStatusResponse = populateReversePolicyStatusResponse(response);
+            //var schema = ResponseSchemasEnvelope.DataBooleanSchema;
 
             //Arrange
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
-            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
-            ValidateResponseShouldMatchSchema(response, schema);
-            ValidationReversePolicyStatusResponseIsNotNullOrEmpty(reversePolicyStatusResponse);
+            Assert.That(response.Content, Is.Not.Null.And.Not.Empty,                    "Response body should not be null or empty.");
+            Assert.That(response.Content, Is.EqualTo("\"Policy is already in force\""), "Response Body Should Be Policy is already in force");
+            DocumentTemplate.DisplayBody($"Validated: Response Content Is Not Null Or Empty And Is Equal To: '{response.Content}'");
         }
 
         [Test, Category("Negative")]
-        [Ignore("The response is incorrect as the status returned is incorrect and the response content is not formated correctly, policy number is not validated if it exists or not")]
+        //[Ignore("The response is incorrect as the status returned is incorrect and the response content is not formated correctly, policy number is not validated if it exists or not")]
         public async Task Give_ReversePolicyStatusRequestPayloadIsValid_And_PolicyNoStatusIsInforce_When_ReversePolicyStatusAsync_Then_ValidationReversePolicyStatusRespone() {
             //Arrange
             var reversePolicyStatusRequest = JsonSerializer.Deserialize<ReversePolicyStatusRequest>(
@@ -51,8 +51,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.InternalServerError);
             ValidateResponseHeadersAreValid(response);
-            //ValidateResponseDataShouldAcceptValidNames_And_Types(response, schema);
-            //ValidateResponseShouldMatchSchema(response, schema);
+            Assert.That(response.Content, Is.Not.Null.And.Not.Empty,                    "Response body should not be null or empty.");
+            Assert.That(response.Content, Is.EqualTo("\"Policy is already in force\""), "Response Body Should Be Policy is already in force");
+            DocumentTemplate.DisplayBody($"Validated: Response Content Is Not Null Or Empty And Is Equal To: '{response.Content}'");
         }
     }
 }

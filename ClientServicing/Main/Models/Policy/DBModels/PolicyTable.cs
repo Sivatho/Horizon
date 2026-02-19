@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientServicing.Main.Models.Policy.DBModels
+﻿namespace ClientServicing.Main.Models.Policy.DBModels
 {
     public class PolicyTable
     {

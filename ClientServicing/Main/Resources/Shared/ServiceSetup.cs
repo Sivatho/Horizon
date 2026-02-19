@@ -3,7 +3,6 @@ using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.DataAccess.SQL;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace ClientServicing.Main.Resources.Shared
 {

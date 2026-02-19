@@ -1,4 +1,7 @@
-﻿using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
+﻿using System.Net;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.SendPayNumber;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
@@ -8,10 +11,8 @@ using ClientServicing.Main.Resources.Helper;
 using ClientServicing.Main.Resources.Shared;
 using com.sun.tools.javac.comp;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System.Net;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 
 namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
 {
@@ -30,7 +31,6 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             sendPayAtNumberAPIClient = new SendPayAtNumberAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
             _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
         }
-
 
         [Test]
         public async Task Given_When_SendTextMessageAsync_Then() {

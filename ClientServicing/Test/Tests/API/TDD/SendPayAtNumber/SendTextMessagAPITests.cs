@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using System.Text.Json;
-using System.Text.Json.Nodes;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.SendPayNumber;
 using ClientServicing.Main.Controller;
@@ -8,10 +7,6 @@ using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.Policy.DBModels;
 using ClientServicing.Main.Models.SendPayAtNumber;
 using ClientServicing.Main.Resources.Helper;
-using ClientServicing.Main.Resources.Shared;
-using com.sun.tools.javac.comp;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber

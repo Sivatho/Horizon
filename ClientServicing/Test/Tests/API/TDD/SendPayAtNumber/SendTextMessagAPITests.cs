@@ -48,15 +48,13 @@ namespace ClientServicing.Test.Tests.API.TDD.SendPayAtNumber
             // Query database to validate API side effects or state
             var dbResults = await _dataAccess.QueryAsync<PolicyTable>("SELECT TOP (1) * FROM Polly_C.polmas.m_policy ");
 
-
             //Assert HTTPS
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
-            Assert.That(response.Content, Is.Not.Null.And.Not.Empty, "Response body should not be null or empty.");
-            Assert.That(response.Content, Is.EqualTo("true").Or.EqualTo("false"), "Response body should be either 'true' or 'false'.");
-            DocumentTemplate.DisplayBody($"Validated: response: '{response.Content}' is not null or empty and is either 'true' or 'false'.");
-            //ValidateResponseShouldMatchSchema(response, schema);
+            Assert.That(response.Content, Is.Not.Null.And.Not.Empty,                "Response body should not be null or empty.");
+            Assert.That(response.Content, Is.EqualTo("true").Or.EqualTo("false"),   "Response body should be either 'true' or 'false'.");
+            DocumentTemplate.DisplayBody($"Validated: Response Content Is Not null Or Empty And Is Either 'true' or 'false': '{response.Content}'");
 
             //Assert DB
             //var dbData = dbResults.FirstOrDefault();

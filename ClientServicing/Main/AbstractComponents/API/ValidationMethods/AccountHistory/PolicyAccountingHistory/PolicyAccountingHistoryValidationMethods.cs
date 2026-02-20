@@ -37,8 +37,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.AccountH
 
                 var payments = policyAccountHistoryResponse.data.accountingHistoryPaymentResults;
                 Assert.That(payments.totalNumberOfPayments,     Is.TypeOf<int>(),               "Response: TotalNumberOfPayments Should Be A Type Integer");
-                Assert.That(payments.totalAmountReceived,       Is.TypeOf<double>(),               "Response: TotalAmountOutstanding Should Be A Type Integer");
-                Assert.That(payments.totalAmountOutstanding,    Is.TypeOf<double>(),               "Response: TotalAmountReceived Should Be A Type Integer");
+                Assert.That(payments.totalAmountReceived,       Is.TypeOf<double>(),            "Response: TotalAmountOutstanding Should Be A Type Integer");
+                Assert.That(payments.totalAmountOutstanding,    Is.TypeOf<double>(),            "Response: TotalAmountReceived Should Be A Type Integer");
                 Assert.That(payments.collectionMethod,          Is.Not.Null.Or.Empty,           "Response: CollectionMethod Should Not Be Null Or Empty");
                 Assert.That(payments.mandateType,               Is.Null.Or.TypeOf<string?>(),   "Response: MandateType Should Be Null Or Be Type String");
                 Assert.That(payments.gsdType,                   Is.TypeOf<int>(),               "Response: GSDType Should Be A Type Integer");

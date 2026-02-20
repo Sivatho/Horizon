@@ -25,10 +25,10 @@ namespace ClientServicing.Main.Models.AccountHistory
         public string legacy_Pol_No { get; set; }
         public string referenceNO { get; set; }
         public int month { get; set; }
-        public DateTime raisedDate { get; set; }
+        public DateTime? raisedDate { get; set; }
         public DateTime? bankSubmissionDate { get; set; }
         public DateTime? strikeDate { get; set; }
-        public DateTime paymentDate { get; set; }
+        public DateTime? paymentDate { get; set; }
         public int? trackingDays { get; set; }
         public string? mandateType { get; set; }
         public string paymentType { get; set; }

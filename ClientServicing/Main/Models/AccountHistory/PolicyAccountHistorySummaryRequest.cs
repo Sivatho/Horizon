@@ -9,7 +9,7 @@ namespace ClientServicing.Main.Models.AccountHistory
     public class PolicyAccountHistorySummaryRequest
     {
         public int policyNo { get; set; }
-        public String billingPeriod { get; set; } = DateTime.Now.ToString("yyMM");
+        public int billingPeriod { get; set; }
 
     }
 }

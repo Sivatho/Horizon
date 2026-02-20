@@ -1,113 +1,69 @@
-﻿using ClientServicing.Main.IController;
+﻿using ClientServicing.Main.AbstractComponents.API.Base;
+using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using static ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints.AccountHistoryAPIEndPoints;
 
 
 namespace ClientServicing.Main.Controller
 {
-    public class AccountingHistoryAPIClient : IAccountHistory, IDisposable
+    public class AccountingHistoryAPIClient : IAccountHistory
     {
-        readonly RestClient restClient;
-        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        private readonly RestClient _restClient;
 
-        public AccountingHistoryAPIClient(string baseUrl)
-        {
-            var options = new RestClientOptions(baseUrl)
-            {
-                BaseUrl = new Uri(baseUrl),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-                //Authenticator = new OauthAPIAuthenticator()
-            };
-            restClient = new RestClient(options);
-        }
+        public IRestLibrary SharedRestLibrary { get; }
 
-        public void Dispose()
+        public AccountingHistoryAPIClient(IRestLibrary sharedRestLibrary)
         {
-            restClient?.Dispose();
-            GC.SuppressFinalize(this);
+            _restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
         }
 
         public async Task<RestResponse> policyAccountingHistoryAsync<T>(T policyNo) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyAccountingHistory), Method.Post);
-                request.AddJsonBody(policyNo);
-                request.AddHeader("Accept", "application/json");
+            // Arrange
+            var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyAccountingHistory);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                policyNo,
+                out var stopwatch);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
 
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"policyAcountingHistory > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                //Log Exception
-                TestContext.Out.WriteLine($"\tpolicyAcountingHistory > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tpolicyAcountingHistory > Stack Trace: {ex.StackTrace}");
-                //Return a failed response
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
         }
-        /*
-        public async Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T policyNo)
-
-        {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyAccountingHistorySummary), Method.Get);
-                request.AddBody(policyNo);
-
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"policyAcountingHistorySummary > Response failed. Status: {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                //Log Exception
-                TestContext.Out.WriteLine($"\tpolicyAcountingHistorySummary > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tpolicyAcountingHistorySummary > Stack Trace: {ex.StackTrace}");
-                //Return a failed response
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }*/
 
         public async Task<RestResponse> policyCashReceipt(int policyNo)
         {
-            try
+            /**/
+            // Arrange
+            var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyCashReceipt);
+            Method method = Method.Get;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            IDictionary<string, string>? queryParams = null;
+            IDictionary<string, int>? urlSegment = new Dictionary<string, int>
+            {
+                ["policyNo"] = policyNo
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest<object?>(
+                url,
+                method,
+                null,
+                out var stopwatch,
+                headers,
+                queryParams, urlSegment);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
+            
+            /*try
             {
                 //Arrange
                 var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.policyCashReceipt), Method.Get);
@@ -135,12 +91,25 @@ namespace ClientServicing.Main.Controller
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                     ErrorMessage = ex.Message
                 };
-            }
+            }*/
         }
 
         public async Task<RestResponse> GetStatementLineCD<T>(T payload) where T : class
         {
-            try
+            // Arrange
+            var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.GetStatementLineID);
+            Method method = Method.Post;
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
+
+            /*try
             {
                 //Arrange
                 var request = new RestRequest(AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.GetStatementLineID), Method.Post);
@@ -165,7 +134,7 @@ namespace ClientServicing.Main.Controller
                     StatusCode = System.Net.HttpStatusCode.InternalServerError,
                     ErrorMessage = ex.Message
                 };
-            }
+            }*/
         }
 
         public Task<RestResponse> CashReceiptInforUpsert<T>(T payload) where T : class

@@ -82,7 +82,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         }
         public IReadOnlyList<IJsonRule> Rules { get; }
         public ISet<JsonValueKind> AllowedRootKinds { get; }
-        public ISet<string>? AllowedRootStringEnum { get; }       
+        public ISet<string>? AllowedRootStringEnum { get; }
     }
     //Code change
     public sealed class ObjectSchema : IJsonSchema, IRootConstrained
@@ -91,8 +91,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         {
 
             Rules = rules?.ToList() ?? new List<IJsonRule>();
-            AllowedRootKinds = new HashSet<JsonValueKind> { 
-                JsonValueKind.Object 
+            AllowedRootKinds = new HashSet<JsonValueKind> {
+                JsonValueKind.Object
             };
         }
         public IReadOnlyList<IJsonRule> Rules { get; }
@@ -452,7 +452,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         public static JsonSchema BoolPrimitiveEnvelope(params JsonValueKind[] primitiveKinds)
         {
             return new JsonSchema.Builder()
-                .Property("enum", JsonKinds.Of(primitiveKinds)) 
+                .Property("enum", JsonKinds.Of(primitiveKinds))
                 .Build();
         }
 
@@ -556,16 +556,16 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
     #region Policy    
     public static class ResponseSchemasEnvelope
     {
-        public static JsonSchema BooleanResponse =      ResponseSchemas.BoolPrimitiveEnvelope(JsonValueKind.True, JsonValueKind.False);
-        public static JsonSchema DataFalseSchema =      ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
-        public static JsonSchema DataBooleanSchema =    ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
-        public static JsonSchema DataNumberSchema =     ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.Number);
-        public static JsonSchema EligibilitySchema =    ResponseSchemas.StandardEnvelopeObject(data =>
+        public static JsonSchema BooleanResponse = ResponseSchemas.BoolPrimitiveEnvelope(JsonValueKind.True, JsonValueKind.False);
+        public static JsonSchema DataFalseSchema = ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
+        public static JsonSchema DataBooleanSchema = ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.True, JsonValueKind.False);
+        public static JsonSchema DataNumberSchema = ResponseSchemas.StandardEnvelopePrimitive(JsonValueKind.Number);
+        public static JsonSchema EligibilitySchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
-            data.Property("isEligibile",    JsonKinds.Boolean)
-                .Property("message",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+            data.Property("isEligibile", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
-        public static JsonSchema BankSchema =           ResponseSchemas.StandardEnvelopeObject(data =>
+        public static JsonSchema BankSchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
             data.Property("bankID", JsonKinds.Of(JsonValueKind.Number))
                 .Property("bankName", JsonKinds.Of(JsonValueKind.String))
@@ -621,7 +621,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
                 .Property("auditToken", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
-        public static JsonSchema PolicyDetailsSchema =  ResponseSchemas.StandardEnvelopeObject(data =>
+        public static JsonSchema PolicyDetailsSchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
             data.Property("policy_NO", JsonKinds.Of(JsonValueKind.Number))
                 .Property("entityNo", JsonKinds.Of(JsonValueKind.Number))
@@ -672,7 +672,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("premiumCount", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
                 .Property("paymentFrequency", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
-        public static JsonSchema BankListSchema =       ResponseSchemas.StandardEnvelopeArray(item =>
+        public static JsonSchema BankListSchema = ResponseSchemas.StandardEnvelopeArray(item =>
         {
             item.Property("bankID", JsonKinds.Of(JsonValueKind.Number))
                 .Property("bankName", JsonKinds.Of(JsonValueKind.String))
@@ -682,7 +682,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("lastChanged", JsonKinds.Of(JsonValueKind.String))
                 .Property("userID", JsonKinds.Of(JsonValueKind.String));
         });
-        public static JsonSchema PolicyListSchema =     ResponseSchemas.StandardEnvelopeArray(item =>
+        public static JsonSchema PolicyListSchema = ResponseSchemas.StandardEnvelopeArray(item =>
         {
             item.Property("entityID", JsonKinds.Of(JsonValueKind.Number))
                 .Property("ifaNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
@@ -729,104 +729,105 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("channelDesc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("entityFullname", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
-        public static JsonSchema BenefitCoversSchema =  ResponseSchemas.StandardEnvelopeArray(item =>
+        public static JsonSchema BenefitCoversSchema = ResponseSchemas.StandardEnvelopeArray(item =>
         {
             item.Property("benefitID", JsonKinds.Of(JsonValueKind.Number))
                 .Property("benefitCover", JsonKinds.Of(JsonValueKind.Number));
         });
         public static JsonSchema GetPolicyProductLineSChema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
-            data.Property("policyNo",           JsonKinds.Of(JsonValueKind.Number))
-            .Property("productLineCD",          JsonKinds.Of(JsonValueKind.Number))
+            data.Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
+            .Property("productLineCD", JsonKinds.Of(JsonValueKind.Number))
             .Property("productLineDescription", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
-        });       
+        });
         public static JsonSchema PayerDetailsEnvelopeSchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
-            data.Property("payerEntityNo",      JsonKinds.Of(JsonValueKind.Number))
-                .Property("policyNumber",       JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("productCategory",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("productCategoryId",  JsonKinds.Of(JsonValueKind.Number))
-                .Property("title",              JsonKinds.Of(JsonValueKind.String))
-                .Property("titleCd",            JsonKinds.Of(JsonValueKind.Number))
-                .Property("firstName",          JsonKinds.Of(JsonValueKind.String))
-                .Property("surname",            JsonKinds.Of(JsonValueKind.String))
-                .Property("initials",           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("emailAddress",       JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("isAMember",          JsonKinds.Boolean)
-                .Property("legalRefNo",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("legalRefNoTypeCD",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("dateOfBirth",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("genderCd",           JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("employerName",       JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("employeeNumber",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            data.Property("payerEntityNo", JsonKinds.Of(JsonValueKind.Number))
+                .Property("policyNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("productCategory", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("productCategoryId", JsonKinds.Of(JsonValueKind.Number))
+                .Property("title", JsonKinds.Of(JsonValueKind.String))
+                .Property("titleCd", JsonKinds.Of(JsonValueKind.Number))
+                .Property("firstName", JsonKinds.Of(JsonValueKind.String))
+                .Property("surname", JsonKinds.Of(JsonValueKind.String))
+                .Property("initials", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("emailAddress", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("isAMember", JsonKinds.Boolean)
+                .Property("legalRefNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("legalRefNoTypeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("dateOfBirth", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("genderCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("employerName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("employeeNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("employeeDepartmentCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
                 .Property("employeeDepartment", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("authorizationTypeCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("payroll",            JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("mandateType",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("agentID",            JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("isAuthorized",       JsonKinds.Of(JsonValueKind.True, JsonValueKind.False, JsonValueKind.Null))
-                .Property("homeNumber",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("cellNumber",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("workNumber",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("relationCd",         JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("bankId",             JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("bankName",           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("bankShortName",      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("branchNo",           JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("branchCode",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("bankAccNo",          JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payroll", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("agentID", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("isAuthorized", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False, JsonValueKind.Null))
+                .Property("homeNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("cellNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("workNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("relationCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("bankId", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("bankName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankShortName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("branchNo", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("branchCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("bankAccHolderInitial", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("bankAccHolderName",  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("bankAccTypeCD",      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("bankAccTypeDesc",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("bankAccountID",      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("bankAccSwiftCode",   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("isActive",           JsonKinds.Of(JsonValueKind.True, JsonValueKind.False, JsonValueKind.Null))
-                .Property("paymentTypeCD",      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("paymentFreqCD",      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("paymentRefId",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.String, JsonValueKind.Null))
-                .Property("premium",            JsonKinds.Of(JsonValueKind.Number))
-                .Property("earlyTracking",      JsonKinds.Boolean)
-                .Property("debitDay",           JsonKinds.Of(JsonValueKind.Number))
-                .Property("firstDebitDay",      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("firstDebitMonth",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("effectiveDate",      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("gsd",                JsonKinds.Of(JsonValueKind.Object), nested:
+                .Property("bankAccHolderName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccTypeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("bankAccTypeDesc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccountID", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("bankAccSwiftCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("isActive", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False, JsonValueKind.Null))
+                .Property("paymentTypeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("paymentFreqCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("paymentRefId", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.String, JsonValueKind.Null))
+                .Property("premium", JsonKinds.Of(JsonValueKind.Number))
+                .Property("earlyTracking", JsonKinds.Boolean)
+                .Property("debitDay", JsonKinds.Of(JsonValueKind.Number))
+                .Property("firstDebitDay", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("firstDebitMonth", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("effectiveDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("gsd", JsonKinds.Of(JsonValueKind.Object), nested:
                     new JsonSchema.Builder()
                         .Property("deductionAuthorization", JsonKinds.Boolean)
-                        .Property("payrollName",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                        .Property("payrollId",      JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                        .Property("departmentId",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("payrollName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("payrollId", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("departmentId", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
                         .Property("departmentName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                         .Property("employeeNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                        .Property("mandateType",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                         .Build())
-                .Property("lastChanged",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("userID",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("entityNo",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("agentCode",      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("agentName",      JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("payAtNumber",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("csdEmployeeNo",  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("lastChanged", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("userID", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("entityNo", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("agentCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("agentName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("payAtNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("csdEmployeeNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("csdCompanyDepartment", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("csdCompanyName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("csdCompanyCd",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
+                .Property("csdCompanyCd", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
         });
-        public static JsonSchema RemovalFromBillingHistorySchema = ResponseSchemas.StandardEnvelopeArray(item => {
-            item.Property("removeID",       JsonKinds.Of(JsonValueKind.Number))
-                .Property("policyNo",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("removeCD",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("removalDate",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("premiumAmt",     JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("effDate",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("endDate",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("months",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("statusCD",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                .Property("s_Desc",         JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("comments",       JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("audModUser",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
+        public static JsonSchema RemovalFromBillingHistorySchema = ResponseSchemas.StandardEnvelopeArray(item =>
+        {
+            item.Property("removeID", JsonKinds.Of(JsonValueKind.Number))
+                .Property("policyNo", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("removeCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("removalDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("premiumAmt", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("effDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("endDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("months", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("statusCD", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("s_Desc", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("comments", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("audModUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
         ///<summary>
         ///Method Name: 
@@ -905,6 +906,46 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("employeeNumberHash", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
         }
+        public static JsonSchema policyAccountHistoryResponseSchema =
+            ResponseSchemas.StandardEnvelopeObject(data =>
+            {
+                // accountingHistoryPaymentResults
+                data.Property(
+                    "accountingHistoryPaymentResults",
+                    JsonKinds.Of(JsonValueKind.Object),
+                    new JsonSchema.Builder()
+                        .Property("totalNumberOfPayments", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("totalAmountReceived", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("totalAmountOutstanding", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("collectionMethod", JsonKinds.Of(JsonValueKind.String))
+                        .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("gsdType", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("suspenseAmt", JsonKinds.Of(JsonValueKind.Number))
+                        .Build()
+                );
+
+                // accountingHistoryPolicyResults (array of objects)
+                data.Property(
+                    "accountingHistoryPolicyResults",
+                    JsonKinds.Of(JsonValueKind.Array),
+                    new JsonSchema.Builder()
+                        .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("legacy_Pol_No", JsonKinds.Of(JsonValueKind.String))
+                        .Property("referenceNO", JsonKinds.Of(JsonValueKind.String))
+                        .Property("month", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("raisedDate", JsonKinds.Of(JsonValueKind.String))
+                        .Property("bankSubmissionDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("strikeDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("paymentDate", JsonKinds.Of(JsonValueKind.String))
+                        .Property("trackingDays", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                        .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                        .Property("paymentType", JsonKinds.Of(JsonValueKind.String))
+                        .Property("description", JsonKinds.Of(JsonValueKind.String))
+                        .Property("premiumAmount", JsonKinds.Of(JsonValueKind.Number))
+                        .Property("amountPaid", JsonKinds.Of(JsonValueKind.Number))
+                        .Build()
+                );
+            });
     }
     #endregion
     #endregion

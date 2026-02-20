@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using System.Text.Json;
-using ClientServicing.Main.AbstractComponents.API.ValidationMethods.AccountHistory.PolicyAccountingHistory;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.AccountHistory;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
@@ -25,7 +25,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
         }
 
         [Test]
-        public async Task GivenAccountHistoryRequestHasPolicyNO_WhenpolicyAcountingHistoryAsync_ThenValidateAccountHistoryResponseIsOk()
+        public async Task Given_PolicyAccountingHistoryRequestIsValid_When_PolicyAcountingHistoryAsync_Then_ValidateAccountHistoryResponseIsOk()
         {
             //Arrange
             var request = JsonSerializer.Deserialize<PolicyAccountHistoryRequest>(
@@ -35,7 +35,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             ValidatePolicyAccountingHistoryRequestDataIsNotNullOrEmpty(request);
             //Act
             var response = await accountHistoryAPIClient.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(request);
-            var policyAccountHistoryResponse = populatePolicyAccountHistoryResponse(response);
+            var policyAccountHistoryResponse = PopulatePolicyAccountHistoryResponse(response);
             var schema = ResponseSchemasEnvelope.policyAccountHistoryResponseSchema;
 
             //Assert

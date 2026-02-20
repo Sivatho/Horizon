@@ -10,7 +10,6 @@ namespace ClientServicing.Main.Controller
     public class SendPayAtNumberAPIClient : ISendPayAtNumber
     {
         private readonly RestClient _restClient;
-        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
         public SendPayAtNumberAPIClient(IRestLibrary sharedRestLibrary)
         {

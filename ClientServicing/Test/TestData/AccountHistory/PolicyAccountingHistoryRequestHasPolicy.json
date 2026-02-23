@@ -1,3 +1,5 @@
-  {
-    "policyNo": 204801
-  }
+{
+    "policyNo": 204801,
+    "legacyPolicyNumber": "204801",
+    "auditToken": null
+}

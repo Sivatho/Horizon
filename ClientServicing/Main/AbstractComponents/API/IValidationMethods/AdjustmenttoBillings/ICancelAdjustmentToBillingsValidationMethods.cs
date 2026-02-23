@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.AdjustmenttoBillings
 {
-    public class ICancelAdjustmentToBillingsValidationMethods
+    public interface ICancelAdjustmentToBillingsValidationMethods
     {
 
         public void ValidatCancelAdjustmentToBillingsResponseDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest canceladjustmenttobillings);

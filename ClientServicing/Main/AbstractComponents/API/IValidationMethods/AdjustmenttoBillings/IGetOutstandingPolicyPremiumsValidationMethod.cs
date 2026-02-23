@@ -10,6 +10,6 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Adjustm
     internal interface IGetOutstandingPolicyPremiumsValidationMethods
 	{
 
-        public void ValidateGetOutstandingPolicyPremiumsResponseDataIsNotNullOrEmpty(GetOutstandingPolicyPremiumsRequest GetOutstandingPolicyPremiums);
+        public void ValidateGetOutstandingPolicyPremiumsRequestIsValid(GetOutstandingPolicyPremiumsRequest request);
 	}
 }

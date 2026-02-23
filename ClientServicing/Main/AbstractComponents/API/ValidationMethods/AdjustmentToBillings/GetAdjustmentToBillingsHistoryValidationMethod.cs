@@ -45,12 +45,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
                 }
             });
         }
-
-        public void ValidateGetAdjustmentToBillingsHistoryResponseDataIsNotNullOrEmpty(GetAdjustmentToBillingsHistoryValidationMethod getadjustmenttobillingshistory)
-        {
-            throw new NotImplementedException();
-        }
-
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();

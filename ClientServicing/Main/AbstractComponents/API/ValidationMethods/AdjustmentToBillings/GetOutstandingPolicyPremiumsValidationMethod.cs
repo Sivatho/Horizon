@@ -33,12 +33,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
             });
         }
 
-        public void ValidateGetOutstandingPolicyPremiumsResponseDataIsNotNullOrEmpty(GetOutstandingPolicyPremiumsRequest request)
-        {
-            Assert.That(request, Is.Not.Null, "Request should not be null.");
-            Assert.That(request.policyNo, Is.GreaterThan(0), "PolicyNo should be greater than 0.");
-        }
-
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();

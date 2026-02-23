@@ -1,4 +1,5 @@
 ﻿using ClientServicing.Main.AbstractComponents.API.IValidationMethods.AdjustmenttoBillings;
+using ClientServicing.Main.Models.AdjustementToBillings;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,11 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
 {
     public class CancelAdjustmentToBillingsValidationMethods : AbstractValidationMethods, ICancelAdjustmentToBillingsValidationMethods
     {
+        public void ValidatCancelAdjustmentToBillingsResponseDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest canceladjustmenttobillings)
+        {
+            throw new NotImplementedException();
+        }
+
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();

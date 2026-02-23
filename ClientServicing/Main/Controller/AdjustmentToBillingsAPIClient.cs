@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using ClientServicing.Main.AbstractComponents.API.Base;
 using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.AccountHistoryAPIEndPoints;
 using ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings;
@@ -10,181 +11,116 @@ namespace ClientServicing.Main.Controller
 {
     public class AdjustmentToBillingsAPIClient : IAdjustmentToBillings
     {
-        readonly RestClient restClient;
-        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        private readonly RestClient _restClient;
 
-        public AdjustmentToBillingsAPIClient(string baseUrl)
-        {
-            var options = new RestClientOptions(baseUrl)
-            {
-                BaseUrl = new Uri(baseUrl),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-                //Authenticator = new OauthAPIAuthenticator()
-            };
-            restClient = new RestClient(options);
-        }
+        public IRestLibrary SharedRestLibrary { get; }
+       
+
+        public AdjustmentToBillingsAPIClient(IRestLibrary sharedRestLibrary)
+		{
+			_restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
+		}
+
+
         
         public async Task<RestResponse> AddAdjustementToBillingsAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.AddAdjustmentToBillings), Method.Post);
-                request.AddBody(payload);
-                
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
 
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"AddAdjustementToBillings > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }
+            //Arrange
+            var url = AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.AddAdjustmentToBillings);
+			Method method = Method.Post;
+			IDictionary<string, string>? headers = new Dictionary<string, string>
+			{
+				{ "Accept", "*/*" }
+			};
+			var request = ApiRequestAndResponseHelper.BuildRequest(
+			  url,
+			  method,
+			  payload,
+			  out var stopwatch,
+			  headers);
+
+			var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+			return response;
+		}
 
         public async Task<RestResponse> CancelAdjustmentToBillingsAsync<T>(T payload) where T : class
         {
-            try
+            var url = AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.CancelAdjustmentToBillings);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                //Arrange
-                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.CancelAdjustmentToBillings), Method.Post);
-                request.AddBody(payload);
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+              url,
+              method,
+              payload,
+              out var stopwatch,
+              headers);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"AddAdjustementToBillings > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
         }
 
-        public async Task<RestResponse> GetAdjustedPeriodsAsync<T>(T payload) where T : class
-        {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustedPeriods), Method.Post);
-                request.AddBody(payload);
+		public async Task<RestResponse> GetAdjustedPeriodsAsync<T>(T payload) where T : class
+		{
+			var url = AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustedPeriods);
+			Method method = Method.Post;
+			IDictionary<string, string>? headers = new Dictionary<string, string>
+			{
+				{ "Accept", "*/*" }
+			};
+			var request = ApiRequestAndResponseHelper.BuildRequest(
+			  url,
+			  method,
+			  payload,
+			  out var stopwatch,
+			  headers);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
+			var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+			return response;
+		}
 
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"AddAdjustementToBillings > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }
+		public async Task<RestResponse> GetAdjustmentToBillingsHistoryAsync<T>(T payload) where T : class
+		{
+			var url = AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustmentToBillingsHistory);
+			Method method = Method.Post;
+			IDictionary<string, string>? headers = new Dictionary<string, string>
+			{
+				{ "Accept", "*/*" }
+			};
+			var request = ApiRequestAndResponseHelper.BuildRequest(
+			  url,
+			  method,
+			  payload,
+			  out var stopwatch,
+			  headers);
 
-        public async Task<RestResponse> GetAdjustmentToBillingsHistoryAsync<T>(T payload) where T : class
-        {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetAdjustmentToBillingsHistory), Method.Post);
-                request.AddBody(payload);
-
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"AddAdjustementToBillings > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+			var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+			return response;
+	 
         }
 
         public async Task<RestResponse> GetOutstandingPolicyPremiumsAsync<T>(T payload) where T : class
         {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetOutstandingPolicyPremiums), Method.Post);
-                request.AddBody(payload);
+			{
+				var url = AdjustmentToBillingsAPIEndPoints.GetEndPoint(EndPoints.GetOutstandingPolicyPremiums);
+				Method method = Method.Post;
+				IDictionary<string, string>? headers = new Dictionary<string, string>
+			{
+				{ "Accept", "*/*" }
+			};
+				var request = ApiRequestAndResponseHelper.BuildRequest(
+				  url,
+				  method,
+				  payload,
+				  out var stopwatch,
+				  headers);
 
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"AddAdjustementToBillings > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tAddAdjustementToBillings > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }
+				var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+				return response;
+			}
+		}
     }
 }

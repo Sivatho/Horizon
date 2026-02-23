@@ -1,28 +1,28 @@
 {
-    "billingsAdjustmentInformation": {
-        "policyNo": 164535,
-        "effectiveDate": "2025-12-09T13:52:13.571Z",
-        "adjustmentDateFrom": "2025-12-09T13:52:13.571Z",
-        "adjustmentAmount": 0,
-        "totalAdjAmount": 0,
-        "adjustedMonthCnt": 0,
-        "adjustmentEndDate": "2025-12-09T13:52:13.571Z",
-        "comment": "string",
-        "actionID": "string"
-    },
-    "billingAdjustmentPeriods": [
-        {
-            "policyNo": 164535,
-            "legacyPolNo": "string",
-            "referenceNO": "string",
-            "billingPeriod": 0,
-            "raisedDate": "2025-12-09T13:52:13.571Z",
-            "mandateType": "string",
-            "description": "string",
-            "paymentType": "string",
-            "premiumAmount": 0,
-            "amountPaid": 0,
-            "effectiveDate": "2025-12-09T13:52:13.571Z"
-        }
-    ]
+  "billingsAdjustmentInformation": {
+    "policyNo": 207013,
+    "effectiveDate": "2026-02-21T09:48:03.599Z",
+    "adjustmentDateFrom": "2026-02-21T09:48:03.599Z",
+    "adjustmentAmount": 250,
+    "totalAdjAmount": 250,
+    "adjustedMonthCnt": 1,
+    "adjustmentEndDate": "2026-02-21T09:48:03.599Z",
+    "comment": "Testing",
+    "actionID": "Spadayachy"
+  },
+  "billingAdjustmentPeriods": [
+    {
+      "policyNo": 207013,
+      "legacyPolNo": "207013",
+      "referenceNO": "54849849-6554894",
+      "billingPeriod": 2501,
+      "raisedDate": "2026-02-21T09:48:03.599Z",
+      "mandateType": "immediate",
+      "description": "Testing",
+      "paymentType": "Cash",
+      "premiumAmount": 250,
+      "amountPaid": 250,
+      "effectiveDate": "2026-02-21T09:48:03.599Z"
+    }
+  ]
 }

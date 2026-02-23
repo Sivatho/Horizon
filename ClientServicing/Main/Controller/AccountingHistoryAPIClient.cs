@@ -64,11 +64,16 @@ namespace ClientServicing.Main.Controller
         {
             var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.GetStatementLineID);
             Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
             var request = ApiRequestAndResponseHelper.BuildRequest(
                 url,
                 method,
                 payload,
-                out var stopwatch);
+                out var stopwatch,
+                headers);
 
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);

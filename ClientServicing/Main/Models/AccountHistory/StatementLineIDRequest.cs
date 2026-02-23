@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AccountHistory
 {
-    public class GetStatementLineIDRequest
+    public class StatementLineIDRequest
     {
         public string statementLineID { get; set; }
         public int policyNo { get; set; }

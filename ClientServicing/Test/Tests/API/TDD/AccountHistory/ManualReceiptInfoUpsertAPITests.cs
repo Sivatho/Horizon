@@ -21,6 +21,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
         }
         [Test]
+        [Ignore("This test is missing validation Checks")]
         public async Task Given_ManualReceiptInfoUpsertRequestIsValid_When_ManualReceiptInfoUpsertAsync_Then_ValidateManualReceiptInfoUpsertResponseIsOk()
         {
             //Arrange

@@ -34,7 +34,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             );
             ValidatePolicyAccountingHistoryRequestDataIsNotNullOrEmpty(request);
             //Act
-            var response = await accountHistoryAPIClient.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(request);
+            var response = await accountHistoryAPIClient!.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(request);
             var policyAccountHistoryResponse = PopulatePolicyAccountHistoryResponse(response);
             var schema = ResponseSchemasEnvelope.policyAccountHistoryResponseSchema;
 

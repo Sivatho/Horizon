@@ -17,7 +17,7 @@ namespace ClientServicing.Main.Models.AddAdjustementToBillings
         public class AddAdjustementToBillingsRequestData {
 
             public BillingsAdjustmentInformationRequest[] billingsadjustmentinformation { get; set;}
-        public BillingAdjustmentPeriodsRequest[] billingadjustmentperiods { get;set }
+        public BillingAdjustmentPeriodsRequest[] billingadjustmentperiods { get; set; }
 	}
         public class BillingsAdjustmentInformationRequest
 		{

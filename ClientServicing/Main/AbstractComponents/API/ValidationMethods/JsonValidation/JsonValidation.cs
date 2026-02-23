@@ -950,27 +950,41 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             ResponseSchemas.StandardEnvelopeArray(item =>
             {
                 item
-                    .Property("policyNo",       JsonKinds.Of(JsonValueKind.Number))
-                    .Property("legacy_Pol_No",  JsonKinds.Of(JsonValueKind.String))
-                    .Property("referenceNO",    JsonKinds.Of(JsonValueKind.String))
-                    .Property("month",          JsonKinds.Of(JsonValueKind.Number))
-                    .Property("raisedDate",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                    .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))
+                    .Property("legacy_Pol_No", JsonKinds.Of(JsonValueKind.String))
+                    .Property("referenceNO", JsonKinds.Of(JsonValueKind.String))
+                    .Property("month", JsonKinds.Of(JsonValueKind.Number))
+                    .Property("raisedDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                     .Property("bankSubmissionDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                    .Property("strikeDate",     JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                    .Property("paymentDate",    JsonKinds.Of(JsonValueKind.String))
-                    .Property("trackingDays",   JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
-                    .Property("mandateType",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                    .Property("paymentType",    JsonKinds.Of(JsonValueKind.String))
-                    .Property("description",    JsonKinds.Of(JsonValueKind.String))
-                    .Property("premiumAmount",  JsonKinds.Of(JsonValueKind.Number))
-                    .Property("amountPaid",     JsonKinds.Of(JsonValueKind.Number));
+                    .Property("strikeDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                    .Property("paymentDate", JsonKinds.Of(JsonValueKind.String))
+                    .Property("trackingDays", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                    .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                    .Property("paymentType", JsonKinds.Of(JsonValueKind.String))
+                    .Property("description", JsonKinds.Of(JsonValueKind.String))
+                    .Property("premiumAmount", JsonKinds.Of(JsonValueKind.Number))
+                    .Property("amountPaid", JsonKinds.Of(JsonValueKind.Number));
             });
-    }
-    #endregion
-    #endregion
 
-    #region 6) Replace Your Method With This (Clean & Single Line)
-    public class JsonValidation
+        public static JsonSchema PolicyCashReceiptResponseSchema =
+            ResponseSchemas.StandardEnvelopeArray(item =>
+            {
+                item
+                    .Property("policyNo", JsonKinds.Of(JsonValueKind.Number))  // Integer if supported
+                    .Property("reference", JsonKinds.Of(JsonValueKind.String))
+                    .Property("billingPeriod", JsonKinds.Of(JsonValueKind.Number))  // Integer if supported
+                    .Property("raisedDate", JsonKinds.Of(JsonValueKind.String))  // ISO 8601
+                    .Property("mandateType", JsonKinds.Of(JsonValueKind.String))
+                    .Property("description", JsonKinds.Of(JsonValueKind.String))
+                    .Property("premium", JsonKinds.Of(JsonValueKind.Number))
+                    .Property("susTransTotal", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
+            });
+
+        #endregion
+        #endregion
+
+        #region 6) Replace Your Method With This (Clean & Single Line)
+        public class JsonValidation
     {
         public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse)
         {
@@ -978,4 +992,5 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         }
     }
     #endregion
+}
 }

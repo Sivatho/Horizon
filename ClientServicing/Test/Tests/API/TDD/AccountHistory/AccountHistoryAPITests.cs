@@ -11,7 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
 {
     [TestFixture]
-    public class AccountHistoryAPITest : PolicyAccountingHistoryValidationMethods
+    public class AccountHistoryAPITests : PolicyAccountingHistoryValidationMethods
     {
         AccountingHistoryAPIClient? accountHistoryAPIClient = null;
         UtilitiesHelper utilitiesHelper = new();
@@ -32,7 +32,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
                 utilitiesHelper.ReadTestDataJson
                 ("AccountHistory", "PolicyAccountingHistoryRequestHasPolicy.json")
             );
-            ValidatePolicyAccountingHistoryRequestDataIsNotNullOrEmpty(request);
+            ValidatePolicyAccountingHistoryRequestDataIsNotNullOrEmpty(request!);
             //Act
             var response = await accountHistoryAPIClient!.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(request);
             var policyAccountHistoryResponse = PopulatePolicyAccountHistoryResponse(response);

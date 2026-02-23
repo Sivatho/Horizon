@@ -82,12 +82,42 @@ namespace ClientServicing.Main.Controller
 
         public async Task<RestResponse> CashReceiptInfoUpsertAsync<T>(T payload) where T : class
         {
-            throw new NotImplementedException();
+            var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.CashReceiptInfoUpsert);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> ManualReceiptInfoUpsertAsync<T>(T payload) where T : class
         {
-            throw new NotImplementedException();
+            var url = AccountHistoryAPIEndPoints.GetEndPoint(EndPoints.ManualReceiptInfoUpsert);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
         }
 
         public async Task<RestResponse> policyAccountingHistorySummaryAsync<T>(T payload) where T : class

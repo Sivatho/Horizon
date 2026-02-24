@@ -4,7 +4,6 @@ using ClientServicing.Main.AbstractComponents.API.ValidationMethods.CancelPolicy
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
-using ClientServicing.Main.Models.BeneficiaryDetails;
 using ClientServicing.Main.Models.CancelPolicy;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Extensions.DependencyInjection;

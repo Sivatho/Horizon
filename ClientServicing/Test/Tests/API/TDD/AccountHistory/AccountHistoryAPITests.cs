@@ -30,8 +30,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             //Arrange
             var request = JsonSerializer.Deserialize<PolicyAccountHistoryRequest>(
                 utilitiesHelper.ReadTestDataJson
-                ("AccountHistory", "PolicyAccountingHistoryRequestHasPolicy.json")
-            );
+                ("AccountHistory", "PolicyAccountingHistoryRequestHasPolicy.json"));
             ValidatePolicyAccountingHistoryRequestDataIsNotNullOrEmpty(request!);
             //Act
             var response = await accountHistoryAPIClient!.policyAccountingHistoryAsync<PolicyAccountHistoryRequest>(request);
@@ -48,4 +47,3 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
         }
     }
 }
-

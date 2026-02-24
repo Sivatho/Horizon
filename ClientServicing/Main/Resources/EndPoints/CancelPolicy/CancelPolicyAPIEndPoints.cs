@@ -10,7 +10,7 @@
         {
             return endPoint switch
             {
-                EndPoints.UpdateCancelPolicyDetails => "/api/cancelpolicy/update",
+                EndPoints.UpdateCancelPolicyDetails => "/api/CancelPolicy/UpdateCancelPolicyDetails",
                 _ => throw new ArgumentOutOfRangeException(nameof(endPoint), endPoint, null)
             };
         }

@@ -2,14 +2,14 @@
 {
     public class CCMEventAPIEndPoints
     {
-        public enum EndPoint {
+        public enum EndPoints {
             TriggerEvent, GetEventDetailConstructBPE
         }
-        public static string GetEndPoints(EndPoint endPoint) {
+        public static string GetEndPoint(EndPoints endPoint) {
             return endPoint switch
             {
-                EndPoint.TriggerEvent => "api/CCMEvent/TriggerEvent",
-                EndPoint.GetEventDetailConstructBPE => "api/CCMEvent/GetEventDetailConstructBPE"
+                EndPoints.TriggerEvent => "api/CCMEvent/TriggerEvent",
+                EndPoints.GetEventDetailConstructBPE => "api/CCMEvent/GetEventDetailConstructBPE"
             };
         }
     }

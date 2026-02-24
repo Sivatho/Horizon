@@ -53,7 +53,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.AccountH
                     Assert.That(item.strikeDate,                Is.Null.Or.Not.EqualTo(default(DateTime)),  "Response: StrikeDate Should Not Be Null Or Not Equal To Default DateTime");
                     Assert.That(item.paymentDate,               Is.Not.EqualTo(default(DateTime)),          "Response: PaymentDate Should Not Equal To Default DateTime");
                     Assert.That(item.trackingDays,              Is.Null.Or.TypeOf<int?>(),                  "Response: TrackingDays Should Be Null Or Type Of Integer");
-                    Assert.That(item.mandateType,               Is.Null.Or.TypeOf<string>(),                "Response: MandateType Should Be Null Or Type Of Integer");
+                    Assert.That(item.mandateType,               Is.Null.Or.TypeOf<string>(),                "Response: MandateType Should Be Null Or Type Of String");
                     Assert.That(item.paymentType,               Is.Not.Null.Or.Not.Empty,                   "Response: PaymentType Should Not Be Null Or Empty");
                     Assert.That(item.description,               Is.Not.Null.Or.Not.Empty,                   "Response: Description Should Not Be Null Or Empty");
                     Assert.That(item.premiumAmount,             Is.Not.LessThan(0),                         "Response: PremiumAmount Should Not Be Less Than 0");

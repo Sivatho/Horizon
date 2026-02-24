@@ -455,6 +455,15 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("enum", JsonKinds.Of(primitiveKinds))
                 .Build();
         }
+        public static JsonSchema StandardResponseDataBoolSchema()
+        {
+            return new JsonSchema.Builder()
+                .Property("succeeded", JsonKinds.Boolean)
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errors", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("data", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Build();
+        }
 
     }
     public static class PolicySchemas

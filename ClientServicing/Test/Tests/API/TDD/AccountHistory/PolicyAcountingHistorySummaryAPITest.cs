@@ -36,7 +36,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             );
             ValidatePolicyAccountHistorySummaryRequestPayload(request);
             //Act
-            var response = await accountHistoryAPIClient.policyAccountingHistorySummaryAsync<PolicyAccountHistorySummaryRequest>(request);
+            var response = await accountHistoryAPIClient.policyAccountingHistorySummaryAsync(request);
             var policyAccountHistorySummaryResponse = PopulatePolicyAccountHistorySummaryResponse(response);
             var schema = ResponseSchemasEnvelope.policyAccountHistorySummaryResponseSchema;
             //Assert

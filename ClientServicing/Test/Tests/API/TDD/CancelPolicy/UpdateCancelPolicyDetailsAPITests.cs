@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
+using ClientServicing.Main.Models.BeneficiaryDetails;
 using ClientServicing.Main.Models.CancelPolicy;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace ClientServicing.Test.Tests.API.TDD.CancelPolicy
         UtilitiesHelper utilityHelper = new();
         private IDataAccess _dataAccess = null!;
 
+        [SetUp]
         public void SetUp()
         {
             cancelPolicyAPIClient = new CancelPolicyAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
@@ -27,7 +29,7 @@ namespace ClientServicing.Test.Tests.API.TDD.CancelPolicy
                 utilityHelper.ReadTestDataJson
                 ("CancelPolicy", "UpdateCancelPolicyDetailsRequest.json"));
              //Act
-             var response = await cancelPolicyAPIClient!.UpdateCancelPolicyDetailsAsync(request);
+             var response = await cancelPolicyAPIClient!.UpdateCancelPolicyDetailsAsync<UpdateCancelPolicyDetailsRequest>(request);
              //Assert
              Assert.That(response, Is.Not.Null, "Response should not be null");
              Assert.That(response.StatusCode, Is.EqualTo(System.Net.HttpStatusCode.OK), "Status code should be 200 OK");

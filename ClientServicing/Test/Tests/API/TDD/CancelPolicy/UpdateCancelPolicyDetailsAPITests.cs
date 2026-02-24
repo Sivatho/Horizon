@@ -33,7 +33,7 @@ namespace ClientServicing.Test.Tests.API.TDD.CancelPolicy
             //Act
             var response = await cancelPolicyAPIClient!.UpdateCancelPolicyDetailsAsync<UpdateCancelPolicyDetailsRequest>(request);
             var updateCancelPolicyDetailsResponse = PopulateUpdateCancelDetailsResponse(response);
-            var schema = ResponseSchemas.StandardResponseDataBoolSchema();
+            var schema = ResponseSchemasEnvelope.UpdateCancelPolicyDetailsSchema;
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);

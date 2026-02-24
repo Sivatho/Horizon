@@ -838,6 +838,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("comments", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Property("audModUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
+        public static JsonSchema UpdateCancelPolicyDetailsSchema = ResponseSchemas.StandardResponseDataBoolSchema();
         ///<summary>
         ///Method Name: 
         ///Description:

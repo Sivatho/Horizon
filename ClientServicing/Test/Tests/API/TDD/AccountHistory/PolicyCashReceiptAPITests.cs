@@ -10,9 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
 {
+    [TestFixture]
     public class PolicyCashReceiptAPITests : PolicyCashReceiptValidatiomMethods
     {
-
         AccountingHistoryAPIClient? accountHistoryAPIClient = null;
         UtilitiesHelper utilitiesHelper = new();
         private IDataAccess _dataAccess = null!;
@@ -23,6 +23,7 @@ namespace ClientServicing.Test.Tests.API.TDD.AccountHistory
             accountHistoryAPIClient = new AccountingHistoryAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
             _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
         }
+
         [Test]
         public async Task Given_PolicyCashReceiptRequestIsValid_When_PolicyCashReceiptAsync_Then_ValidatePolicyCashReceiptResponseIsOk()
         {

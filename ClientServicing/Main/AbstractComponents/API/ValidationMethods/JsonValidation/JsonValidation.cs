@@ -839,6 +839,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("audModUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
         public static JsonSchema UpdateCancelPolicyDetailsSchema = ResponseSchemas.StandardResponseDataBoolSchema();
+        public static JsonSchema triggerEventSchema = ResponseSchemas.StandardEnvelopeObject(data => {
+            data.Property("token", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Build();
+        });
         ///<summary>
         ///Method Name: 
         ///Description:

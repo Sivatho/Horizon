@@ -12,10 +12,10 @@ namespace ClientServicing.Main.Models.CancelPolicy
         public int statusCd { get; set; }
         public int reasonCd { get; set; }
         public int subReasonCd { get; set; }
-        public DateTime effectiveDate { get; set; }
-        public string comment { get; set; }
-        public string userID { get; set; }
+        public DateTime? effectiveDate { get; set; }
+        public string? comment { get; set; }
+        public string? userID { get; set; }
         public int paymentTypeCD { get; set; }
-        public string providerReference { get; set; }
+        public string? providerReference { get; set; }
     }
 }

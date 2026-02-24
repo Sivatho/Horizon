@@ -26,7 +26,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.AccountH
         {
             Assert.Multiple(() =>
             {
-                Assert.That(policyCashReceiptResponse.executionOutcome, Is.Not.Null, "Response: ExecutionOutcome should not be null");
+                Assert.That(policyCashReceiptResponse.executionOutcome, Is.Not.Null.Or.Empty, "Response: ExecutionOutcome Should Not Be Null Or Empty");
                 Assert.That(policyCashReceiptResponse.data,             Is.Not.Null, "Response: Data should not be null");
 
                 Assert.That(policyCashReceiptResponse.executionOutcome.succeeded,   Is.True.Or.False,               "Response: ExecutionOutcome.Succeeded Should Be True Or False");

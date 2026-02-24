@@ -1,0 +1,11 @@
+{
+    "policyNo": 205241,
+    "statusCd": 1,
+    "reasonCd": 0,
+    "subReasonCd": 0,
+    "effectiveDate": "2026-02-23T12:59:32.626Z",
+    "comment": "string",
+    "userID": "CLIENTELE\\SBadat",
+    "paymentTypeCD": 1,
+    "providerReference": "string"
+}

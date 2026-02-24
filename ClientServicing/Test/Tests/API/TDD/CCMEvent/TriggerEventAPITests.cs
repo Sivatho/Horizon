@@ -4,7 +4,6 @@ using ClientServicing.Main.AbstractComponents.API.ValidationMethods.CCMEvent;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
-using ClientServicing.Main.Models.AccountHistory;
 using ClientServicing.Main.Models.CCMEvent;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Testing.Platform.Services;

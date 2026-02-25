@@ -1,100 +1,119 @@
-﻿using ClientServicing.Main.Resources.EndPoints.Debicheck;
+﻿using ClientServicing.Main.AbstractComponents.API.Base;
+using ClientServicing.Main.IController;
+using ClientServicing.Main.Resources.EndPoints.Debicheck;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 using static ClientServicing.Main.Resources.EndPoints.Debicheck.DebicheckAPIEndPoints;
 
 namespace ClientServicing.Main.Controller
 {
-    public class DebicheckAPIClient
+    public class DebicheckAPIClient : IDebicheck
     {
-        readonly RestClient restClient;
-        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
-        public DebicheckAPIClient()
+        private readonly RestClient _restClient;
+        private readonly IRestLibrary sharedRestLibrary;
+
+        public DebicheckAPIClient(IRestLibrary sharedRestLibrary)
         {
-            var options = new RestClientOptions()
+            _restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
+        }
+        public async Task<RestResponse> CheckStatusAsync<T>(T payload) where T : class
+        {
+            var url = DebicheckAPIEndPoints.GetEndPoint(EndPoints.CheckStatus);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-                //Authenticator = new OauthAPIAuthenticator()
+                { "Accept", "application/json" }
             };
-            restClient = new RestClient(options);
-        }
-        public async Task<RestResponse> DebicheckCheckStatusAPIClientAsync<T>(T payload) where T : class
-        {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(DebicheckAPIEndPoints.GetEndPoint(EndPoints.CheckStatus), Method.Post);
-                request.AddJsonBody(payload);
-                request.AddHeader("Accept", "application/json");
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"\tDebicheckAPIClientAsync > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                //Log Exception
-                TestContext.Out.WriteLine($"\tDebicheckAPIClientAsync > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tDebicheckAPIClientAsync > Stack Trace: {ex.StackTrace}");
-                //Return a failed response
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
-        }
-        public async Task<RestResponse> DebicheckMandateRequestAPIClientAsync<T>(T payload) where T : class
-        {
-            try
-            {
-                //Arrange
-                var request = new RestRequest(DebicheckAPIEndPoints.GetEndPoint(EndPoints.MandatesRequest), Method.Post);
-                request.AddJsonBody(payload);
-                request.AddHeader("Accept", "application/json");
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                //Assert
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex)
-            {
-                //Log Exception
-                TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tDebicheckMandateRequestAPIClientAsync > Stack Trace: {ex.StackTrace}");
-                //Return a failed response
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
         }
 
-        internal async Task DebicheckMandateAPIClientAsync<T>(T mandaterequest)
+        public async Task<RestResponse> DebicheckRequestRetryAsync<T>(T payload) where T : class
         {
-            throw new NotImplementedException();
+            var url = DebicheckAPIEndPoints.GetEndPoint(EndPoints.DebicheckRequestRetry);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
+        }
+
+        public async Task<RestResponse> DebicheckRetryCheckStatusAsync<T>(T payload) where T : class
+        {
+            var url = DebicheckAPIEndPoints.GetEndPoint(EndPoints.DebicheckRetryCheckStatus);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
+        }
+
+        public async Task<RestResponse> DetermineMandateTypeAsync<T>(T payload) where T : class
+        {
+            var url = DebicheckAPIEndPoints.GetEndPoint(EndPoints.DetermineMandateType);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
+        }
+
+        public async Task<RestResponse> MandatesRequestAsync<T>(T payload) where T : class
+        {
+            var url = DebicheckAPIEndPoints.GetEndPoint(EndPoints.MandatesRequest);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "application/json" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(_restClient, request, stopwatch);
+            return response;
         }
     }
 }

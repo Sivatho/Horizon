@@ -845,6 +845,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
         });
+        public static JsonSchema getEventDetailConstructBPESchema = ResponseSchemas.StandardEnvelopeObject(data => {
+            data.Property("jsonData", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Build();
+        });
         ///<summary>
         ///Method Name: 
         ///Description:

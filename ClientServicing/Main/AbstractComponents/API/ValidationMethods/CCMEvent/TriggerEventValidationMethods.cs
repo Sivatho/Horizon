@@ -24,7 +24,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.CCMEvent
                 Assert.That(triggerEventRequest.effectiveDate,  Is.Not.EqualTo(default(DateTime)), "Response: PolicyNo Should Not Equal To Default DateTime");
                 Assert.That(triggerEventRequest.userId, Is.Null.Or.TypeOf<string>(),            "Response: UserId Should Be NUll or Type of String");
             });
-            DocumentTemplate.DisplayBody("Validate: TriggerEventRequest Data Has Valid Properties and Values");
+            DocumentTemplate.DisplayBody("Validated: TriggerEventRequest Data Has Valid Properties and Values");
         }
 
         public void ValidateTriggerEventResponsePayload(TriggerEventResponse triggerEventResponse)
@@ -42,6 +42,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.CCMEvent
                 Assert.That(triggerEventResponse.data.message,                  Is.Not.Null.Or.Empty,           "Response: Data.Message Should Not Be null Or Empty");
                 Assert.That(triggerEventResponse.data.success == true || triggerEventResponse.data.success == false, "Response: Data.Success Should Be True Or False");
             });
+            DocumentTemplate.DisplayBody("Validated: TriggerEventResponse Data Has Valid Properties and Values");
+
         }
 
         public TriggerEventResponse PopulateTriggerEventResponse(RestResponse restResponse)

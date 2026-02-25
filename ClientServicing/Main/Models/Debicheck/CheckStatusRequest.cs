@@ -19,7 +19,7 @@ namespace ClientServicing.Main.Models.Debicheck
         public string? initials { get; set; }
         public int? amount { get; set; }
         public bool? bypassD3Check { get; set; }
-        public Int32 sourceSystemId { get; set; } 
+        public int sourceSystemId { get; set; } 
 
     }
 }

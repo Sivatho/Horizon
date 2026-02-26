@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientServicing.Main.Models.Debicheck
+﻿namespace ClientServicing.Main.Models.Debicheck
 {
     public class MandatesRequest
     {
@@ -16,8 +10,9 @@ namespace ClientServicing.Main.Models.Debicheck
         public string? agentName { get; set; }
         public required int transactionType { get; set; }
 
-
-
-
+        public class MandatesRequestData
+        {
+            public List<MandatesRequest>? listOfMandatesRequest { get; set; }
+        }
     }
 }

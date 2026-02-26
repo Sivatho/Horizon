@@ -18,8 +18,10 @@ namespace ClientServicing.Main.Models.Debicheck
         public string? surnameOrCompanyName { get; set; }
         public string? initials { get; set; }
         public int? amount { get; set; }
-        public bool? bypassD3Check { get; set; }
         public int sourceSystemId { get; set; } 
 
+    }
+    public class CheckStatusRequestData {
+        public List<CheckStatusRequest>? checkStatusRequestData { get; set; }
     }
 }

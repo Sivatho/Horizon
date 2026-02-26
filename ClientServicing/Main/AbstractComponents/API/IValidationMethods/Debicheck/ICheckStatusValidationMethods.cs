@@ -8,8 +8,9 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck
 {
-    public interface ICheckStatusResponseValidationMethods
+    public interface ICheckStatusValidationMethods
     {
+        public void ValidateCheckStatusRequestDataIsNotNullOrEmpty(CheckStatusRequestData CheckStatusRequestData);
         public void ValidateCheckStatusResponseDataIsNotNullOrEmpty(CheckStatusResponse checkStatusResponse);
     }
 }

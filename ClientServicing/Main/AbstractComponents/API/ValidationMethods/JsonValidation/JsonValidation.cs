@@ -465,6 +465,18 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Build();
         }
 
+        public static JsonSchema StatusDataEnvelop(Action<JsonSchema.Builder>? objectOrItemRules = null)
+        {
+            var nestedBuilder = new JsonSchema.Builder();
+            objectOrItemRules?.Invoke(nestedBuilder);
+            var nestedSchema = nestedBuilder.Build();
+
+            return new JsonSchema.Builder()
+            .Property("success",  JsonKinds.Boolean)
+            .Property("message",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("result",       JsonKinds.Of(JsonValueKind.Object,JsonValueKind.Array), nested: nestedSchema)
+            .Build();
+        }
     }
     public static class PolicySchemas
     {
@@ -557,7 +569,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             var validator = new JsonValidator();
             return validator.Validate(doc.RootElement, schema);
         }
-
     }
     #endregion
 
@@ -851,6 +862,25 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
         });
+        public static JsonSchema checkStatusResponseSchema = ResponseSchemas.StatusDataEnvelop(data => {
+            var dataProperties = new JsonSchema.Builder()
+                 .Property("amount", JsonKinds.Of(JsonValueKind.Number))
+                 .Property("ifaBusinessFeeIncluded", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                 .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                 .Property("message", JsonKinds.Of(JsonValueKind.String))
+                 .Property("status", JsonKinds.Of(JsonValueKind.String))
+                 .Property("payerIdentityNumber", JsonKinds.Of(JsonValueKind.String))
+                 .Property("payerMobileTelephoneNumber", JsonKinds.Of(JsonValueKind.String))
+                 .Property("policyNumber", JsonKinds.Of(JsonValueKind.String))
+                 .Property("createdAt", JsonKinds.Of(JsonValueKind.String))
+                 .Property("mandateType", JsonKinds.Of(JsonValueKind.String))
+                 .Build();
+            data.Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("data", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array),nested: dataProperties)
+            .Build();
+        });
+        
         ///<summary>
         ///Method Name: 
         ///Description:
@@ -1001,7 +1031,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                     .Property("premium", JsonKinds.Of(JsonValueKind.Number))
                     .Property("susTransTotal", JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null));
             });
-
         #endregion
         #endregion
 

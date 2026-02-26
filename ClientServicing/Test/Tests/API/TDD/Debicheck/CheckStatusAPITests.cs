@@ -21,6 +21,7 @@ using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Debicheck
 {
+    [TestFixture]
     public class CheckStatusAPITests : CheckStatusValidationMethods
     {
         DebicheckAPIClient? debicheckAPIClient = null!;

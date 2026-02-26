@@ -1,0 +1,61 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net;
+using System.Text;
+using System.Text.Json;
+using System.Threading.Tasks;
+using AventStack.ExtentReports.Gherkin.Model;
+using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debicheck;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
+using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
+using ClientServicing.Main.Models.AccountHistory;
+using ClientServicing.Main.Models.BenefitExtendedMember;
+using ClientServicing.Main.Models.Debicheck;
+using ClientServicing.Main.Models.General;
+using ClientServicing.Main.Resources.Helper;
+using Microsoft.Extensions.DependencyInjection;
+using RestSharp;
+
+namespace ClientServicing.Test.Tests.API.TDD.Debicheck
+{
+    public class CheckStatusAPITests : CheckStatusValidationMethods
+    {
+        DebicheckAPIClient? debicheckAPIClient = null!;
+        UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
+
+        [SetUp]
+        public void SetUp()
+        { 
+            debicheckAPIClient = new DebicheckAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
+        }
+        [Test]
+        public async Task Given_CheckStatusRequestPayloadIsValid_When_ValidateCheckStatusResponseCodeOk_And_CheckStatusResponseIsOk_And_PropertyNameisValid_And_DataTypesIsValid_And_DataTypesIsValid_And_CheckStatusResponseDataIsNotNull()
+        {
+            //Arrange
+            var checkStatusRequestData = new CheckStatusRequestData();
+            var request = JsonSerializer.Deserialize<List<CheckStatusRequest>>(
+                    utilitiesHelper.ReadTestDataJson
+                    ("Debicheck\\Data", "CheckStatusRequestPayloadIsValid.json"))!;
+            
+            checkStatusRequestData.checkStatusRequestData = request;
+            ValidateCheckStatusRequestDataIsNotNullOrEmpty(checkStatusRequestData);
+
+            //Act
+            var response = await debicheckAPIClient!.CheckStatusAsync(request);
+            var checkStatusResponse = PopulateCheckStatusResponse(response);
+            var schema = ResponseSchemasEnvelope.checkStatusResponseSchema;
+            //Assert
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidateCheckStatusResponseDataIsNotNullOrEmpty(checkStatusResponse);
+        }
+    }
+}

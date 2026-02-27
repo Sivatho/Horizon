@@ -1,12 +1,13 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿namespace ClientServicing.Main.Models.Debicheck
+{
+    public class DetermineMandateTypeRequest
+    {
+        public string? policyNumber { get; set; }
+        public int sourceSystemId { get; set; }
+        public bool hasBankApp { get; set; }
+    }
 
-//namespace ClientServicing.Main.Models.Debicheck
-//{
-//    internal class CheckStatusRequest
-//    {
-//    }
-//}
+    public class DetermineMandateTypeRequestData {
+        public  List<DetermineMandateTypeRequest> listOfDetermineMandateTypeRequest { get; set; }
+    }
+}

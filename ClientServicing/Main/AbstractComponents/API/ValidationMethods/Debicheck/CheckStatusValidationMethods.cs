@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Collections.Generic;
+using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck;
 using ClientServicing.Main.Models.Debicheck;
 using ClientServicing.Main.Models.Email;
@@ -28,8 +29,8 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
                     Assert.That(checkStatusRequest.surnameOrCompanyName,    Is.Not.Null.And.Not.Empty,  "Response: SurnameOrCompanyName Should Not Be Null Or Empty");
                     Assert.That(checkStatusRequest.initials,                Is.Not.Null.And.Not.Empty,  "Response: Initials Should Not Be Null Or Empty");
                     Assert.That(checkStatusRequest.amount,                  Is.Not.LessThan(0),         "Response: Amount Should Not Be Less Than 0");
+                    Assert.That(checkStatusRequest.bypassD3Check,           Is.True.Or.False,           "Response: BypassD3Check Should True Or False");
                     Assert.That(checkStatusRequest.sourceSystemId,          Is.Not.LessThan(0),         "Response: SourceSystemId Should Not Be Less Than 0");
-                    //Assert.That(checkStatusRequest.bypassD3Check, Is.Not.Null, "bypassD3Check should not be null");
                 }
             });
             DocumentTemplate.DisplayBody("Validated: CheckStatusRequest Data Has Valid Properties and Values");
@@ -39,9 +40,13 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
         {
             Assert.Multiple(() => {
                 Assert.That(checkStatusResponse,            Is.Not.Null,                "CheckStatusResponse Should Not Be Null");
-                Assert.That(checkStatusResponse.success,    Is.True.Or.False,           "Response: Success Should Not Be Null");
+                Assert.That(checkStatusResponse.success,    Is.True.Or.False,           "Response: Success Should True Or False");
                 Assert.That(checkStatusResponse.message,    Is.Null.And.Not.Empty,      "Response: Message Should Be Null Or Not Empty");
                 Assert.That(checkStatusResponse.result,     Is.Not.Null.And.Not.Empty,  "Response: Result Should Not Be Null Or Empty");
+                var resultList = new List<CheckStatusResponseResult>();
+                foreach (var result in checkStatusResponse.result!) { 
+
+                }
             });
             DocumentTemplate.DisplayBody("Validated: CheckStatusRequest Data Has Valid Properties and Values");
         }

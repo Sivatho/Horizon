@@ -477,6 +477,18 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("result",       JsonKinds.Of(JsonValueKind.Object,JsonValueKind.Array), nested: nestedSchema)
             .Build();
         }
+        public static JsonSchema MandatesRequestDataEnvelop(Action<JsonSchema.Builder>? objectOrItemRules = null)
+        {
+            var nestedBuilder = new JsonSchema.Builder();
+            objectOrItemRules?.Invoke(nestedBuilder);
+            var nestedSchema = nestedBuilder.Build();
+
+            return new JsonSchema.Builder()
+            .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("didError", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("result", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array), nested: nestedSchema)
+            .Build();
+        }
     }
     public static class PolicySchemas
     {
@@ -880,7 +892,14 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("data", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array),nested: dataProperties)
             .Build();
         });
-        
+        public static JsonSchema MandatesRequestResponseSchema = ResponseSchemas.MandatesRequestDataEnvelop(data => {
+
+            data.Property("success",    JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("message",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("data",           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Build();
+        });
+
         ///<summary>
         ///Method Name: 
         ///Description:

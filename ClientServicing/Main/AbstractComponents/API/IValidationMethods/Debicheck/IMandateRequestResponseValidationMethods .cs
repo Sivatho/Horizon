@@ -1,15 +1,17 @@
-﻿using ClientServicing.Main.Models.Debicheck;
-using ClientServicing.Main.Models.Email;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ClientServicing.Main.Models.Debicheck;
+using ClientServicing.Main.Models.Email;
+using static ClientServicing.Main.Models.Debicheck.MandatesRequest;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck
 {
-    public interface IMandateRequestResponseValidationMethods
+    public interface IMandateRequestValidationMethods
     {
-        public void ValidateMandateRequestResponseDataIsNotNullOrEmpty(MandatesRequestResponse mandaterequestresponse);
+        void ValidateMandateRequesDataIsNotNullOrEmpty(MandatesRequestData mandatesRequestData);
+        public void ValidateMandateResponseDataIsNotNullOrEmpty(MandatesRequestResponse mandaterequestresponse);
     }
 }

@@ -40,7 +40,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
         {
             Assert.Multiple(() => {
                 Assert.That(checkStatusResponse,            Is.Not.Null,                "CheckStatusResponse Should Not Be Null");
-                Assert.That(checkStatusResponse.success,    Is.True.Or.False,           "Response: Success Should True Or False");
+                Assert.That(checkStatusResponse.success,    Is.True.Or.False,           "Response: Success Should Be True Or False");
                 Assert.That(checkStatusResponse.message,    Is.Null.And.Not.Empty,      "Response: Message Should Be Null Or Not Empty");
                 Assert.That(checkStatusResponse.result,     Is.Not.Null.And.Not.Empty,  "Response: Result Should Not Be Null Or Empty");
                 var resultList = new List<CheckStatusResponseResult>();
@@ -48,7 +48,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
 
                 }
             });
-            DocumentTemplate.DisplayBody("Validated: CheckStatusRequest Data Has Valid Properties and Values");
+            DocumentTemplate.DisplayBody("Validated: CheckStatusResponse Data Has Valid Properties and Values");
         }
         public CheckStatusResponse PopulateCheckStatusResponse(RestResponse restResponse)
         {

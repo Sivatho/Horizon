@@ -43,7 +43,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Debicheck
                     utilitiesHelper.ReadTestDataJson
                     ("Debicheck\\Data", "CheckStatusRequestPayloadIsValid.json"))!;
             
-            checkStatusRequestData.checkStatusRequestData = request;
+            checkStatusRequestData.listOdCheckStatusRequest = request;
             ValidateCheckStatusRequestDataIsNotNullOrEmpty(checkStatusRequestData);
 
             //Act

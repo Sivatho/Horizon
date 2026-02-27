@@ -23,6 +23,6 @@ namespace ClientServicing.Main.Models.Debicheck
 
     }
     public class CheckStatusRequestData {
-        public List<CheckStatusRequest>? checkStatusRequestData { get; set; }
+        public List<CheckStatusRequest>? listOdCheckStatusRequest { get; set; }
     }
 }

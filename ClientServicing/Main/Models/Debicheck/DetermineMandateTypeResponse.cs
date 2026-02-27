@@ -1,12 +1,10 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using ClientServicing.Main.Models.General;
 
-//namespace ClientServicing.Main.Models.Debicheck
-//{
-//    internal class CheckStatusRequest
-//    {
-//    }
-//}
+namespace ClientServicing.Main.Models.Debicheck
+{
+    public class DetermineMandateTypeResponse
+    {
+        public bool success { get; set; }
+        public SuccessBoolMessageStringDataObjectResult result { get; set; }
+    }
+}

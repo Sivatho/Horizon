@@ -937,7 +937,16 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
 
 
         });
-
+        public static JsonSchema DebicheckRetryCheckStatusSchema()
+        {
+            return new JsonSchema.Builder()
+                .Property("policyNumber", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("debiCheckStatus", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("retryCount", JsonKinds.Of(JsonValueKind.Number))
+                .Property("retryAllowed", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("latestMandateCreatedAt", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Build();
+        }
         ///<summary>
         ///Method Name: 
         ///Description:

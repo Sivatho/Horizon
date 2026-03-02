@@ -17,6 +17,6 @@
 
     }
     public class CheckStatusRequestData {
-        public List<DebicheckRetryCheckStatusRequest>? listOdCheckStatusRequest { get; set; }
+        public List<DebicheckRetryCheckStatusRequest>? listOfCheckStatusRequest { get; set; }
     }
 }

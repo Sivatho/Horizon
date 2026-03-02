@@ -18,7 +18,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debichec
             Assert.Multiple(() =>
             {
                 Assert.That(checkStatusRequestData, Is.Not.Null, "CheckStatusRequest Should Not Be Null");
-                foreach (CheckStatusRequest checkStatusRequest in checkStatusRequestData.listOdCheckStatusRequest!)
+                foreach (DebicheckRetryCheckStatusRequest checkStatusRequest in checkStatusRequestData.listOdCheckStatusRequest!)
                 {
                     Assert.That(checkStatusRequest.identityNumber,          Is.Not.Null.And.Not.Empty,  "Response: IdentityNumber Should Not Be Null Or Empty");
                     Assert.That(checkStatusRequest.cellPhoneNumber,         Is.Not.Null.And.Not.Empty,  "Response: CellPhoneNumber Should Not Be Null Or Empty");

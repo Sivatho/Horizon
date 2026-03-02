@@ -39,7 +39,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Debicheck
         {
             //Arrange
             var checkStatusRequestData = new CheckStatusRequestData();
-            var request = JsonSerializer.Deserialize<List<CheckStatusRequest>>(
+            var request = JsonSerializer.Deserialize<List<DebicheckRetryCheckStatusRequest>>(
                     utilitiesHelper.ReadTestDataJson
                     ("Debicheck\\Data", "CheckStatusRequestPayloadIsValid.json"))!;
             

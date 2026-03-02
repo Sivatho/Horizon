@@ -464,7 +464,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("data", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
             .Build();
         }
-
+        //DebiCheck
         public static JsonSchema StatusDataEnvelop(Action<JsonSchema.Builder>? objectOrItemRules = null)
         {
             var nestedBuilder = new JsonSchema.Builder();
@@ -472,9 +472,9 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             var nestedSchema = nestedBuilder.Build();
 
             return new JsonSchema.Builder()
-            .Property("success",  JsonKinds.Boolean)
-            .Property("message",    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-            .Property("result",       JsonKinds.Of(JsonValueKind.Object,JsonValueKind.Array), nested: nestedSchema)
+            .Property("success", JsonKinds.Boolean)
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("result", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array), nested: nestedSchema)
             .Build();
         }
         public static JsonSchema MandatesRequestDataEnvelop(Action<JsonSchema.Builder>? objectOrItemRules = null)
@@ -489,6 +489,18 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("result", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array), nested: nestedSchema)
             .Build();
         }
+        public static JsonSchema DetermineMandateResponseDataSuccessAndResultEnvelop(Action<JsonSchema.Builder>? objectOrItemRules = null)
+        {
+            var nestedBuilder = new JsonSchema.Builder();
+            objectOrItemRules?.Invoke(nestedBuilder);
+            var nestedSchema = nestedBuilder.Build();
+
+            return new JsonSchema.Builder()
+                .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("result", JsonKinds.Of(JsonValueKind.Object), nested: nestedSchema)
+                .Build();
+        }
+
     }
     public static class PolicySchemas
     {
@@ -862,19 +874,22 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("audModUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null));
         });
         public static JsonSchema UpdateCancelPolicyDetailsSchema = ResponseSchemas.StandardResponseDataBoolSchema();
-        public static JsonSchema triggerEventSchema = ResponseSchemas.StandardEnvelopeObject(data => {
+        public static JsonSchema triggerEventSchema = ResponseSchemas.StandardEnvelopeObject(data =>
+        {
             data.Property("token", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
             .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
         });
-        public static JsonSchema getEventDetailConstructBPESchema = ResponseSchemas.StandardEnvelopeObject(data => {
+        public static JsonSchema getEventDetailConstructBPESchema = ResponseSchemas.StandardEnvelopeObject(data =>
+        {
             data.Property("jsonData", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
             .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
         });
-        public static JsonSchema checkStatusResponseSchema = ResponseSchemas.StatusDataEnvelop(data => {
+        public static JsonSchema checkStatusResponseSchema = ResponseSchemas.StatusDataEnvelop(data =>
+        {
             var dataProperties = new JsonSchema.Builder()
                  .Property("amount", JsonKinds.Of(JsonValueKind.Number))
                  .Property("ifaBusinessFeeIncluded", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
@@ -889,15 +904,38 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                  .Build();
             data.Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
             .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-            .Property("data", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array),nested: dataProperties)
+            .Property("data", JsonKinds.Of(JsonValueKind.Object, JsonValueKind.Array), nested: dataProperties)
             .Build();
         });
-        public static JsonSchema MandatesRequestResponseSchema = ResponseSchemas.MandatesRequestDataEnvelop(data => {
+        public static JsonSchema MandatesRequestResponseSchema = ResponseSchemas.MandatesRequestDataEnvelop(data =>
+        {
 
-            data.Property("success",    JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
-            .Property("message",        JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-            .Property("data",           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            data.Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("data", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
             .Build();
+        });
+        public static JsonSchema DetermineMandateResponseResultSchema = ResponseSchemas.DetermineMandateResponseDataSuccessAndResultEnvelop(data =>
+        {
+            data
+             .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+
+            // result.message: string or null (adjust if always string)
+            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+            .Property("data", JsonKinds.Of(JsonValueKind.Object), nested:
+                new JsonSchema.Builder()
+                    .Property("mandateType", JsonKinds.Of(JsonValueKind.String))
+                    .Property("statusReason", JsonKinds.Of(JsonValueKind.Array), nested:
+                        new JsonSchema.Builder()
+                            .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                            .Property("policyNumber", JsonKinds.Of(JsonValueKind.String))
+                            .Build()
+                    )
+                    .Build()
+            )
+            .Build();
+
+
         });
 
         ///<summary>
@@ -1055,12 +1093,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
 
         #region 6) Replace Your Method With This (Clean & Single Line)
         public class JsonValidation
-    {
-        public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse)
         {
-            restResponse.ShouldMatchSchema(ResponseSchemasEnvelope.PolicySchema);
+            public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse)
+            {
+                restResponse.ShouldMatchSchema(ResponseSchemasEnvelope.PolicySchema);
+            }
         }
+        #endregion
     }
-    #endregion
-}
 }

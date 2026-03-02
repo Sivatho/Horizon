@@ -7,7 +7,6 @@ using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.Debicheck;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Extensions.DependencyInjection;
-using static ClientServicing.Main.Models.Debicheck.MandatesRequest;
 
 namespace ClientServicing.Test.Tests.API.TDD.Debicheck
 {

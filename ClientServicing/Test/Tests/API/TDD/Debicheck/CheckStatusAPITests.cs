@@ -1,23 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
-using AventStack.ExtentReports.Gherkin.Model;
-using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Debicheck;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Debicheck;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
-using ClientServicing.Main.Models.AccountHistory;
-using ClientServicing.Main.Models.BenefitExtendedMember;
 using ClientServicing.Main.Models.Debicheck;
-using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Extensions.DependencyInjection;
-using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Debicheck
 {
@@ -43,7 +32,7 @@ namespace ClientServicing.Test.Tests.API.TDD.Debicheck
                     utilitiesHelper.ReadTestDataJson
                     ("Debicheck\\Data", "CheckStatusRequestPayloadIsValid.json"))!;
             
-            checkStatusRequestData.listOdCheckStatusRequest = request;
+            checkStatusRequestData.listOfCheckStatusRequest = request;
             ValidateCheckStatusRequestDataIsNotNullOrEmpty(checkStatusRequestData);
 
             //Act

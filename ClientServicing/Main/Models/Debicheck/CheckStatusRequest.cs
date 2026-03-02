@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientServicing.Main.Models.Debicheck
+﻿namespace ClientServicing.Main.Models.Debicheck
 {
-    public class CheckStatusRequest
+    public class DebicheckRetryCheckStatusRequest
     {
         public string policyNumber { get; set; }
         public string? identityNumber { get; set; }
@@ -23,6 +17,6 @@ namespace ClientServicing.Main.Models.Debicheck
 
     }
     public class CheckStatusRequestData {
-        public List<CheckStatusRequest>? listOdCheckStatusRequest { get; set; }
+        public List<DebicheckRetryCheckStatusRequest>? listOdCheckStatusRequest { get; set; }
     }
 }

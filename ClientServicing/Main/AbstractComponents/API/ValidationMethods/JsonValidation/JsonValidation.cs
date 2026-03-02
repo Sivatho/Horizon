@@ -947,6 +947,21 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("latestMandateCreatedAt", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
         }
+
+        public static JsonSchema DebitcheckRequestRetry()
+        {
+            return new JsonSchema.Builder()
+                .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("didError", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("data", JsonKinds.Of(JsonValueKind.Object), nested:
+                new JsonSchema.Builder()
+                    .Property("mandateType", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                    .Property("statusReason", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                    .Build()
+                )
+                .Build();
+        }
         ///<summary>
         ///Method Name: 
         ///Description:

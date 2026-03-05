@@ -104,7 +104,8 @@ namespace ClientServicing.Main.Controller
                 null,
                 out var stopwatch,
                 headers,
-                queryParams, urlSegment);
+                queryParams,
+                urlSegment);
 
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);

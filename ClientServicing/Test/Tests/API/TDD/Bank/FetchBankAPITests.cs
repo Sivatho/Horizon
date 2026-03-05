@@ -4,9 +4,7 @@ using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
-using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
-using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {

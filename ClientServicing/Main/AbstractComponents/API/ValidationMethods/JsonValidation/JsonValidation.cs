@@ -937,6 +937,19 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
 
 
         });
+        //Bank
+        public static JsonSchema FetchBankResponseSchema = ResponseSchemas.StandardEnvelopeArray(item =>
+        {
+            item.Property("bankID",         JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankName",       JsonKinds.Of(JsonValueKind.String))
+                .Property("bankShortName",  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("dispSeq",        JsonKinds.Of(JsonValueKind.Number))
+                .Property("isActive",       JsonKinds.Boolean)
+                .Property("lastChanged",    JsonKinds.Of(JsonValueKind.String))
+                .Property("userID",         JsonKinds.Of(JsonValueKind.String));
+        });
+        
+        
         public static JsonSchema DebicheckRetryCheckStatusSchema()
         {
             return new JsonSchema.Builder()
@@ -947,7 +960,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("latestMandateCreatedAt", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
         }
-
         public static JsonSchema DebitcheckRequestRetry()
         {
             return new JsonSchema.Builder()

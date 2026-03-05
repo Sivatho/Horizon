@@ -948,7 +948,12 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("lastChanged",    JsonKinds.Of(JsonValueKind.String))
                 .Property("userID",         JsonKinds.Of(JsonValueKind.String));
         });
-        
+        public static JsonSchema CanChangeBankAccountSchema = ResponseSchemas.StandardEnvelopeObject(item => { 
+            item.Property("procCompleted", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("success", JsonKinds.Of(JsonValueKind.True, JsonValueKind.False))
+                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Build();
+        });
         
         public static JsonSchema DebicheckRetryCheckStatusSchema()
         {

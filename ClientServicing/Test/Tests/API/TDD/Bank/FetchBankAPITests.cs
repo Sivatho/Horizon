@@ -1,6 +1,7 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
@@ -18,58 +19,63 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().ReadJsonTestDataFields("Bank/Data", "BankDetailsAreNotNull.json");
 
         [Test, Category("Positive")]
-        public async Task Given_BankDetailsAreNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        public async Task Given_BankDetailsAreNotNull_When_FetchBanksAsync_Then_ValidateFetchBankResponse_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime()
         {
             //Arrange
             FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
                 (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreNotNull.json"));
-            fetchBankRequest.lastChanged = DateTime.Now.AddDays(-10);
-
+            fetchBankRequest!.lastChanged = DateTime.Now.AddDays(-10);
+            ValidateFetchBanksRequestData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBankRequest);
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
-            var fetchBanksResponse = populateFetchBanksResponse(response);
-
+            var fetchBanksResponse = PopulateFetchBanksResponse(response);
+            var schema = ResponseSchemasEnvelope.FetchBankResponseSchema;
             //Assertl
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidatFetchBanksResponseData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBanksResponse);
         }
+
         [Test, Category("Positive")]
         public async Task Given_BankDetailsAreAllNull_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
             FetchBanksRequest? fetchBankRequest = JsonSerializer.Deserialize<FetchBanksRequest>
                 (utilitiesHelper.ReadTestDataJson("Bank/Data", "BankDetailsAreAllNull.json"));
-
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
-            var fetchBanksResponse = populateFetchBanksResponse(response);
-
+            var fetchBanksResponse = PopulateFetchBanksResponse(response);
+            var schema = ResponseSchemasEnvelope.FetchBankResponseSchema;
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidatFetchBanksResponseData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBanksResponse);
         }
+
        [TestCaseSource(nameof(fetchBankRequestEachTestDataObject)), Category("Positive")]
         public async Task Given_FetchBankRequestEachAvailableBank_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(FetchBanksRequest fetchBankRequest)
         {
             //Arrange
-            //ValidateObjectRequestDataIsNotNullOrEmptyOrLessThanZero(fetchBankRequest);
+            ValidateFetchBanksRequestData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBankRequest);
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
-            var fetchBanksResponse = populateFetchBanksResponse(response);
-
-            //Assertl
+            var fetchBanksResponse = PopulateFetchBanksResponse(response);
+            var schema = ResponseSchemasEnvelope.FetchBankResponseSchema;
+            //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidatFetchBanksResponseData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBanksResponse);
         }
+
         [Test, Category("Positive")]
         [TestCaseSource(nameof(fetchBankRequestEachTestDataFields))]
         public async Task Given_BankDetailsAreNotNullRequestEachField_When_FetchBanksAsync_Then_ValidateFetchBankResponseIsOk_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid(
@@ -89,16 +95,18 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
                 case "userID":          fetchBankRequest.userID         = fieldValue != null ? fieldValue.ToString() : null; break;
                 default: TestContext.Out.WriteLine($"Unkown property: {fieldName}"); break;
             }
+            ValidateFetchBanksRequestData_When_IsNotNullAndNotEmpty(fetchBankRequest);
             //Act
             var response = await bankAPIClient.FetchBanksAsync(fetchBankRequest);
-            var fetchBanksResponse = populateFetchBanksResponse(response);
-
-            //Assertl
+            var fetchBanksResponse = PopulateFetchBanksResponse(response);
+            var schema = ResponseSchemasEnvelope.FetchBankResponseSchema;
+            //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidatFetchBanksResponseDataIsNotNullOrEmpty(fetchBanksResponse);
-            ValidateResponseSchemaIsValid(response, "Bank/Schema", "FetchBankResponseSchema.json");
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidatFetchBanksResponseData_When_IsNotNullAndNotEmpty_And_GreaterOrEqualZero_And_NotEqualToDefaultDateTime(fetchBanksResponse);
         }
     }
 }

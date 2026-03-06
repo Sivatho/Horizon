@@ -13,9 +13,9 @@
         public string bankAccNo { get; set; }
         public int bankAccountId { get; set; }
         public int entityNo { get; set; }
-        public string effFrom { get; set; }
-        public string effTo { get; set; }
-        public string audModifyDate { get; set; }
+        public DateTime effFrom { get; set; }
+        public DateTime effTo { get; set; }
+        public DateTime audModifyDate { get; set; }
         public string audModifyUser { get; set; }
     }
 }

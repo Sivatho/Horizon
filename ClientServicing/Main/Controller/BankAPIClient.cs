@@ -1,6 +1,6 @@
-﻿using ClientServicing.Main.IController;
+﻿using ClientServicing.Main.AbstractComponents.API.Base;
+using ClientServicing.Main.IController;
 using ClientServicing.Main.Resources.EndPoints.Bank;
-using ClientServicing.Main.Resources.EndPoints.Policy;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 using static ClientServicing.Main.Resources.EndPoints.Bank.BankAPIEndPoints;
@@ -11,16 +11,11 @@ namespace ClientServicing.Main.Controller
     {
         readonly RestClient restClient;
         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        private readonly IRestLibrary sharedRestLibrary;
 
-        public BankAPIClient()
+        public BankAPIClient(IRestLibrary sharedRestLibrary)
         {
-            var options = new RestClientOptions()
-            {
-                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-                //Authenticator = new OauthAPIAuthenticator()
-            };
-            restClient = new RestClient(options);
+            restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
         }
 
         public async Task<RestResponse> CanChangeBankAccountAsync(int bankAccountId)
@@ -28,8 +23,11 @@ namespace ClientServicing.Main.Controller
             //Arrange
             var url = BankAPIEndPoints.GetEndPoint(EndPoints.CanChangeBankAccount);
              Method method = Method.Get;
-             IDictionary<string, string>? headers = null;
-             IDictionary<string, int>? urlSegment = new Dictionary<string, int>
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            IDictionary<string, int>? urlSegment = new Dictionary<string, int>
              {
                  ["bankAccountId"] = bankAccountId
              };
@@ -38,10 +36,9 @@ namespace ClientServicing.Main.Controller
                  method,
                  null,
                  out var stopwatch,
-                 null,
+                 headers,
                  null,
                  urlSegment);
-
              // Act
              var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
              return response;

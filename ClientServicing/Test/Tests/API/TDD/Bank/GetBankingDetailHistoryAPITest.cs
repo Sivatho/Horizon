@@ -10,6 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
+    [TestFixture]
     public class GetBankingDetailHistoryAPITest : GetBankDetailsHisoryResponseValidationMethods
     {
         BankAPIClient bankAPIClient = null!;

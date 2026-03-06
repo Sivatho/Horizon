@@ -94,7 +94,10 @@ namespace ClientServicing.Main.Controller
             //Arrange
             var url = BankAPIEndPoints.GetEndPoint(EndPoints.ValidateAccountNumberUsageLimit);
             Method method = Method.Get;
-            IDictionary<string, string>? headers = null;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
             IDictionary<string, int>? urlSegment = new Dictionary<string, int>
             {
                 ["accountNumber"] = int.Parse(accountNumber)
@@ -104,7 +107,7 @@ namespace ClientServicing.Main.Controller
                 method,
                 null,
                 out var stopwatch,
-                null,
+                headers,
                 null,
                 urlSegment);
 

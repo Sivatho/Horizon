@@ -3,16 +3,27 @@ using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Resources.Helper;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     [TestFixture]
     public class FetchBankAPITests : FetchBankResponseValidationMethods
     {
-        BankAPIClient bankAPIClient = new();
+        BankAPIClient bankAPIClient = null;
         UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            bankAPIClient = new BankAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
+        }
+
         public static IEnumerable<FetchBanksRequest> fetchBankRequestEachTestDataObject = new JsonDataLoader().ReadJsonTestDataList<FetchBanksRequest>("Bank/Data", "AvailableBanks.json");
         public static IEnumerable<TestCaseData> fetchBankRequestEachTestDataFields = new JsonDataLoader().ReadJsonTestDataFields("Bank/Data", "BankDetailsAreNotNull.json");
 

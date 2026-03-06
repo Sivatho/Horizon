@@ -1,92 +1,67 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
+using Microsoft.Extensions.DependencyInjection;
 using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.Bank
 {
     public class CanChangeBankAccountAPITest : CanChangeBankAccountIdValidationMethods
     {
-        BankAPIClient bankAPIClient = new();
-        [Test]
-        public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
-            //Arrange
-            int bankAccountId = 20354;
+        BankAPIClient bankAPIClient = null;
+        UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
 
-            //Act
-            var response = await bankAPIClient.CanChangeBankAccountAsync(bankAccountId);
-            var canChangeBankAccountResponse = populateCanChangeBankAccountResponse(response);
-
-            //Assert
-            ValidationAssertionHeading();
-            ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
+        [SetUp]
+        public void SetUp()
+        {
+            bankAPIClient = new BankAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
         }
 
         [Test]
-        public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid() {
+        public async Task GivenBankAccountId_WhenCanChangeBankAccountAsync_Then_ValidateCanChangeBankAccountResponseData_IsNotNull_And_IsTrueOrFalse_And_TypeOfString()
+        {
+            //Arrange
+            var bankAccountRequest = JsonSerializer.Deserialize<BankAccountRequest>(
+                utilitiesHelper.ReadTestDataJson("General/Data", "BankAccountIDsRequestUrlSegmentIsValid.json"));
+            var bankAccountId = bankAccountRequest!.bankAccountList[0];
+            ValidateCanChangeBankAccountRequestDataIsNotNullOrEmpty(bankAccountRequest);
+            //Act
+            var response = await bankAPIClient.CanChangeBankAccountAsync(bankAccountId);
+            var canChangeBankAccountResponse = PopulateCanChangeBankAccountResponse(response);
+            var schema = ResponseSchemasEnvelope.CanChangeBankAccountSchema;
+            //Assert
+            ValidationAssertionHeading();
+            ValidateResponseStatusCode(response, HttpStatusCode.OK);
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidateCanChangeBankAccountResponseDataIsNotNullAndIsTrueOrFalseAndTypeOfString(canChangeBankAccountResponse);
+        }
+
+        [Test]
+        public async Task GivenInvalidBankAccountId_WhenCanChangeBankAccountAsync_ThenResponseStatusCodeOK_AndResponsePropertyNameIsValid_AndDataTypesIsValid()
+        {
             //Arrange
             int bankAccountId = -1;
-
             //Act
             var response = await bankAPIClient.CanChangeBankAccountAsync(bankAccountId);
-            var canChangeBankAccountResponse = populateCanChangeBankAccountResponse(response);
-
+            var canChangeBankAccountResponse = PopulateCanChangeBankAccountResponse(response);
+            var schema = ResponseSchemasEnvelope.CanChangeBankAccountSchema;
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-        }
-        public CanChangeBankAccountResponse populateCanChangeBankAccountResponse(RestResponse response) {
-            try {
-                using JsonDocument document = JsonDocument.Parse(response.Content);
-
-                CanChangeBankAccountResponse canChangeBankAccountResponse = new CanChangeBankAccountResponse
-                {
-                    data = new CompleteStatusMessages()
-                };
-                foreach(var property in document.RootElement.EnumerateObject()) {
-                    switch(property.Name) {
-                        case "succeeded":
-                            canChangeBankAccountResponse.succeeded = property.Value.GetBoolean();
-                            break;
-                        case "message":
-                            canChangeBankAccountResponse.message = property.Value.GetString();
-                            break;
-                        case "errors":
-                            canChangeBankAccountResponse.errors = property.Value.GetString();
-                            break;
-                        case "data":
-                            foreach(var dataProperty in property.Value.EnumerateObject()) {
-                                switch(dataProperty.Name) {
-                                    case "proCompleted":
-                                        canChangeBankAccountResponse.data.proCompleted = dataProperty.Value.GetBoolean();
-                                        break;
-                                    case "success":
-                                        canChangeBankAccountResponse.data.success = dataProperty.Value.GetBoolean();
-                                        break;
-                                    case "message":
-                                        canChangeBankAccountResponse.data.message = dataProperty.Value.GetString();
-                                        break;
-                                }
-                            }
-                            break;
-                        default:
-                            TestContext.Out.WriteLine($"Unknown property in response: {property.Name}");
-                            break;
-                    }
-                }
-                return canChangeBankAccountResponse;
-            }
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Exception occurred while deserializing response: {ex.Message}");
-                TestContext.Out.WriteLine($"\tCanChangeBankAccount > Stack Trace: {ex.StackTrace}");
-                return null;
-            }
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidateCanChangeBankAccountResponseDataIsNotNullAndIsTrueOrFalseAndTypeOfString(canChangeBankAccountResponse);
         }
     }
 }

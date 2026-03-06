@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.Bank;
 using ClientServicing.Main.Models.Bank;
 using ClientServicing.Main.Resources.Helper;
@@ -13,44 +8,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
 {
     public class ValidateAccountNumberUsageLimitValidationMethods : AbstractValidationMethods, IValidateAccountNumberUsageLimitValidationMethods
     {
-        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
-        {
-            throw new NotImplementedException();
-        }
-
-        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
-        {
-            var rules = new List<JsonValidationRule> {
-                new JsonValidationRule {
-                    PropertyName = "success",
-                    AllowedKinds = new[] {
-                        JsonValueKind.True, JsonValueKind.False
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "message",
-                    AllowedKinds = new[] {
-                        JsonValueKind.String, JsonValueKind.Null
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "totalPolicies",
-                    AllowedKinds = new[] {
-                        JsonValueKind.Number, JsonValueKind.Null
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "limitExceeded",
-                    AllowedKinds = new[] {
-                        JsonValueKind.True, JsonValueKind.False
-                    }
-                }
-            };
-            using var doc = JsonDocument.Parse(restResponse.Content);
-            JsonValidationRule.ValidateJson(doc.RootElement, rules);
-            TestContext.Out.WriteLine("Response: content data types are valid.");
-        }
-
+        UtilitiesHelper utilitiesHelper = new();
         public void ValidateValidateAccountNumberUsageLimitResponseDataIsNotNullOrEmpty(ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse)
         {
             Assert.Multiple(() =>
@@ -62,6 +20,31 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 );
             });
             TestContext.Out.WriteLine("Response: ValidateAccountNumberUsageLimitResponse is not null or empty.");
+        }
+        public ValidateAccountNumberUsageLimitResponse PopulateValidateAccountNumberUsageLimitResponse(RestResponse response)
+        {
+            using JsonDocument document = JsonDocument.Parse(response.Content!);
+            ValidateAccountNumberUsageLimitResponse validateAccountNumberUsageLimitResponse = new();
+            foreach (var property in document.RootElement.EnumerateObject())
+            {
+                switch (property.Name.ToLower())
+                {
+                    case "succeeded":       validateAccountNumberUsageLimitResponse.success =       (bool)utilitiesHelper.ReadBooleanNullable(property.Value)!; break;
+                    case "message":         validateAccountNumberUsageLimitResponse.message =       utilitiesHelper.ReadStringNullable(property.Value)!; break;
+                    case "totalPolicies":   validateAccountNumberUsageLimitResponse.totalPolicies = (int)utilitiesHelper.ReadInt32Nullable(property.Value)!; break;
+                    case "limitExceeded":   validateAccountNumberUsageLimitResponse.limitExceeded = (bool)utilitiesHelper.ReadBooleanNullable(property.Value)!; break;
+                }
+            }
+            return validateAccountNumberUsageLimitResponse;
+        }
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
+        {
+            throw new NotImplementedException();
         }
     }
 }

@@ -954,7 +954,27 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
         });
-        
+        public static JsonSchema GetBankingDetailHistorySchema = ResponseSchemas.StandardEnvelopeAny(item =>
+        {
+            item.Property("debitDay", JsonKinds.Of(JsonValueKind.Number))
+                .Property("paymentMethod", JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankAccHolder", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankId", JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccTypeCd", JsonKinds.Of(JsonValueKind.Number))
+                .Property("bankAccTypeDescr", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("branchCode", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccNo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("bankAccountId", JsonKinds.Of(JsonValueKind.Number))
+                .Property("entityNo", JsonKinds.Of(JsonValueKind.Number))
+                .Property("effFrom", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("effTo", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("audModifyDate", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("audModifyUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Build();
+        });
+
+
         public static JsonSchema DebicheckRetryCheckStatusSchema()
         {
             return new JsonSchema.Builder()

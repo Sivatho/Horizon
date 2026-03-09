@@ -58,7 +58,6 @@ namespace ClientServicing.Main.Controller
                 payload,
                 out var stopwatch,
                 headers);
-
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
             return response;
@@ -84,7 +83,6 @@ namespace ClientServicing.Main.Controller
                 headers,
                 null,
                 urlSegment);
-
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
             return response;
@@ -110,38 +108,28 @@ namespace ClientServicing.Main.Controller
                 headers,
                 null,
                 urlSegment);
-
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
             return response;
         }
         public async Task<RestResponse> ValidateBankAccountAsync<T>(T payload) where T : class
         {
-            try {
-                // Arrange
-                var request = new RestRequest(BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccount),Method.Post);
-                request.AddJsonBody(payload);
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                // Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"ValidateBankAccount > Response failed. Status:" +
-                        $" {response.StatusCode}," +
-                        $" {response.ErrorMessage}");
-                }
-                return response;
-            }
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"\tValidateBankAccount > Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"\tValidateBankAccount > Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = ex.Message
-                };
-            }
+            // Arrange
+            var url = BankAPIEndPoints.GetEndPoint(EndPoints.ValidateBankAccount);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
         public async Task<RestResponse> ValidateBankAccountQAVSRAsync<T>(T payload) where T : class
         {
@@ -153,7 +141,6 @@ namespace ClientServicing.Main.Controller
                 method,
                 payload,
                 out var stopwatch);
-
             // Act
             var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
             return response;

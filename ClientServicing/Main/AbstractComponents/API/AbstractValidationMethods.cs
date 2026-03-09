@@ -28,11 +28,11 @@ namespace ClientServicing.Main.AbstractComponents.API
                 bodyPreview = bodyPreview.Substring(0, maxBodyPreviewLength) + "... [truncated]";
             }
             return $@"❌ Status Code Assertion Failed!
-      {statusLine}
-      Request: {method} {uri}
-      Content-Type: {contentType}
-      Content-Length: {contentLength}
-      Body (preview): {bodyPreview}";
+              {statusLine}
+              Request: {method} {uri}
+              Content-Type: {contentType}
+              Content-Length: {contentLength}
+              Body (preview): {bodyPreview}";
         }
 
         public void ValidateResponseStatusCode(RestResponse restResponse, HttpStatusCode expectedStatusCode)
@@ -44,7 +44,7 @@ namespace ClientServicing.Main.AbstractComponents.API
         }
         public void ValidateResponseHeadersAreValid(RestResponse restResponse)
         {
-            if (restResponse.Headers.Count == 0)
+            if (restResponse.Headers!.Count == 0)
             {
                 Assert.Fail("Response Headers should not be empty");
             }
@@ -54,22 +54,22 @@ namespace ClientServicing.Main.AbstractComponents.API
                 {
                     Assert.Multiple(() =>
                     {
-                        Assert.That(header.Name, Is.Not.Null.Or.Empty, "Response Header Name should not be null or empty");
-                        Assert.That(header.Value, Is.Not.Null.Or.Empty, $"Response Header '{header.Name}' value should not be null or empty");
+                        Assert.That(header.Name,    Is.Not.Null.Or.Empty, "Response Header Name should not be null or empty");
+                        Assert.That(header.Value,   Is.Not.Null.Or.Empty, $"Response Header '{header.Name}' value should not be null or empty");
                     });
                     Assert.Multiple(() =>
                     {
                         switch (header.Name)
                         {
-                            case "Transfer-Encoding": Assert.That(header.Value, Is.EqualTo("chunked")); break;
-                            case "Server": Assert.That(header.Value, Is.EqualTo("Microsoft-IIS/10.0")); break;
-                            case "Strict-Transport-Security": Assert.That(header.Value, Is.EqualTo("max-age=2592000")); break;
-                            case "api-supported-versions": Assert.That(header.Value, Is.EqualTo("1.0")); break;
-                            case "X-Powered-By": Assert.That(header.Value, Is.EqualTo("ASP.NET")); break;
+                            case "Transfer-Encoding":           Assert.That(header.Value, Is.EqualTo("chunked")); break;
+                            case "Server":                      Assert.That(header.Value, Is.EqualTo("Microsoft-IIS/10.0")); break;
+                            case "Strict-Transport-Security":   Assert.That(header.Value, Is.EqualTo("max-age=2592000")); break;
+                            case "api-supported-versions":      Assert.That(header.Value, Is.EqualTo("1.0")); break;
+                            case "X-Powered-By":                Assert.That(header.Value, Is.EqualTo("ASP.NET")); break;
                         }
                     });
                 });
-                TestContext.Out.WriteLine("Validated: Response Header Should Be Valid And Data Should Match : As Expected");
+                DocumentTemplate.DisplayBody("Validated: Response Header Should Be Valid And Data Should Match : As Expected");
             }
         }
         public void ValidateResponsePropertyNameIsValidAndDataTypesIsValid(RestResponse restResponse, JsonSchema jsonSchema)
@@ -82,23 +82,15 @@ namespace ClientServicing.Main.AbstractComponents.API
             var schema = jsonSchema;
             restResponse.ShouldMatchSchema(schema);
         }
-
         public void ValidateErrorrMessage(RestResponse restResponse, string expectedErrorMessage)
         {
             var actualErrorMessage = restResponse?.Content ?? string.Empty;
 
-            Assert.That(
-                  actualErrorMessage,
-                  Is.EqualTo(expectedErrorMessage),
-                  "Response error message should match the expected value."
-              );
-
-
-            DocumentTemplate.DisplayBody(
-                   $"Validated: Response Error Message: {actualErrorMessage} matches Expected Error Message: {expectedErrorMessage}."
-               );
+            Assert.That(actualErrorMessage, Is.EqualTo(expectedErrorMessage),"Response error message should match the expected value.");
+            DocumentTemplate.DisplayBody($"Validated: Response Error Message: {actualErrorMessage} matches Expected Error Message: {expectedErrorMessage}.");
         }
 
+        //Below code is no longer used but keeping it for reference until we remove all the consuming classes and methods
         public void ValidateResponseSchemaIsValid(RestResponse restResponse, string folder, string jsonfile)
         {
             UtilitiesHelper utilitiesHelper = new UtilitiesHelper();

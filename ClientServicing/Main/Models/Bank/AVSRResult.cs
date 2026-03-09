@@ -28,4 +28,9 @@
         public string? message { get; set; }
         public bool isForcedSuccessResponse { get; set; }
     }
+    public class BankAccountAVSRResult {
+        public AVSRResult avsrResult { get; set; }
+        public int payDay { get; set; }
+        public bool hasException { get; set; }
+    }
 }

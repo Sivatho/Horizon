@@ -20,14 +20,11 @@ namespace ClientServicing.Test.Tests.API.TDD.Policy
             // Arrange           
             var policyNoRequest = JsonSerializer.Deserialize<PolicyNoRequest>(
                 utilitiesHelper.ReadTestDataJson("General/Data", "ListOfPolicyNo.json"));
-            int firstPolicyNo = policyNoRequest.policyNoList[0];
-            
-
+            int firstPolicyNo = policyNoRequest.policyNoList[0];            
             // Act
             var response = await policyAPIClient.GetUnmentPremiumAsync(firstPolicyNo);
             var getUnmentPremiumResponse = populateGetUnmentPremiumResponse(response);
             var schema = ResponseSchemasEnvelope.GetUnmetPremiumResponseSchema();
-
             // Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);

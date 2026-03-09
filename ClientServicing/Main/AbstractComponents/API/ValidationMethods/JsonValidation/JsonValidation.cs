@@ -1019,21 +1019,76 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         ///Advantage:
         ///Disadvantage:
         ///</summary>
-        public static JsonSchema AvsValidationBody()
-        {
-            return new JsonSchema.Builder()
-                .Property("isValid", JsonKinds.Boolean)
-                .Property("shouldUpdateAccountType", JsonKinds.Boolean)
-                .Property("overrideIsValid", JsonKinds.Boolean)
-                .Property("message", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("fraudsterFailure", JsonKinds.Of(JsonValueKind.Number))
-                .Property("correctBankName", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
-                .Property("softyCompResult", JsonKinds.Of(JsonValueKind.Object))
-                .Property("fraudsterResult", JsonKinds.Of(JsonValueKind.Object))
-                .Property("d3BlackListResult", JsonKinds.Of(JsonValueKind.Object))
-                .Property("avsrResult", JsonKinds.Of(JsonValueKind.Object))
+        public static JsonSchema SoftyCompResultSchema() =>
+             new JsonSchema.Builder()
+                 .Property("wasTestResultOverridden",   JsonKinds.Boolean)
+                 .Property("wasTestPerformed",          JsonKinds.Boolean)
+                 .Property("isValid",                   JsonKinds.Boolean)
+                 .Property("message",                   JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                 .Build();
+
+        public static JsonSchema FraudsterResultSchema() =>
+            new JsonSchema.Builder()
+                .Property("wasTestResultOverridden",    JsonKinds.Boolean)
+                .Property("fraudsterFailureType",       JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("wasTestPerformed",           JsonKinds.Boolean)
+                .Property("isValid",                    JsonKinds.Boolean)
+                .Property("message",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
-        }
+
+        public static JsonSchema D3BlackListResultSchema() =>
+            new JsonSchema.Builder()
+                .Property("wasTestResultOverridden",    JsonKinds.Boolean)
+                .Property("wasTestPerformed",           JsonKinds.Boolean)
+                .Property("isValid",                    JsonKinds.Boolean)
+                .Property("message",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Build();
+
+        public static JsonSchema AvsrResultSchema() =>
+            new JsonSchema.Builder()
+                .Property("qLinkAvsrCheckId",                           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errorCode",                                  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("errorDescription",                           JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("sessionId",                                  JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("accountStatusId",                            JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("wasCachedResultUsed",                        JsonKinds.Boolean)
+                .Property("wasBankAccountFound",                        JsonKinds.Boolean)
+                .Property("isBankAccountOpen",                          JsonKinds.Boolean)
+                .Property("doesBankAccountTypeMatch",                   JsonKinds.Boolean)
+                .Property("doesInitialsMatch",                          JsonKinds.Boolean)
+                .Property("doesIdentityNumberMatch",                    JsonKinds.Boolean)
+                .Property("doesNameMatch",                              JsonKinds.Boolean)
+                .Property("doesAcceptsDebits",                          JsonKinds.Boolean)
+                .Property("doesAcceptsCredits",                         JsonKinds.Boolean)
+                .Property("didTimeout",                                 JsonKinds.Boolean)
+                .Property("accountLengthMatch",                         JsonKinds.Boolean)
+                .Property("missingParameter",                           JsonKinds.Boolean)
+                .Property("doesPhoneMatch",                             JsonKinds.Boolean)
+                .Property("doesEmailMatch",                             JsonKinds.Boolean)
+                .Property("hasBankAccountBeenOpenForMoreThan3Months",   JsonKinds.Boolean)
+                .Property("responseDate",                               JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("wasTestPerformed",                           JsonKinds.Boolean)
+                .Property("isValid",                                    JsonKinds.Boolean)
+                .Property("message",                                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("isForcedSuccessResponse",                    JsonKinds.Boolean)
+                .Build();
+
+        public static JsonSchema ValidateBankAccoutntStandardEnvelope() =>
+            new JsonSchema.Builder()
+                .Property("isValid",                    JsonKinds.Boolean)
+                .Property("shouldUpdateAccountType",    JsonKinds.Boolean)
+                .Property("overrideIsValid",            JsonKinds.Boolean)
+                .Property("message",                    JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+                .Property("fraudsterFailure",           JsonKinds.Of(JsonValueKind.Number, JsonValueKind.Null))
+                .Property("correctBankName",            JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
+
+                .Property("softyCompResult",    JsonKinds.Of(JsonValueKind.Object), nested: SoftyCompResultSchema())
+                .Property("fraudsterResult",    JsonKinds.Of(JsonValueKind.Object), nested: FraudsterResultSchema())
+                .Property("d3BlackListResult",  JsonKinds.Of(JsonValueKind.Object), nested: D3BlackListResultSchema())
+                .Property("avsrResult",         JsonKinds.Of(JsonValueKind.Object), nested: AvsrResultSchema())
+
+                .Build();
+
         public static JsonSchema GetUnmetPremiumResponseSchema()
         {
 

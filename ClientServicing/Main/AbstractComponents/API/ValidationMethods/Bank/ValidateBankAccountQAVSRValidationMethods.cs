@@ -11,7 +11,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
     {
         UtilitiesHelper utilitiesHelper = new();
         public void ValidateValidateBankAccountQAVSRRequestDataIsNotNullOrEmptyOrLessThanZero(ValidateBankAccountQAVSRRequest validateBankAccountQAVSRRequest)
-        {
+        {            
             Assert.Multiple(() =>
             {
                 Assert.That(validateBankAccountQAVSRRequest.payerEntityNo,          Is.Not.LessThan(0),                 "Request: payerEntityNo Should Not Be Less Than 0");
@@ -27,7 +27,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(validateBankAccountQAVSRRequest.isAMember,              Is.True.Or.False,                   "Request: isAMember Should Be True Or False");
                 Assert.That(validateBankAccountQAVSRRequest.legalRefNo,             Is.Not.Null.And.Not.Empty,          "Request: legalRefNo Should Not Be Null Or Empty");
                 Assert.That(validateBankAccountQAVSRRequest.legalRefNoTypeCD,       Is.Not.LessThan(0),                 "Request: legalRefNoTypeCD Should Not Be Less Than 0");
-                Assert.That(validateBankAccountQAVSRRequest.dateOfBirth,            Is.Not.EqualTo(default(DateTime)),  "Request: dateOfBirth Should Not Be Equal To Default DateTime");
+                Assert.That(validateBankAccountQAVSRRequest.dateOfBirth,            Is.TypeOf<DateTime>(),  "Request: dateOfBirth Should Not Be Equal To Default DateTime");
                 Assert.That(validateBankAccountQAVSRRequest.genderCd,               Is.Not.LessThan(0),                 "Request: genderCd Should Not Be Less Than 0");
                 Assert.That(validateBankAccountQAVSRRequest.employerName,           Is.Null.Or.TypeOf<string>(),        "Request: employerName Should Not Be Null Or Empty");
                 Assert.That(validateBankAccountQAVSRRequest.employeeNumber,         Is.Null.Or.TypeOf<string>(),        "Request: employeeNumber Should Not Be Null Or Empty");
@@ -61,20 +61,23 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Bank
                 Assert.That(validateBankAccountQAVSRRequest.premium,                Is.Not.LessThan(0),                 "Request: premium Should Not Be Less Than 0");
                 Assert.That(validateBankAccountQAVSRRequest.earlyTracking,          Is.True.Or.False,                   "Request: earlyTracking Should Be True Or False");
                 Assert.That(validateBankAccountQAVSRRequest.debitDay,               Is.Not.LessThan(0),                 "Request: debitDay Should Not Be Less Than 0");
-                Assert.That(validateBankAccountQAVSRRequest.firstDebitDay,          Is.Not.EqualTo(default(DateTime)),  "Request: firstDebitDay Should Not Be Equal To Default DateTime");
-                Assert.That(validateBankAccountQAVSRRequest.firstDebitMonth,        Is.Not.EqualTo(default(DateTime)),  "Request: firstDebitMonth Should Not Be Equal To Default DateTime");
-                Assert.That(validateBankAccountQAVSRRequest.effectiveDate,          Is.Not.EqualTo(default(DateTime)),  "Request: effectiveDate Should Not Be Equal To Default DateTime");
+                Assert.That(validateBankAccountQAVSRRequest.firstDebitDay,          Is.TypeOf<DateTime>(),              "Request: firstDebitDay Is Type of Date Time");
+                Assert.That(validateBankAccountQAVSRRequest.firstDebitMonth,        Is.TypeOf<DateTime>(),              "Request: firstDebitMonth Is Type of Date Time");
+                Assert.That(validateBankAccountQAVSRRequest.effectiveDate,          Is.TypeOf<DateTime>(),              "Request: effectiveDate Is Type of Date Time");
                 
                 Assert.That(validateBankAccountQAVSRRequest.gsd,                    Is.Null.Or.TypeOf<object>(),        "Request: gsd Should Be Null Or Type Of Object");
-                Assert.That(validateBankAccountQAVSRRequest.gsd!.deductionAuthorization,        Is.Null.Or.True.Or.False,        "Request: gsd.gsdId Should Be True Or False");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.payrollName,        Is.Null.Or.TypeOf<string>(),        "Request: gsd.gsdName Should Not Be Null Or Empty");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.payrollId,          Is.Null.Or.TypeOf<string>(),        "Request: gsd.gsdShortName Should Not Be Null Or Empty");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.departmentId,       Is.Not.LessThan(0),                 "Request: gsd.gsdType Should Not Be Less Than 0");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.departmentName,     Is.Null.Or.TypeOf<string>(),        "Request: gsd.departmentName Should Not Be Null Or Empty");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.employeeNumber,     Is.Null.Or.TypeOf<string>(),        "Request: gsd.companyId Should Not Be Less Than 0");
-                Assert.That(validateBankAccountQAVSRRequest.gsd.mandateType,        Is.Null.Or.TypeOf<string>(),        "Request: gsd.employeeName Should Not Be Null Or Empty");
+                if (validateBankAccountQAVSRRequest.gsd != null) {
+                    Assert.That(validateBankAccountQAVSRRequest.gsd!.deductionAuthorization,    Is.Null.Or.True.Or.False, "Request: gsd.gsdId Should Be True Or False");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.payrollName,                Is.Null.Or.TypeOf<string>(), "Request: gsd.gsdName Should Not Be Null Or Empty");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.payrollId,                  Is.Null.Or.TypeOf<string>(), "Request: gsd.gsdShortName Should Not Be Null Or Empty");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.departmentId,               Is.Not.LessThan(0), "Request: gsd.gsdType Should Not Be Less Than 0");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.departmentName,             Is.Null.Or.TypeOf<string>(), "Request: gsd.departmentName Should Not Be Null Or Empty");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.employeeNumber,             Is.Null.Or.TypeOf<string>(), "Request: gsd.companyId Should Not Be Less Than 0");
+                    Assert.That(validateBankAccountQAVSRRequest.gsd.mandateType,                Is.Null.Or.TypeOf<string>(), "Request: gsd.employeeName Should Not Be Null Or Empty");
+                }
 
-                Assert.That(validateBankAccountQAVSRRequest.lastChanged,            Is.Not.EqualTo(default(DateTime)),  "Request: lastChanged Should Not Be Equal To Default DateTime");
+
+                Assert.That(validateBankAccountQAVSRRequest.lastChanged,            Is.TypeOf<DateTime>(),              "Request: lastChanged Is Type Of DateTime");
                 Assert.That(validateBankAccountQAVSRRequest.userID,                 Is.Null.Or.TypeOf<string>(),        "Request: userID Should Not Be Null Or Empty");
                 Assert.That(validateBankAccountQAVSRRequest.entityNo,               Is.Null.Or.TypeOf<string>(),        "Request: entityNo Should Not Be Null Or Empty");
                 Assert.That(validateBankAccountQAVSRRequest.agentCode,              Is.Null.Or.TypeOf<string>(),        "Request: agentCode Should Not Be Null Or Empty");

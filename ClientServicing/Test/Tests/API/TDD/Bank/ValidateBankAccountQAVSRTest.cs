@@ -26,9 +26,9 @@ namespace ClientServicing.Test.Tests.API.TDD.Bank
         public async Task GivenBankAccountQAVSRIsValid_WhenValidateBankAccountQAVSRAsync_ThenValidateResponseIsNotNullOrEmpty_And_TypeOfstring_And_IsTrueOrfalse_And_IntegerIsNotLessThan0_And_DateTimeIsNotEqualToDefaultDateTime()
         {
             //Arrange
-            ValidateBankAccountQAVSRRequest validateBankAccountQAVSRRequest = JsonSerializer.Deserialize<ValidateBankAccountQAVSRRequest>(
+            var validateBankAccountQAVSRRequest = JsonSerializer.Deserialize<ValidateBankAccountQAVSRRequest>(
                 utilitiesHelper.ReadTestDataJson("Bank/Data", "ValidateBankAccountQAVSRRequestNotNull.json"))!;
-            //ValidateValidateBankAccountQAVSRRequestDataIsNotNullOrEmptyOrLessThanZero(validateBankAccountQAVSRRequest);
+            ValidateValidateBankAccountQAVSRRequestDataIsNotNullOrEmptyOrLessThanZero(validateBankAccountQAVSRRequest);
             //Act
             var response = await bankAPIClient.ValidateBankAccountQAVSRAsync(validateBankAccountQAVSRRequest);
             var validateBankAccountQAVSRResponse = PopulateValidateBankAccountQAVSRResponse(response);

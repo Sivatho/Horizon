@@ -52,7 +52,7 @@
         public DateTime firstDebitDay { get; set; }
         public DateTime firstDebitMonth { get; set; }
         public DateTime effectiveDate { get; set; }
-        public ClientServicing.Main.Models.General.GSD? gsd { get; set; }
+        public ClientServicing.Main.Models.General.GSDModel? gsd { get; set; }
         public DateTime lastChanged { get; set; }
         public string? userID { get; set; }
         public string? entityNo { get; set; }

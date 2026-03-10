@@ -70,7 +70,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         public static ISet<JsonValueKind> Of(params JsonValueKind[] kinds)
                 => new HashSet<JsonValueKind>(kinds ?? Array.Empty<JsonValueKind>());
     }
-    //Code change
     public sealed class PrimitiveSchema : IJsonSchema, IRootConstrained
     {
         public PrimitiveSchema(ISet<JsonSchema> kinds, ISet<string>? enumStrings = null)
@@ -84,7 +83,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
         public ISet<JsonValueKind> AllowedRootKinds { get; }
         public ISet<string>? AllowedRootStringEnum { get; }
     }
-    //Code change
     public sealed class ObjectSchema : IJsonSchema, IRootConstrained
     {
         public ObjectSchema(IEnumerable<IJsonRule> rules)

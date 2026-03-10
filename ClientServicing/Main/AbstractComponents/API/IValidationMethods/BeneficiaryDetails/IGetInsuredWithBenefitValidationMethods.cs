@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ClientServicing.Main.Models.BeneficiaryDetails;
+﻿using ClientServicing.Main.Models.BeneficiaryDetails;
 
 namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.BeneficiaryDetails
 {
     public interface IGetInsuredWithBenefitValidationMethods
     {
-        //public void ValidateResponseIsNotNullOrEmpty(GetInsuredWithBenefitResponse getInsuredWithBenefitResponse);
-        public void ValidateGetInsuredWithBenefitDataIsNotNullOrEmpty(GetInsuredWithBenefitResponse getInsuredWithBenefit);
+        public void ValidateGetInsuredWithBenefitRequestIsNotNullOrEmpty(GetInsuredWithBenefitRequest getInsuredWithBenefitRequest);
+        public void ValidateGetInsuredWithBenefitDataIsNotNull_And_IsTrueOrFalse_And_TypeOfString_And_IsNotLessThanOrEqualTo0(GetInsuredWithBenefitResponse getInsuredWithBenefit);
     }
 }

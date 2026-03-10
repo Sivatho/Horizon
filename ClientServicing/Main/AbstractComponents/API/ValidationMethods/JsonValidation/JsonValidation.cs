@@ -250,113 +250,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             return new ValidationResult(failures);
         }
 
-        /*public ValidationResult Validate(JsonElement element, IJsonSchema schema, string path = "$")
-        {
-            var failures = new List<ValidationFailure>();
-            // ---------- ROOT-LEVEL VALIDATION (optional) ----------
-            if (schema is IRootConstrained root)
-            {
-                // Enf orce allowed kinds at the root (if provided)
-                if (root.AllowedRootKinds is { Count: > 0 } &&
-                    !root.AllowedRootKinds.Contains(element.ValueKind))
-                {
-                    var expected = string.Join(", ", root.AllowedRootKinds.OrderBy(k => k));
-                    failures.Add(new ValidationFailure(
-                        path,
-                        $"Unexpected root kind '{element.ValueKind}'. Expected: {expected}"
-                    ));
-                    return new ValidationResult(failures); // cannot proceed if root kind is wrong
-                }
-
-                // If root is a STRING and we have an enum constraint, enforce it
-                if (element.ValueKind == JsonValueKind.String &&
-                    root.AllowedRootStringEnum is { Count: > 0 })
-                {
-                    var value = element.GetString();
-                    if (!root.AllowedRootStringEnum.Contains(value!))
-                    {
-                        var expectedVals = string.Join(", ", root.AllowedRootStringEnum.OrderBy(s => s));
-                        failures.Add(new ValidationFailure(
-                            path,
-                            $"Unexpected root string value '{value}'. Expected one of: {expectedVals}"
-                        ));
-                        return new ValidationResult(failures);
-                    }
-                }
-
-                // Short-circuit: if the root is NOT an object, there are no properties to validate.
-                if (element.ValueKind != JsonValueKind.Object)
-                    return new ValidationResult(failures);
-            }
-            else
-            {
-                // If the schema has property rules but the element isn't an object, fail gracefully.
-                if (schema.Rules.Count > 0 && element.ValueKind != JsonValueKind.Object)
-                {
-                    failures.Add(new ValidationFailure(
-                        path,
-                        $"Expected root kind 'Object' to validate properties, but was '{element.ValueKind}'."
-                    ));
-                    return new ValidationResult(failures);
-                }
-            }
-
-            // ---------- OBJECT PROPERTY VALIDATION (existing logic) ----------
-            foreach (var rule in schema.Rules)
-            {
-                var propPath = $"{path}.{rule.PropertyName}";
-                if (!element.TryGetProperty(rule.PropertyName, out var prop))
-                {
-                    if (rule.Required)
-                        failures.Add(new ValidationFailure(propPath, "Required property missing."));
-                    continue;
-                }
-
-                if (!rule.AllowedKinds.Contains(prop.ValueKind))
-                {
-                    var expected = string.Join(", ", rule.AllowedKinds.OrderBy(k => k));
-                    failures.Add(new ValidationFailure(
-                        propPath,
-                        $"Unexpected kind '{prop.ValueKind}'. Expected: {expected}"));
-                    continue;
-                }
-
-                if (rule.NestedSchema != null)
-                {
-                    switch (prop.ValueKind)
-                    {
-
-                        case JsonValueKind.Object:
-                            failures.AddRange(Validate(prop, rule.NestedSchema, propPath).Failures);
-                            break;
-
-                        case JsonValueKind.Array:
-                            int idx = 0;
-                            foreach (var item in prop.EnumerateArray())
-                            {
-                                var itemPath = $"{propPath}[{idx}]";
-                                if (item.ValueKind != JsonValueKind.Object)
-                                {
-                                    failures.Add(new ValidationFailure(itemPath, "Array item not an object"));
-                                }
-                                else
-                                {
-                                    failures.AddRange(Validate(item, rule.NestedSchema, itemPath).Failures);
-                                }
-                                idx++;
-                            }
-                            break;
-                        default:
-                            failures.Add(new ValidationFailure(
-                            propPath,
-                            "Nested schema provided but value is not an object or array."));
-                            break;
-
-                    }
-                }
-            }
-            return new ValidationResult(failures);
-        }*/
+        
     }
     #endregion
 
@@ -619,6 +513,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("lastChanged",    JsonKinds.Of(JsonValueKind.String))
                 .Property("userID",         JsonKinds.Of(JsonValueKind.String));
         });
+        //BeneficiaryDetails
         public static JsonSchema PolicyBeneficiaryDetailsSchema = ResponseSchemas.StandardEnvelopeObject(data =>
         {
             data.Property("totalAllocated", JsonKinds.Of(JsonValueKind.Number))
@@ -972,8 +867,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
                 .Property("audModifyUser", JsonKinds.Of(JsonValueKind.String, JsonValueKind.Null))
                 .Build();
         });
-
-
         public static JsonSchema DebicheckRetryCheckStatusSchema()
         {
             return new JsonSchema.Builder()
@@ -1135,7 +1028,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonVali
             .Property("d3BlackListResult",          JsonKinds.Of(JsonValueKind.Object), nested: D3BlackListResultSchema())
 
             .Build();
-
+        //END
         public static JsonSchema GetUnmetPremiumResponseSchema()
         {
 

@@ -5,10 +5,8 @@ using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidati
 using ClientServicing.Main.Controller;
 using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.BeneficiaryDetails;
-using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 using Microsoft.Extensions.DependencyInjection;
-using RestSharp;
 
 namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 {

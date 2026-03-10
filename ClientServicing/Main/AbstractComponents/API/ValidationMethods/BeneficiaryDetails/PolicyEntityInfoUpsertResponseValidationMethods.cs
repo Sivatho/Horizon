@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.IValidationMethods.BeneficiaryDetails;
 using ClientServicing.Main.Models.BeneficiaryDetails;
+using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 
@@ -13,6 +9,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
 {
     public class PolicyEntityInfoUpsertResponseValidationMethods : AbstractValidationMethods, IPolicyEntityInfoUpsertValidationMethods
     {
+        UtilitiesHelper utilitiesHelper = new();
         public void ValidatePolicyEntityInfoUpsertResponseDataIsNotNullOrEmpty(PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse)
         {
             Assert.Multiple(() =>
@@ -21,7 +18,37 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
                 Assert.That(policyEntityInfoUpsertResponse.executionOutcome, Is.Not.Null.Or.Empty, "ExecutionOutcome property is null.");
             });
         }
+        public PolicyEntityInfoUpsertResponse PopulatePolicyEntityInfoUpsert(RestResponse restResponse)
+        {
+            using JsonDocument doc = JsonDocument.Parse(restResponse.Content);
 
+            PolicyEntityInfoUpsertResponse policyEntityInfoUpsertResponse = new PolicyEntityInfoUpsertResponse
+            {
+                executionOutcome = new ExecutionOutcome()
+            };
+            foreach (JsonProperty property in doc.RootElement.EnumerateObject())
+            {
+                switch (property.Name)
+                {
+                    case "succeeded":
+                        policyEntityInfoUpsertResponse.executionOutcome.succeeded = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
+                        break;
+                    case "message":
+                        policyEntityInfoUpsertResponse.executionOutcome.message = utilitiesHelper.ReadStringNullable(property.Value);
+                        break;
+                    case "errors":
+                        policyEntityInfoUpsertResponse.executionOutcome.errors = utilitiesHelper.ReadStringNullable(property.Value);
+                        break;
+                    case "data":
+                        policyEntityInfoUpsertResponse.data = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
+                        break;
+                    default:
+                        TestContext.Out.WriteLine($"Unknown property: {property.Name}");
+                        break;
+                }
+            }
+            return policyEntityInfoUpsertResponse;
+        }
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
@@ -29,35 +56,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Benefici
 
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
-            var rules = new List<JsonValidationRule> {
-                new JsonValidationRule {
-                    PropertyName = "succeeded",
-                    AllowedKinds = new[] {
-                        JsonValueKind.True, JsonValueKind.False
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "message",
-                    AllowedKinds = new[] {
-                        JsonValueKind.String, JsonValueKind.Null
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "errors",
-                    AllowedKinds = new[] {
-                        JsonValueKind.String, JsonValueKind.Null
-                    }
-                },
-                new JsonValidationRule {
-                    PropertyName = "data",
-                    AllowedKinds = new[] {
-                        JsonValueKind.True, JsonValueKind.False, JsonValueKind.Null
-                    }
-                }
-            };
-            using var jsonDoc = JsonDocument.Parse(restResponse.Content);
-            JsonValidationRule.ValidateJson(jsonDoc.RootElement, rules);
-            TestContext.Out.WriteLine("Validated: Response Property Names are valid and Data Types are valid.");
+            throw new NotImplementedException();
         }
     }
 }

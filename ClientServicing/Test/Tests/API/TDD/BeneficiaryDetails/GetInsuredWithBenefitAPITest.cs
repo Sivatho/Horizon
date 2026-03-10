@@ -1,87 +1,45 @@
 ﻿using System.Net;
 using System.Text.Json;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.BeneficiaryDetails;
+using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.BeneficiaryDetails;
-using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
-using RestSharp;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 {
     public class GetInsuredWithBenefitAPITest : GetInsuredWithBenefitValidationMethods
     {
-        BeneficiaryDetailsAPIClient beneficiaryDetailsAPIClient = new BeneficiaryDetailsAPIClient();
-        UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        BeneficiaryDetailsAPIClient? beneficiaryDetailsAPIClient = null;
+        UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
 
+        [SetUp]
+        public void SetUp()
+        {
+            beneficiaryDetailsAPIClient = new BeneficiaryDetailsAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
+        }
         [Test]
-        //Review business login (benefitCover should not be allocated for beneficiary)
-        public async Task Given_GetInsuredWithBenefitRequest_When_GetInsuredWithBenefit_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
+        public async Task Given_GetInsuredWithBenefitRequest_When_GetInsuredWithBenefit_Then_ValidateResponseStatusCodeOK_And_IsNotNull_And_IsTrueOrFalse_And_TypeOfString_And_IsNotLessThanOrEqualTo0_And_SchemaIsValid()
         {
             //Arrange
-            GetInsuredWithBenefitRequest getInsuredWithBenefitRequest = JsonSerializer.Deserialize<GetInsuredWithBenefitRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "GetInsuredWithBenefitRequestPayloadIsValid.json"));
-
+            var getInsuredWithBenefitRequest = JsonSerializer.Deserialize<GetInsuredWithBenefitRequest>(
+                utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "GetInsuredWithBenefitRequestPayloadIsValid.json"))!;
+            var schema = ResponseSchemasEnvelope.BenefitCoversSchema;
+            ValidateGetInsuredWithBenefitRequestIsNotNullOrEmpty(getInsuredWithBenefitRequest);
             //Act
-            var response = await beneficiaryDetailsAPIClient.GetInsuredWithBenefit(getInsuredWithBenefitRequest);
-            var getInsuredWithBenefitResponse = populateGetInsuredWithBenefitResponseData(response);
-
+            var response = await beneficiaryDetailsAPIClient!.GetInsuredWithBenefit(getInsuredWithBenefitRequest);
+            var getInsuredWithBenefitResponse = PopulateGetInsuredWithBenefitResponseData(response);
             //Assert           
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
-            ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateGetInsuredWithBenefitDataIsNotNullOrEmpty(getInsuredWithBenefitResponse);
-            ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "GetInsuredWithBenefitResponseSchema.json");
-        }
-        public GetInsuredWithBenefitResponse populateGetInsuredWithBenefitResponseData(RestResponse restResponse)
-        {
-            using JsonDocument jsonDoc = JsonDocument.Parse(restResponse.Content);
-            GetInsuredWithBenefitResponse getInsuredWithBenefitResponse = new GetInsuredWithBenefitResponse
-            {
-                executionOutcome = new ExecutionOutcome()
-            };
-
-            foreach (var property in jsonDoc.RootElement.EnumerateObject())
-            {
-                switch (property.Name)
-                {
-                    case "succeeded":
-                        getInsuredWithBenefitResponse.executionOutcome.succeeded = (bool)utilitiesHelper.ReadBooleanNullable(property.Value); break;
-                    case "message":
-                        getInsuredWithBenefitResponse.executionOutcome.message = utilitiesHelper.ReadStringNullable(property.Value); break;
-                    case "errors":
-                        getInsuredWithBenefitResponse.executionOutcome.errors = utilitiesHelper.ReadStringNullable(property.Value); break;
-                    case "data":
-                        var dataElement = property.Value;
-                        var items = new List<BenefitData>();
-                        switch (dataElement.ValueKind)
-                        {
-                            case JsonValueKind.Array:
-
-                                foreach (var dataProperty in dataElement.EnumerateArray())
-                                {
-                                    var benefitData = new BenefitData();
-                                    foreach (var item in dataProperty.EnumerateObject())
-                                    {
-                                        switch (item.Name)
-                                        {
-                                            case "benefitID":
-                                                benefitData.benefitID = (int)utilitiesHelper.ReadInt32Nullable(item.Value); break;
-                                            case "benefitCover":
-                                                benefitData.benefitCover = (double)utilitiesHelper.ReadInt32Nullable(item.Value); break;
-                                        }
-                                    }
-                                    items.Add(benefitData);
-                                }
-                                break;
-                        }
-                        getInsuredWithBenefitResponse.data = items;
-                        break;
-                    default:
-                        TestContext.Out.WriteLine($"Unknown property: {property.Name}");
-                        break;
-                }
-            }
-            return getInsuredWithBenefitResponse;
+            ValidateResponseHeadersAreValid(response);
+            ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
+            ValidateResponseShouldMatchSchema(response, schema);
+            ValidateGetInsuredWithBenefitDataIsNotNull_And_IsTrueOrFalse_And_TypeOfString_And_IsNotLessThanOrEqualTo0(getInsuredWithBenefitResponse);
         }
     }
 }

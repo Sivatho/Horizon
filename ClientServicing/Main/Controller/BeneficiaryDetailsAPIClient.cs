@@ -1,4 +1,6 @@
-﻿using ClientServicing.Main.IController;
+﻿using ClientServicing.Main.AbstractComponents.API.Base;
+using ClientServicing.Main.IController;
+using ClientServicing.Main.Resources.EndPoints.Bank;
 using ClientServicing.Main.Resources.EndPoints.BeneficiaryDetails;
 using ClientServicing.Main.Resources.Helper;
 using RestSharp;
@@ -9,218 +11,145 @@ namespace ClientServicing.Main.Controller
     public class BeneficiaryDetailsAPIClient : IBeneficiaryDetails
     {
         readonly RestClient restClient;
-   
-         readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
+        private readonly IRestLibrary sharedRestLibrary;
 
-        public BeneficiaryDetailsAPIClient()
+        public BeneficiaryDetailsAPIClient(IRestLibrary sharedRestLibrary)
         {
-            var options = new RestClientOptions()
-            {
-                BaseUrl = new Uri(utilitiesHelper.GetApiBaseUrl()),
-                RemoteCertificateValidationCallback = (sender, certificate, chain, sslPolicyErrors) => true
-                //Authenticator = new OauthAPIAuthenticator()
-            };
-            restClient = new RestClient(options);
+            restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
         }
         public async Task<RestResponse> GetAndCachePolicyBeneficiaryDetailsAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetAndCachePolicyBeneficiaryDetails), Method.Post);
-                request.AddJsonBody(payload);
-
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if(!response.IsSuccessful) {
-                    TestContext.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex) { 
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetAndCachePolicyBeneficiaryDetails);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> GetCachedBeneficiaryListAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetCachedBeneficiaryList), Method.Post);
-                request.AddJsonBody(payload);
-
-                //Act 
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetCachedBeneficiaryList);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> GetInsuredWithBenefit<T>(T payload) where T : class
         {
-            try { 
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetInsuredWithBenefit), Method.Post);
-                request.AddJsonBody(payload);
-
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                if (!response.IsSuccessful)
-                {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            } 
-            catch (Exception ex)
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.GetInsuredWithBenefit);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> PolicyBeneficiaryDetailsAsync<T>(T payload) where T : class
         {
-            try { 
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(
-                    EndPoints.policyBeneficiaryDetails),
-                    Method.Post);
-                request.AddJsonBody(payload);
-
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-
-                //Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"API call failed with status code: " +
-                        $"{response.StatusCode} and message: " +
-                        $"{response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.policyBeneficiaryDetails);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> PolicyEntityInfoUpsertAsync<T>(T payload) where T : class
         {
-            try { 
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.PolicyEntityInfoUpsert), Method.Post);
-                request.AddJsonBody(payload);
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                //Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            } 
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.PolicyEntityInfoUpsert);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> SaveUpdatedBeneficiariesAsync<T>(T payload) where T : class
         {
-            try {
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.SaveUpdatedBeneficiaries), Method.Post);
-                request.AddJsonBody(payload);
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                //Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            } 
-            catch (Exception ex) {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.SaveUpdatedBeneficiaries);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
+            {
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
-
         public async Task<RestResponse> UpdatePolicyBeneficiaryCacheAsync<T>(T payload) where T : class
         {
-            try { 
-                //Arrange
-                var request = new RestRequest(BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.UpdatePolicyBeneficiaryCache), Method.Post);
-                request.AddJsonBody(payload);
-                //Act
-                var response = await restClient.ExecuteAsync(request);
-                utilitiesHelper.LogRequestAndResponse(request, response);
-                //Assert
-                if (!response.IsSuccessful) {
-                    TestContext.Out.WriteLine($"API call failed with status code: {response.StatusCode} and message: {response.Content}");
-                }
-                return response;
-            }
-            catch (Exception ex)
+            // Arrange
+            var url = BeneficiaryDetailsAPIEndPoints.GetEndPoint(EndPoints.UpdatePolicyBeneficiaryCache);
+            Method method = Method.Post;
+            IDictionary<string, string>? headers = new Dictionary<string, string>
             {
-                TestContext.Out.WriteLine($"Exception occurred: {ex.Message}");
-                TestContext.Out.WriteLine($"Stack Trace: {ex.StackTrace}");
-                return new RestResponse
-                {
-                    StatusCode = System.Net.HttpStatusCode.InternalServerError,
-                    ErrorMessage = $"Exception occurred: {ex.Message}"
-                };
-            }
+                { "Accept", "*/*" }
+            };
+            var request = ApiRequestAndResponseHelper.BuildRequest(
+                url,
+                method,
+                payload,
+                out var stopwatch,
+                headers);
+            // Act
+            var response = await ApiRequestAndResponseHelper.ExecuteAsync(restClient, request, stopwatch);
+            return response;
         }
     }
 }

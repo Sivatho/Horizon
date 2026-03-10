@@ -1,53 +1,58 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
+﻿using System.Net;
 using System.Text.Json;
-using System.Threading.Tasks;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.BeneficiaryDetails;
 using ClientServicing.Main.AbstractComponents.API.ValidationMethods.JsonValidation;
 using ClientServicing.Main.Controller;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Models.BeneficiaryDetails;
-using ClientServicing.Main.Models.General;
 using ClientServicing.Main.Resources.Helper;
-using RestSharp;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
 {
     public class GetAndCachePolicyBeneficiaryDetailsAPITest : PolicyBeneficiaryDetailsValidationMethods
     {
-        BeneficiaryDetailsAPIClient beneficiaryDetailsAPIClient = new();
+        BeneficiaryDetailsAPIClient? beneficiaryDetailsAPIClient = null ;
         UtilitiesHelper utilitiesHelper = new();
+        private IDataAccess _dataAccess = null!;
+
+        [SetUp]
+        public void SetUp()
+        {
+            beneficiaryDetailsAPIClient = new BeneficiaryDetailsAPIClient(GlobalTestInfrastructureSetup.SharedRestLibrary);
+            _dataAccess = GlobalTestInfrastructureSetup.ServiceProvider.GetRequiredService<IDataAccess>();
+        }
 
         [Test]
         public async Task Given_PolicyBeneficiaryDetailsRequest_When_GetAndCachePolicyBeneficiaryDetailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid() {
             //Arrange
-            PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsPayloadIsValid.json"));
+            var beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(
+                utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsPayloadIsValid.json"))!;
+            ValidatePolicyBeneficiaryDetailsRequestIsNotNullOrEmpty_And_GreaterThanOrEqualToZeroOrTypeOfString_And_IsNullOrTypeOfString(beneficiaryDetailsRequest);
             var schema = ResponseSchemasEnvelope.PolicyBeneficiaryDetailsSchema;
-
             //Act
-            var response = await beneficiaryDetailsAPIClient.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
-            var getAndCachePolicyBeneficiaryDetailsResponse = populatePolicyBeneficiaryDetailsResponse(response);
-
+            var response = await beneficiaryDetailsAPIClient!.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
+            var getAndCachePolicyBeneficiaryDetailsResponse = PopulatePolicyBeneficiaryDetailsResponse(response);
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponseHeadersAreValid(response);
             ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
-            ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);            
+            ValidatePolicyBeneficiaryDetailsResponseIsNotNullOrEmpty_And_IsTrueOrFalse_And_IsNullOrTypeOfString_And_IntergerIsNotLessThan0(getAndCachePolicyBeneficiaryDetailsResponse);            
         }
         [Test]
         public async Task Given_PolicyBeneficiaryDetailsByPolicyNoPayloadIsValid_When_GetAndCachePolicyBeneficiaryDetailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
-            PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByPolicyNoPayloadIsValid.json"));
+            var beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(
+                utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByPolicyNoPayloadIsValid.json"));
+            ValidatePolicyBeneficiaryDetailsRequestIsNotNullOrEmpty_And_GreaterThanOrEqualToZeroOrTypeOfString_And_IsNullOrTypeOfString(beneficiaryDetailsRequest);
             var schema = ResponseSchemasEnvelope.PolicyBeneficiaryDetailsSchema;
 
             //Act
-            var response = await beneficiaryDetailsAPIClient.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
-            var getAndCachePolicyBeneficiaryDetailsResponse = populatePolicyBeneficiaryDetailsResponse(response);
+            var response = await beneficiaryDetailsAPIClient!.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
+            var getAndCachePolicyBeneficiaryDetailsResponse = PopulatePolicyBeneficiaryDetailsResponse(response);
 
             //Assert
             ValidationAssertionHeading();
@@ -55,191 +60,27 @@ namespace ClientServicing.Test.Tests.API.TDD.BeneficiaryDetails
             ValidateResponseHeadersAreValid(response);
             ValidateResponsePropertyNameIsValidAndDataTypesIsValid(response, schema);
             ValidateResponseShouldMatchSchema(response, schema);
-            ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);          
+            ValidatePolicyBeneficiaryDetailsResponseIsNotNullOrEmpty_And_IsTrueOrFalse_And_IsNullOrTypeOfString_And_IntergerIsNotLessThan0(getAndCachePolicyBeneficiaryDetailsResponse);          
         }
         [Test]
         [Ignore("Status Code: 400, Title: One or more validation errors occurred; Errors: (policyNo:The JSON value could not be converted to System.Int32.")]
         public async Task Given_PolicyBeneficiaryDetailsByLegacyPolicyNumberPayloadIsInvalid_When_GetAndCachePolicyBeneficiaryDetailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_IsNotNullOrEmpty_And_SchemaIsValid()
         {
             //Arrange
-            PolicyBeneficiaryDetailsRequest beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByLegacyPolicyNumberPayloadIsInvalid.json"));
-
+            var beneficiaryDetailsRequest = JsonSerializer.Deserialize<PolicyBeneficiaryDetailsRequest>(
+                utilitiesHelper.ReadTestDataJson("BeneficiaryDetails/Data", "PolicyBeneficiaryDetailsByLegacyPolicyNumberPayloadIsInvalid.json"));
+            ValidatePolicyBeneficiaryDetailsRequestIsNotNullOrEmpty_And_GreaterThanOrEqualToZeroOrTypeOfString_And_IsNullOrTypeOfString(beneficiaryDetailsRequest);
             //Act
-            var response = await beneficiaryDetailsAPIClient.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
-            var getAndCachePolicyBeneficiaryDetailsResponse = populatePolicyBeneficiaryDetailsResponse(response);
+            var response = await beneficiaryDetailsAPIClient!.GetAndCachePolicyBeneficiaryDetailsAsync(beneficiaryDetailsRequest);
+            var getAndCachePolicyBeneficiaryDetailsResponse = PopulatePolicyBeneficiaryDetailsResponse(response);
 
             //Assert
             ValidationAssertionHeading();
             ValidateResponseStatusCode(response, HttpStatusCode.BadRequest);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
-            ValidateResponseIsNotNullOrEmpty(getAndCachePolicyBeneficiaryDetailsResponse);
+            ValidatePolicyBeneficiaryDetailsResponseIsNotNullOrEmpty_And_IsTrueOrFalse_And_IsNullOrTypeOfString_And_IntergerIsNotLessThan0(getAndCachePolicyBeneficiaryDetailsResponse);
             ValidateResponseSchemaIsValid(response, "BeneficiaryDetails/Schema", "BeneficiaryDetailsResponseSchema.json");
 
-        }
-
-
-        private PolicyBeneficiaryDetailsResponse populatePolicyBeneficiaryDetailsResponse(RestResponse restResponse)
-        {
-            using JsonDocument doc = JsonDocument.Parse(restResponse.Content);
-
-            PolicyBeneficiaryDetailsResponse policyBeneficiaryDetailsResponse = new PolicyBeneficiaryDetailsResponse
-            {
-                executionOutcome = new ExecutionOutcome(),
-                data = new BeneficiaryDetailsData()
-            };
-            foreach (var property in doc.RootElement.EnumerateObject())
-            {
-                switch (property.Name)
-                {
-                    case "succeeded":
-                        policyBeneficiaryDetailsResponse.executionOutcome.succeeded = (bool)utilitiesHelper.ReadBooleanNullable(property.Value);
-                        break;
-                    case "message":
-                        policyBeneficiaryDetailsResponse.executionOutcome.message = utilitiesHelper.ReadStringNullable(property.Value);
-                        break;
-                    case "errors":
-                        policyBeneficiaryDetailsResponse.executionOutcome.errors = utilitiesHelper.ReadStringNullable(property.Value);
-                        break;
-                    case "data":
-                        var dataElement = property.Value;
-                        switch (dataElement.ValueKind)
-                        {
-                            case JsonValueKind.Object:
-                                foreach (var dataProperty in dataElement.EnumerateObject())
-                                {
-                                    switch (dataProperty.Name)
-                                    {
-                                        case "totalAllocated":
-                                            policyBeneficiaryDetailsResponse.data.totalAllocated = (int)utilitiesHelper.ReadInt32Nullable(dataProperty.Value);
-                                            break;
-                                        case "policyNo":
-                                            policyBeneficiaryDetailsResponse.data.policyNo = (int)utilitiesHelper.ReadInt32Nullable(dataProperty.Value);
-                                            break;
-                                        case "beneficiaryDetailsItems":
-                                            var items = new List<BeneficiaryDetailsItems>();
-                                            foreach (var item in dataProperty.Value.EnumerateArray())
-                                            {
-                                                var beneficiaryItem = new BeneficiaryDetailsItems();
-                                                foreach (var itemProperty in item.EnumerateObject())
-                                                {
-                                                    switch (itemProperty.Name)
-                                                    {
-                                                        case "rownumber":
-                                                            beneficiaryItem.RowNumber = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "policyNo":
-                                                            beneficiaryItem.PolicyNo = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "firstName":
-                                                            beneficiaryItem.FirstName = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "surname":
-                                                            beneficiaryItem.Surname = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "titleCd":
-                                                            beneficiaryItem.TitleCd = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "titleDescr":
-                                                            beneficiaryItem.TitleDescr = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "statusCd":
-                                                            beneficiaryItem.StatusCd = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "statusDescr":
-                                                            beneficiaryItem.Status = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "entityRelationId":
-                                                            beneficiaryItem.EntityRelationId = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "relationCd":
-                                                            beneficiaryItem.RelationCd = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "relationDescr":
-                                                            beneficiaryItem.RelationDescr = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "legalReferenceNumber":
-                                                            beneficiaryItem.LegalReferenceNumber = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "legalReferenceNumberMasked":
-                                                            beneficiaryItem.LegalReferenceNumberMasked = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "legalReferenceNumberTypeCd":
-                                                            beneficiaryItem.LegalReferenceNumberTypeCd = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "percAllocation":
-                                                            beneficiaryItem.PercAllocation = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "dateOfBirth":
-                                                            beneficiaryItem.DateOfBirth = utilitiesHelper.ReadDateTimeNullable(itemProperty.Value);
-                                                            break;
-                                                        case "status":
-                                                            beneficiaryItem.Status = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "physicalAddress":
-                                                            beneficiaryItem.PhysicalAddress = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "addressLine2":
-                                                            beneficiaryItem.AddressLine2 = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "suburb":
-                                                            beneficiaryItem.Suburb = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "addressCity":
-                                                            beneficiaryItem.AddressCity = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "addressPostCode":
-                                                            beneficiaryItem.AddressPostCode = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "cellNumber":
-                                                            beneficiaryItem.CellNumber = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "cellNumberMasked":
-                                                            beneficiaryItem.CellNumberMasked = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "homeNumber":
-                                                            beneficiaryItem.HomeNumber = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "workNumber":
-                                                            beneficiaryItem.WorkNumber = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "emailAddress":
-                                                            beneficiaryItem.EmailAddress = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "fullname":
-                                                            beneficiaryItem.FullName = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "totalPercentageAvailable":
-                                                            beneficiaryItem.TotalPercentageAvailable = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "role":
-                                                            beneficiaryItem.Role = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "genderCd":
-                                                            beneficiaryItem.GenderCd = utilitiesHelper.ReadInt32Nullable(itemProperty.Value);
-                                                            break;
-                                                        case "auditToken":
-                                                            beneficiaryItem.AuditToken = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                        case "bankAccNo":
-                                                            beneficiaryItem.BankAccNo = utilitiesHelper.ReadStringNullable(itemProperty.Value);
-                                                            break;
-                                                    }
-                                                }
-                                                items.Add(beneficiaryItem);
-                                            }
-                                            policyBeneficiaryDetailsResponse.data.beneficiaryDetailsItems = items;
-                                            break;
-                                    }
-                                }
-                                break;
-                        }
-                        break;
-                    default:
-                        TestContext.Out.WriteLine($"Unknown property: {property.Name}");
-                        break;
-                }
-            }
-            return policyBeneficiaryDetailsResponse;
         }
     }
 }

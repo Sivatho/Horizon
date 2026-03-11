@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.AdjustmentToBillings
 {
-    internal class GetOutstandingPolicyPremiumsValidationMethods : AbstractValidationMethods, IGetOutstandingPolicyPremiumsValidationMethods
+    public class GetOutstandingPolicyPremiumsValidationMethods : AbstractValidationMethods, IGetOutstandingPolicyPremiumsValidationMethods
     {
         public void ValidateGetOutstandingPolicyPremiumsRequestIsValid(GetOutstandingPolicyPremiumsRequest request)
         {
@@ -40,7 +40,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
 
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException(); 
         }
     }
 }

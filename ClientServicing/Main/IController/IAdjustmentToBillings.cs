@@ -12,7 +12,7 @@ namespace ClientServicing.Main.IController
         Task<RestResponse> AddAdjustementToBillingsAsync<T>(T payload) where T : class;
         Task<RestResponse> GetOutstandingPolicyPremiumsAsync<T>(T payload) where T : class;
         Task<RestResponse> CancelAdjustmentToBillingsAsync<T>(T payload) where T : class;
-        Task<RestResponse> GetAdjustmentToBillingsHistoryAsync<T>(T payload) where T : class;
+        Task<RestResponse> BillingAdjustmentToBillingsHistoryAsync<T>(T payload) where T : class;
         Task<RestResponse> GetAdjustedPeriodsAsync<T>(T payload) where T : class;
     }
 }

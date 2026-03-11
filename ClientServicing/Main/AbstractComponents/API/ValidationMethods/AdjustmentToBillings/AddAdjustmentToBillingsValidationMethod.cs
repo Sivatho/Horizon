@@ -1,123 +1,67 @@
 ﻿using ClientServicing.Main.AbstractComponents.API.IValidationMethods.AdjustmenttoBillings;
-using ClientServicing.Main.Models.AccountHistory;
+
 using ClientServicing.Main.Models.AddAdjustementToBillings;
-using ClientServicing.Main.Models.General;
-using com.sun.org.apache.xpath.@internal.objects;
-using com.sun.tools.corba.se.idl.constExpr;
+
+using ClientServicing.Main.Resources.Helper;
 using RestSharp;
-using sun.invoke.empty;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.AdjustmentToBillings
 {
     public class AddAdjustmentToBillingsValidationMethod : AbstractValidationMethods, IAddAdjustmentToBillingsValidationMethods
-	{
+    {
+        UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
 
-		public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
-		{
-			throw new NotImplementedException();
-		}
+        public void ValidateBillingsAdjustmentInformationRequestPayload(AddAdjustementToBillingsRequest addAdjustementToBillingsRequest)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(addAdjustementToBillingsRequest, Is.Not.Null, "AddAdjustementToBillings Request Payload should not be null");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation, Is.Not.Null, "AddAdjustementToBillings Request Payload should not be null");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.policyNo, Is.Not.LessThan(0), "Request: PolicyNo Should Not Be Less Than 0");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.effectiveDate, Is.Not.EqualTo(default(DateTime)), "Request: EffectiveDate Should Not Be Empty");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.adjustmentDateFrom, Is.Not.EqualTo(default(DateTime)), "Request: AdjustmentDateFrom Should Not Be Empty");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.adjustmentAmount, Is.Not.NaN, "Request: AdjustmentAmount Should Not Be NaN");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.totalAdjAmount, Is.Not.NaN, "Request: TotalAdjAmount Should Not Be NaN");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.adjustedMonthCnt, Is.Not.LessThan(0), "Request: AdjustedMonthCnt Should Not Be Less Than 0");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.adjustmentEndDate, Is.Not.EqualTo(default(DateTime)), "Request: AdjustmentEndDate Should Not Be Empty");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.comment, Is.Not.Null.Or.Empty, "Request: Comment Should Not Be Null or Empty");
+                Assert.That(addAdjustementToBillingsRequest.billingsAdjustmentInformation.actionID, Is.Not.Null.Or.Empty, "Request: ActionID Should Not Be Null or Empty");
+                
+                Assert.That(addAdjustementToBillingsRequest.billingAdjustmentPeriods, Is.Not.Null, "AddAdjustementToBillings Request Payload should not be null");
+               foreach(var billingAdjustmentPeriod in addAdjustementToBillingsRequest.billingAdjustmentPeriods)
+                {
+                    Assert.That(billingAdjustmentPeriod.policyNo, Is.Not.LessThan(0), "Request: BillingAdjustmentPeriods.PolicyNo Should Not Be Less Than 0");
+                    Assert.That(billingAdjustmentPeriod.legacyPolNo, Is.Null.Or.TypeOf<string>(), "Request: BillingAdjustmentPeriods.LegacyPolNo Should Be Null Or Type Of String");
+                    Assert.That(billingAdjustmentPeriod.referenceNO, Is.Not.Null.Or.Empty, "Request: BillingAdjustmentPeriods.ReferenceNO Should Not Be Null or Empty");
+                    Assert.That(billingAdjustmentPeriod.billingPeriod, Is.Not.LessThan(0), "Request: BillingAdjustmentPeriods.BillingPeriod Should Not Be Less Than 0");
+                    Assert.That(billingAdjustmentPeriod.raisedDate, Is.Not.EqualTo(default(DateTime)), "Request: BillingAdjustmentPeriods.RaisedDate Should Not Be Empty");
+                    Assert.That(billingAdjustmentPeriod.mandateType, Is.Not.Null.Or.Empty, "Request: BillingAdjustmentPeriods.MandateType Should Not Be Null or Empty");
+                    Assert.That(billingAdjustmentPeriod.paymentType, Is.Not.Null.Or.Empty, "Request: BillingAdjustmentPeriods.PaymentType Should Not Be Null or Empty");
+                    Assert.That(billingAdjustmentPeriod.premiumAmount, Is.Not.NaN, "Request: BillingAdjustmentPeriods.PremiumAmount Should Not Be NaN");
+                    Assert.That(billingAdjustmentPeriod.amountPaid, Is.Not.NaN, "Request: BillingAdjustmentPeriods.AmountPaid Should Not Be NaN");
+                    Assert.That(billingAdjustmentPeriod.effectiveDate, Is.Not.EqualTo(default(DateTime)), "Request: BillingAdjustmentPeriods.EffectiveDate Should Not Be Empty");
+                }
+            });
+            DocumentTemplate.DisplayBody("Validated: AddAdjustementToBillings Request Payload Data is in Correct Format and Not Null or Empty.");
+        }
+        public void ValidateAddAdjustmenttpBillingsisNotBeNullAndTypeOfBoolean (AddAdjustementToBillingsResponse response)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(response, Is.Not.Null, "AddAdjustementToBillings Response Should Not Be Null");
+                Assert.That(response.Result, Is.TypeOf<bool>(), "AddAdjustementToBillings Response Result Should Be of Type Boolean");
+            });
+            DocumentTemplate.DisplayBody("Validated: AddAdjustementToBillings Response Data is Not Null or Empty.");
+        }
 
-		public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
-		{
-			throw new NotImplementedException();
-		}
-		
-			public void ValidateAddAdjustementToBillingsRequestIsNotNullOrEmpty(AddAdjustementToBillingsRequest AddAdjustementToBillings)
-		{
-			Assert.Multiple(() =>
-			{
-				Assert.That(AddAdjustementToBillings, Is.Not.Null, "Request object should not be null.");
-				// Add further field-level checks as needed, for example:
-				// Assert.That(addAdjustementtobillingsrequest.SomeField, Is.Not.Null.Or.Empty, "SomeField should not be null or empty.");
-			});
-		}
-		public void ValidateAddAdjustementToBillingsRequestIsValid(AddAdjustementToBillingsRequest AddAdjustementToBillings)
-		{
-			Assert.Multiple(() =>
-			{
-				Assert.That(AddAdjustementToBillings, Is.Not.Null, "Request object should not be null.");
-				Assert.That(AddAdjustementToBillings.executionOutcome, Is.Not.Null, "executionOutcome should not be null.");
-				Assert.That(AddAdjustementToBillings.executionOutcome.succeeded, Is.TypeOf<bool>(), "executionOutcome.succeeded should be a boolean.");
-				Assert.That(AddAdjustementToBillings.executionOutcome.message, Is.Null.Or.TypeOf<string>(), "executionOutcome.message should be null or a string.");
-				Assert.That(AddAdjustementToBillings.executionOutcome.errors, Is.Null.Or.TypeOf<string>(), "executionOutcome.errors should be null or a string.");
 
-				Assert.That(AddAdjustementToBillings.data, Is.Not.Null, "data should not be null.");
-
-				// Validate billingsadjustmentinformation
-				Assert.That(AddAdjustementToBillings.data.billingsadjustmentinformation, Is.Not.Null, "billingsadjustmentinformation should not be null.");
-				Assert.That(AddAdjustementToBillings.data.billingsadjustmentinformation.Length, Is.GreaterThan(0), "billingsadjustmentinformation should not be empty.");
-				foreach (var info in AddAdjustementToBillings.data.billingsadjustmentinformation)
-				{
-					ValidateAddAdjustementToBillingsRequestIsValid(info);
-				}
-
-				// Validate billingadjustmentperiods
-				Assert.That(AddAdjustementToBillings.data.billingadjustmentperiods, Is.Not.Null, "billingadjustmentperiods should not be null.");
-				Assert.That(AddAdjustementToBillings.data.billingadjustmentperiods.Length, Is.GreaterThan(0), "billingadjustmentperiods should not be empty.");
-				foreach (var period in AddAdjustementToBillings.data.billingadjustmentperiods)
-				{
-					ValidateAddAdjustementToBillingsRequestIsValid(period);
-				}
-			});
-		}
-		public void ValidateBillingsAdjustmentInformationRequestIsValid(AddAdjustementToBillingsRequest.BillingsAdjustmentInformationRequest info)
-		{
-			Assert.Multiple(() =>
-			{
-				Assert.That(info.policyNo, Is.GreaterThan(0), "policyNo should be greater than 0.");
-				Assert.That(info.effectiveDate, Is.Not.EqualTo(default(DateTime)), "effectiveDate should be set.");
-				Assert.That(info.adjustmentDateFrom, Is.Not.EqualTo(default(DateTime)), "adjustmentDateFrom should be set.");
-				Assert.That(info.adjustmentAmount, Is.TypeOf<double>(), "adjustmentAmount should be a double.");
-				Assert.That(info.totalAdjAmount, Is.TypeOf<double>(), "totalAdjAmount should be a double.");
-				Assert.That(info.adjustedMonthCnt, Is.GreaterThanOrEqualTo(0), "adjustedMonthCnt should be non-negative.");
-				Assert.That(info.adjustmentEndDate, Is.Not.EqualTo(default(DateTime)), "adjustmentEndDate should be set.");
-				Assert.That(info.comment, Is.Not.Null, "comment should not be null.");
-				Assert.That(info.actionID, Is.Not.Null.Or.Empty, "actionID should not be null or empty.");
-			});
-		}
-		public void ValidateBillingAdjustmentPeriodsRequestIsValid(AddAdjustementToBillingsRequest.BillingAdjustmentPeriodsRequest period)
-		{
-			Assert.Multiple(() =>
-			{
-				Assert.That(period.policyNo, Is.GreaterThan(0), "policyNo should be greater than 0.");
-				Assert.That(period.legacyPolNo, Is.Not.Null.Or.Empty, "legacyPolNo should not be null or empty.");
-				Assert.That(period.referenceNO, Is.Not.Null.Or.Empty, "referenceNO should not be null or empty.");
-				Assert.That(period.billingPeriod, Is.GreaterThan(0), "billingPeriod should be greater than 0.");
-				Assert.That(period.raisedDate, Is.Not.EqualTo(default(DateTime)), "raisedDate should be set.");
-				Assert.That(period.mandateType, Is.Not.Null.Or.Empty, "mandateType should not be null or empty.");
-				Assert.That(period.paymentType, Is.Not.Null.Or.Empty, "paymentType should not be null or empty.");
-				Assert.That(period.premiumAmount, Is.TypeOf<double>(), "premiumAmount should be a double.");
-				Assert.That(period.amountPaid, Is.TypeOf<double>(), "amountPaid should be a double.");
-				Assert.That(period.effectiveDate, Is.Not.EqualTo(default(DateTime)), "effectiveDate should be set.");
-			});
-		}
-
-		private void ValidateAddAdjustementToBillingsRequestIsValid(AddAdjustementToBillingsRequest.BillingAdjustmentPeriodsRequest period)
+        public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }
 
-        private void ValidateAddAdjustementToBillingsRequestIsValid(AddAdjustementToBillingsRequest.BillingsAdjustmentInformationRequest info)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ValidateAddAdjustementToBillingsResponseIsTrue(object response)
-		{
-			Assert.Multiple(() =>
-			{
-				Assert.That(response, Is.Not.Null, "Response should not be null.");
-				Assert.That(response, Is.TypeOf<bool>(), "Response should be of type bool.");
-				Assert.That((bool)response, Is.True, "Response should be true.");
-			});
-		}
-
-        public void ValidateAddAdjustmentToBillingsResponseDataIsNotNullOrEmpty(AddAdjustementToBillingsRequest addadjustementtobillings)
+        public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ClientServicing.Main.Models.AddAdjustementToBillings
+﻿namespace ClientServicing.Main.Models.AddAdjustementToBillings
 {
     public class GetOutstandingPolicyPremiumsRequest
     {
@@ -12,5 +6,5 @@ namespace ClientServicing.Main.Models.AddAdjustementToBillings
         public String legacyPolicyNumber { get; set; }
         public String auditToken { get; set; }
 
-	}
+    }
 }

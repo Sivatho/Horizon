@@ -10,7 +10,8 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Adjustm
 {
 	internal interface IGetAdjustedPeriodsValidationMethods
 	{
+		void ValidatGetAdjustedPeriodsRequestDataIsNotNullOrEmpty(GetAdjustedPeriodsRequest request);
 
-		public void ValidateAddAdjustmentToBillingsResponseDataIsNotNullOrEmpty(GetAdjustedPeriodsValidationMethod getadjustedperiods);
+        public void ValidateAddAdjustmentToBillingsResponseDataIsNotNullOrEmpty(GetAdjustedPeriodsValidationMethod getadjustedperiods);
 	}
 }

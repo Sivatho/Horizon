@@ -22,7 +22,7 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
             throw new NotImplementedException();
         }
 
-        public void ValidateBillingAdjustmentPeriodsRequestIsValid(BillingAdjustmentPeriodsRequest request)
+        public void ValidatGetAdjustedPeriodsRequestDataIsNotNullOrEmpty(GetAdjustedPeriodsRequest request)
 
         {
             Assert.Multiple(() =>

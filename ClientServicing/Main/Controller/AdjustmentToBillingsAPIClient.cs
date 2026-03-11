@@ -7,22 +7,22 @@ using ClientServicing.Main.Resources.Helper;
 using RestSharp;
 using static ClientServicing.Main.Resources.EndPoints.AdjustmentToBillings.AdjustmentToBillingsAPIEndPoints;
 
+
 namespace ClientServicing.Main.Controller
 {
     public class AdjustmentToBillingsAPIClient : IAdjustmentToBillings
+
     {
         private readonly RestClient _restClient;
 
         public IRestLibrary SharedRestLibrary { get; }
-       
+
 
         public AdjustmentToBillingsAPIClient(IRestLibrary sharedRestLibrary)
-		{
-			_restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
-		}
+        {
+            _restClient = sharedRestLibrary.RestClient ?? throw new ArgumentNullException(nameof(sharedRestLibrary.RestClient));
+        }
 
-
-        
         public async Task<RestResponse> AddAdjustementToBillingsAsync<T>(T payload) where T : class
         {
 
@@ -122,5 +122,9 @@ namespace ClientServicing.Main.Controller
 				return response;
 			}
 		}
+    }
+
+    public interface IAdjustmentToBillings
+    {
     }
 }

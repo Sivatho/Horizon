@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AddAdjustementToBillings
 {
-    public class BillingAdjustmentPeriodsRequest
+    public class GetAdjustedPeriodsRequest
     {
         public int adjustmentID { get; set; }
         public int policyNo { get; set; }

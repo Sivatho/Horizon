@@ -11,7 +11,8 @@ namespace ClientServicing.Main.AbstractComponents.API.IValidationMethods.Adjustm
     public interface ICancelAdjustmentToBillingsValidationMethods
     {
 
-        public void ValidatCancelAdjustmentToBillingsResponseDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest canceladjustmenttobillings);
-    
+        public void ValidatCancelAdjustmentToBillingsRequestDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest canceladjustmenttobillings);
+        public void ValidateResponseFieldParametersIsValid(CancelAdjustmentToBillingsResponse canceladjustmenttobillingsresponse);
+
     }
 }

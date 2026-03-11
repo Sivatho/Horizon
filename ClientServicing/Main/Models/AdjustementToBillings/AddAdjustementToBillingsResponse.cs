@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ClientServicing.Main.Models.AddAdjustementToBillings
 {
-    public class AddAdjustementToBillingsRResponse
+    public class AddAdjustementToBillingsResponse
     {
         public bool Result { get; set; }
     }

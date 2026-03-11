@@ -11,9 +11,23 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Adjustme
 {
     public class CancelAdjustmentToBillingsValidationMethods : AbstractValidationMethods, ICancelAdjustmentToBillingsValidationMethods
     {
-        public void ValidatCancelAdjustmentToBillingsResponseDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest canceladjustmenttobillings)
+        public void ValidatCancelAdjustmentToBillingsRequestDataIsNotNullOrEmpty(CancelAdjustmentToBillingsRequest request)
         {
-            throw new NotImplementedException();
+            Assert.Multiple(() =>
+            {
+                Assert.That(request, Is.Not.Null, "Request should not be null.");
+                Assert.That(request.policyNo, Is.GreaterThan(0), "PolicyNo should be greater than 0.");
+                Assert.That(request.adjustmentID, Is.GreaterThan(0), "AdjustmentID should be greater than 0.");
+            });
+        }
+
+        public  void ValidateResponseFieldParametersIsValid(CancelAdjustmentToBillingsResponse response)
+        {
+            Assert.Multiple(() =>
+            {
+                Assert.That(response, Is.Not.Null, "Response should not be null.");
+                Assert.That(response, Is.TypeOf<bool>(), "Response should be of type bool.");
+            });
         }
 
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)

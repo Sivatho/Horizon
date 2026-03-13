@@ -1,5 +1,12 @@
 ﻿using ClientServicing.Main.DataAccess.Interface;
 using Microsoft.Data.SqlClient;
+using System.Data;
+using System.Data.SqlClient;
+using ClientServicing.Main.Models.Policy.DBModels;
+using javax.management;
+using ClientServicing.Main.Resources.Helper;
+using sun.font;
+
 
 namespace ClientServicing.Main.DataAccess.SQL
 {
@@ -11,6 +18,7 @@ namespace ClientServicing.Main.DataAccess.SQL
     {
         private readonly string _connectionString;
         private const int CommandTimeoutSeconds = 30;
+        private UtilitiesHelper _utilitiesHelper = new UtilitiesHelper();
 
         public MsSqlDataAccess(string connectionString)
         {
@@ -109,6 +117,150 @@ namespace ClientServicing.Main.DataAccess.SQL
                 throw new InvalidOperationException(
                     $"Unexpected error executing command: {ex.Message}", ex);
             }
+        }
+        public async Task<DataTable> ExecuteDataTableAsync(string query, SqlParameter[]? parameters = null)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                throw new ArgumentException("Query cannot be null or empty.", nameof(query));
+
+            var dataTable = new DataTable();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.CommandTimeout = CommandTimeoutSeconds;
+
+                        if (parameters?.Length > 0)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log or handle DB-specific errors
+                throw new InvalidOperationException("Database query failed.", ex);
+            }
+
+            return dataTable;
+        }
+        public async Task<DataTable> ExecuteDataTableCompareAsync(string query, SqlParameter[]? parameters = null)
+        {
+            if (string.IsNullOrWhiteSpace(query))
+                throw new ArgumentException("Query cannot be null or empty.", nameof(query));
+
+            var dataTable = new DataTable();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand(query, connection))
+                    {
+                        command.CommandTimeout = CommandTimeoutSeconds;
+
+                        if (parameters?.Length > 0)
+                        {
+                            command.Parameters.AddRange(parameters);
+                        }
+
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log or handle DB-specific errors
+                throw new InvalidOperationException("Database query failed.", ex);
+            }
+
+            return dataTable;
+        }
+
+        public async Task<DataTable> ExecuteDataTableCompareAsync(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsHorizon)
+        {
+            var script = _utilitiesHelper.ReadTestScriptSQl( "HorizonScripts", "HorizonMainMember.sql");
+            var HorizondataTable = new DataTable();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand(script, connection))
+                    {
+                        command.CommandTimeout = CommandTimeoutSeconds;
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(HorizondataTable);
+                        }
+
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log or handle DB-specific errors
+                throw new InvalidOperationException("Database query failed.", ex);
+            }
+
+            return HorizondataTable;
+        }
+
+
+        public async Task<DataTable> ExecuteDataTable(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsD3)
+        {
+        
+        var script = _utilitiesHelper.ReadTestScriptSQl( "D3Scripts", "D3MainMember.sql");
+            var D3dataTable = new DataTable();
+
+            try
+            {
+                using (var connection = new SqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+
+                    using (var command = new SqlCommand(script, connection))
+                    {
+                        command.CommandTimeout = CommandTimeoutSeconds;
+
+                        using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(D3dataTable);
+                        }
+
+                        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                // Log or handle DB-specific errors
+                throw new InvalidOperationException("Database query failed.", ex);
+            }
+
+            return D3dataTable;
+        }
+        public Task<DataTable> ExecuteDataTable<T>(string query, SqlParameter[]? parameters = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

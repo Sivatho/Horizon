@@ -1,8 +1,10 @@
 ﻿using System.Globalization;
 using System.Text.Json;
+using AventStack.ExtentReports.Model;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Schema;
 using RestSharp;
+using sun.font;
 
 namespace ClientServicing.Main.Resources.Helper
 {
@@ -19,6 +21,9 @@ namespace ClientServicing.Main.Resources.Helper
             string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\..\"));
             string path = Path.Combine(projectRoot, "Test", "TestData", $"{parentFolderName}", $"{fileNameAndExt}");
 
+
+       // C: \Users\spadayachy\source\repos\Horizon\ClientServicing\Main\DataAccess\Scripts\D3Scripts
+
             if (!File.Exists(path))
             {
                 throw new FileNotFoundException($"File not found at path: {path}");
@@ -26,6 +31,23 @@ namespace ClientServicing.Main.Resources.Helper
 
             string jsonString = File.ReadAllText(path);     
             return jsonString;      
+        }
+
+        public string ReadTestScriptSQl(string subparentFolderName, string fileNameAndExt)
+        {
+
+            string baseDir = TestContext.CurrentContext.TestDirectory;
+            string projectRoot = Path.GetFullPath(Path.Combine(baseDir, @"..\..\..\"));
+
+            string SQLScriptPath = Path.Combine(projectRoot,"Main", "DataAccess", "Scripts", $"{subparentFolderName}", $"{fileNameAndExt}");
+
+            if (!File.Exists(SQLScriptPath))
+            {
+                throw new FileNotFoundException($"File not found at path: {SQLScriptPath}");
+            }
+
+            string DBScript = File.ReadAllText(SQLScriptPath);
+            return DBScript;
         }
         public void LogRequestAndResponse(RestRequest restRequest, RestResponse response)
         {

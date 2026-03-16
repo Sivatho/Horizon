@@ -31,11 +31,14 @@ namespace ClientServicing.Test.Tests.DataBaseComparTest
 
           
             // Query database to validate API side effects or state
-            var dbResultsD3 = await _dataAccess.QueryAsync<CompareHorizonMainMemberVsD3MainMember>(D3MainMemberFromD3);
-            var dbResultsHorizon = await _dataAccess.QueryAsync<CompareHorizonMainMemberVsD3MainMember>(MainMemberFromHorizon);
+            var dbResultsD3 = await _dataAccess.ExecuteDataTableD3Async<CompareHorizonMainMemberVsD3MainMember>(D3MainMemberFromD3);
+            var dbResultsHorizon = await _dataAccess.ExecuteDataTablefromHorizonCompareAsync<CompareHorizonMainMemberVsD3MainMember>(MainMemberFromHorizon);
 
-            DataTable MainMemberfromHorizonTable = await _dataAccess.ExecuteDataTable(dbResultsHorizon);
-            DataTable MainMemberfromD3Table = await _dataAccess.ExecuteDataTable(dbResultsD3);
+            var modelD3 = await _dataAccess.ExecuteModelD3Async<CompareHorizonMainMemberVsD3MainMember>(D3MainMemberFromD3);
+            var modelHorizon = await _dataAccess.ExecutemodelCompareAsync<CompareHorizonMainMemberVsD3MainMember>(MainMemberFromHorizon);
+
+            DataTable MainMemberfromHorizonTable = (DataTable)dbResultsHorizon;
+            DataTable MainMemberfromD3Table = (DataTable)dbResultsD3;
 
             //Assert.That(MainMemberfromHorizonTable.Rows.Count, Is.EqualTo(MainMemberfromD3Table.Rows.Count), "Row count mismatch between Horizon and D3 main member data.");
 

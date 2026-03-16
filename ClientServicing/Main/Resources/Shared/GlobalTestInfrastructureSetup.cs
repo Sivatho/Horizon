@@ -14,7 +14,7 @@ public class GlobalTestInfrastructureSetup
     [OneTimeSetUp]
     public void BeforeAllTests()
     {
-        ServiceProvider = ClientServicing.Main.Resources.Shared.ServiceSetup.BuilderServiceProvider();
+        ServiceProvider = ClientServicing.Main.Resources.Shared.ServiceSetup.BuilderServiceProvider;
         SharedRestLibrary = ServiceProvider.GetRequiredService<IRestLibrary>();
         _dataAccess = ServiceProvider.GetRequiredService<IDataAccess>();
     }

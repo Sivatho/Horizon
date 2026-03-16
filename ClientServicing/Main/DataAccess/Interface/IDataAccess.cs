@@ -8,9 +8,11 @@ namespace ClientServicing.Main.DataAccess.Interface
     {
         Task<IEnumerable<T>> QueryAsync<T>(string query, SqlParameter[]? parameters = null) where T : class, new();
         Task<bool> ExecuteAsync(string query, SqlParameter[]? parameters = null);
-        
-        Task<DataTable> ExecuteDataTableCompareAsync(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsHorizon);
-        Task<DataTable> ExecuteDataTable(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsD3);
         Task<DataTable> ExecuteDataTable<T>(string query, SqlParameter[]? parameters = null);
+    
+         Task<IEnumerable<T>> ExecutemodelCompareAsync<T>(string query, SqlParameter[]? parameters = null) where T : class, new();
+        Task<IEnumerable<T>> ExecuteModelD3Async<T>(string query, SqlParameter[]? parameters = null) where T : class, new();
+        Task<DataTable> ExecuteDataTableD3Async<T>(string d3MainMemberFromD3);
+        Task<DataTable> ExecuteDataTablefromHorizonCompareAsync<T>(string mainMemberFromHorizon);
     }
 }

@@ -1,11 +1,12 @@
 ﻿using ClientServicing.Main.DataAccess.Interface;
+using ClientServicing.Main.Models.Policy.DBModels;
+using ClientServicing.Main.Resources.Helper;
+using javax.management;
 using Microsoft.Data.SqlClient;
+using sun.font;
+using sun.java2d.loops;
 using System.Data;
 using System.Data.SqlClient;
-using ClientServicing.Main.Models.Policy.DBModels;
-using javax.management;
-using ClientServicing.Main.Resources.Helper;
-using sun.font;
 
 
 namespace ClientServicing.Main.DataAccess.SQL
@@ -17,17 +18,22 @@ namespace ClientServicing.Main.DataAccess.SQL
     public class MsSqlDataAccess : IDataAccess
     {
         private readonly string _connectionString;
+        private readonly string _connectionString1;
+        private readonly string _connectionString2;
         private const int CommandTimeoutSeconds = 30;
         private UtilitiesHelper _utilitiesHelper = new UtilitiesHelper();
 
-        public MsSqlDataAccess(string connectionString)
+        public MsSqlDataAccess(string connectionString, string connectionString1, string connectionString2)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
+            _connectionString1 = connectionString1 ?? throw new ArgumentNullException(nameof(connectionString1));
+            _connectionString2 = connectionString2 ?? throw new ArgumentNullException(nameof(connectionString2));
         }
 
         /// <summary>
         /// Executes a query and maps results to objects of type T.
         /// </summary>
+        /// pollicy model 
         public async Task<IEnumerable<T>> QueryAsync<T>(string query, SqlParameter[]? parameters = null)
             where T : class, new()
         {
@@ -81,6 +87,7 @@ namespace ClientServicing.Main.DataAccess.SQL
         /// <summary>
         /// Executes a non-query command (INSERT, UPDATE, DELETE).
         /// </summary>
+        /// policy model
         public async Task<bool> ExecuteAsync(string query, SqlParameter[]? parameters = null)
         {
             if (string.IsNullOrWhiteSpace(query))
@@ -118,7 +125,8 @@ namespace ClientServicing.Main.DataAccess.SQL
                     $"Unexpected error executing command: {ex.Message}", ex);
             }
         }
-        public async Task<DataTable> ExecuteDataTableAsync(string query, SqlParameter[]? parameters = null)
+
+        public async Task<DataTable> ExecuteDataTable<T>(string query, SqlParameter[]? parameters = null)
         {
             if (string.IsNullOrWhiteSpace(query))
                 throw new ArgumentException("Query cannot be null or empty.", nameof(query));
@@ -133,70 +141,38 @@ namespace ClientServicing.Main.DataAccess.SQL
 
                     using (var command = new SqlCommand(query, connection))
                     {
-                        command.CommandTimeout = CommandTimeoutSeconds;
+                        command.CommandTimeout = 30;
 
                         if (parameters?.Length > 0)
-                        {
                             command.Parameters.AddRange(parameters);
+
+                        using (var adapter = new SqlDataAdapter(command))
+                        {
+                            adapter.Fill(dataTable);
                         }
-
-                        var rowsAffected = await command.ExecuteNonQueryAsync();
-
                     }
                 }
             }
-            catch (SqlException ex)
+            catch (Exception ex)
             {
-                // Log or handle DB-specific errors
-                throw new InvalidOperationException("Database query failed.", ex);
-            }
-
-            return dataTable;
-        }
-        public async Task<DataTable> ExecuteDataTableCompareAsync(string query, SqlParameter[]? parameters = null)
-        {
-            if (string.IsNullOrWhiteSpace(query))
-                throw new ArgumentException("Query cannot be null or empty.", nameof(query));
-
-            var dataTable = new DataTable();
-
-            try
-            {
-                using (var connection = new SqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.CommandTimeout = CommandTimeoutSeconds;
-
-                        if (parameters?.Length > 0)
-                        {
-                            command.Parameters.AddRange(parameters);
-                        }
-
-                        var rowsAffected = await command.ExecuteNonQueryAsync();
-
-                    }
-                }
-            }
-            catch (SqlException ex)
-            {
-                // Log or handle DB-specific errors
                 throw new InvalidOperationException("Database query failed.", ex);
             }
 
             return dataTable;
         }
 
-        public async Task<DataTable> ExecuteDataTableCompareAsync(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsHorizon)
+
+
+        public async Task<DataTable> ExecuteDataTablefromHorizonCompareAsync<T>(string mainMemberFromHorizon)
         {
-            var script = _utilitiesHelper.ReadTestScriptSQl( "HorizonScripts", "HorizonMainMember.sql");
+
+            
+                var script = _utilitiesHelper.ReadTestScriptSQl("HorizonScripts", "HorizonMainMember.sql");
             var HorizondataTable = new DataTable();
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using (var connection = new SqlConnection(_connectionString1))
                 {
                     await connection.OpenAsync();
 
@@ -222,17 +198,16 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             return HorizondataTable;
         }
-
-
-        public async Task<DataTable> ExecuteDataTable(IEnumerable<CompareHorizonMainMemberVsD3MainMember> dbResultsD3)
+        public async Task<DataTable> ExecuteDataTableD3Async<T>(string d3MainMemberFromD3)
         {
-        
-        var script = _utilitiesHelper.ReadTestScriptSQl( "D3Scripts", "D3MainMember.sql");
+            var script = _utilitiesHelper.ReadTestScriptSQl("D3Scripts", "D3MainMembercompare.sql");
+            var HorizondataTable = new DataTable();
+
             var D3dataTable = new DataTable();
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using (var connection = new SqlConnection(_connectionString2))
                 {
                     await connection.OpenAsync();
 
@@ -244,9 +219,6 @@ namespace ClientServicing.Main.DataAccess.SQL
                         {
                             adapter.Fill(D3dataTable);
                         }
-
-                        var rowsAffected = await command.ExecuteNonQueryAsync();
-
                     }
                 }
             }
@@ -258,9 +230,113 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             return D3dataTable;
         }
-        public Task<DataTable> ExecuteDataTable<T>(string query, SqlParameter[]? parameters = null)
+
+        
+
+        public async Task<IEnumerable<T>> ExecutemodelCompareAsync<T>(string query, SqlParameter[]? parameters = null)
+             where T : class, new()
         {
-            throw new NotImplementedException();
+            {
+                if (string.IsNullOrWhiteSpace(query))
+                    throw new ArgumentException("Query cannot be null or empty", nameof(query));
+
+                var results = new List<T>();
+
+                try
+                {
+                    using (var connection = new SqlConnection(_connectionString1))
+                    {
+                        await connection.OpenAsync();
+
+                        using (var command = new SqlCommand(query, connection))
+                        {
+                            command.CommandTimeout = CommandTimeoutSeconds;
+
+                            if (parameters?.Length > 0)
+                            {
+                                command.Parameters.AddRange(parameters);
+                            }
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    var obj = new T();
+                                    SqlDataMapper.MapReaderToObject(reader, obj);
+                                    results.Add(obj);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new InvalidOperationException(
+                        $"Database query failed. Ensure Windows Authentication is enabled and your user has permissions. " +
+                        $"Error: {ex.Message}", ex);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(
+                        $"Unexpected error executing query: {ex.Message}", ex);
+                }
+
+                return results;
+            }
+        }
+
+        public async Task<IEnumerable<T>> ExecuteModelD3Async<T>(string query, SqlParameter[]? parameters = null)
+             where T : class, new()
+        {
+
+
+            {
+                if (string.IsNullOrWhiteSpace(query))
+                    throw new ArgumentException("Query cannot be null or empty", nameof(query));
+
+                var results = new List<T>();
+
+                try
+                {
+                    using (var connection = new SqlConnection(_connectionString2))
+                    {
+                        await connection.OpenAsync();
+
+                        using (var command = new SqlCommand(query, connection))
+                        {
+                            command.CommandTimeout = CommandTimeoutSeconds;
+
+                            if (parameters?.Length > 0)
+                            {
+                                command.Parameters.AddRange(parameters);
+                            }
+
+                            using (var reader = await command.ExecuteReaderAsync())
+                            {
+                                while (await reader.ReadAsync())
+                                {
+                                    var obj = new T();
+                                    SqlDataMapper.MapReaderToObject(reader, obj);
+                                    results.Add(obj);
+                                }
+                            }
+                        }
+                    }
+                }
+                catch (SqlException ex)
+                {
+                    throw new InvalidOperationException(
+                        $"Database query failed. Ensure Windows Authentication is enabled and your user has permissions. " +
+                        $"Error: {ex.Message}", ex);
+                }
+                catch (Exception ex)
+                {
+                    throw new InvalidOperationException(
+                        $"Unexpected error executing query: {ex.Message}", ex);
+                }
+
+                return results;
+            }
         }
     }
 }

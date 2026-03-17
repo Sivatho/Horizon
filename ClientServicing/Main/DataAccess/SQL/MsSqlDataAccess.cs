@@ -3,10 +3,12 @@ using ClientServicing.Main.Models.Policy.DBModels;
 using ClientServicing.Main.Resources.Helper;
 using javax.management;
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using sun.font;
 using sun.java2d.loops;
 using System.Data;
 using System.Data.SqlClient;
+using static ClientServicing.Main.Resources.Shared.ServiceSetup;
 
 
 namespace ClientServicing.Main.DataAccess.SQL
@@ -17,18 +19,22 @@ namespace ClientServicing.Main.DataAccess.SQL
     /// </summary>
     public class MsSqlDataAccess : IDataAccess
     {
-        private readonly string _connectionString;
-        private readonly string _connectionString1;
-        private readonly string _connectionString2;
-        private const int CommandTimeoutSeconds = 30;
-        private UtilitiesHelper _utilitiesHelper = new UtilitiesHelper();
 
-        public MsSqlDataAccess(string connectionString, string connectionString1, string connectionString2)
+        private readonly string _horizon;
+        private readonly string _migration;
+        private readonly string _d3;
+
+        private const int CommandTimeoutSeconds = 30;
+        private readonly UtilitiesHelper _utilitiesHelper = new();
+
+        public MsSqlDataAccess(IOptions<DatabaseSettings> options)
         {
-            _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
-            _connectionString1 = connectionString1 ?? throw new ArgumentNullException(nameof(connectionString1));
-            _connectionString2 = connectionString2 ?? throw new ArgumentNullException(nameof(connectionString2));
-        }
+        var settings = options.Value; // resolved once
+        _horizon = settings.Horizon;
+        _migration = settings.Migration;
+        _d3 = settings.D3;
+    }
+
 
         /// <summary>
         /// Executes a query and maps results to objects of type T.
@@ -44,29 +50,23 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using var connection = new SqlConnection(_horizon);
+                await connection.OpenAsync();
+
+                using var command = new SqlCommand(query, connection);
+                command.CommandTimeout = CommandTimeoutSeconds;
+
+                if (parameters?.Length > 0)
                 {
-                    await connection.OpenAsync();
+                    command.Parameters.AddRange(parameters);
+                }
 
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.CommandTimeout = CommandTimeoutSeconds;
-
-                        if (parameters?.Length > 0)
-                        {
-                            command.Parameters.AddRange(parameters);
-                        }
-
-                        using (var reader = await command.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                var obj = new T();
-                                SqlDataMapper.MapReaderToObject(reader, obj);
-                                results.Add(obj);
-                            }
-                        }
-                    }
+                using var reader = await command.ExecuteReaderAsync();
+                while (await reader.ReadAsync())
+                {
+                    var obj = new T();
+                    SqlDataMapper.MapReaderToObject(reader, obj);
+                    results.Add(obj);
                 }
             }
             catch (SqlException ex)
@@ -95,23 +95,19 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using var connection = new SqlConnection(_horizon);
+                await connection.OpenAsync();
+
+                using var command = new SqlCommand(query, connection);
+                command.CommandTimeout = CommandTimeoutSeconds;
+
+                if (parameters?.Length > 0)
                 {
-                    await connection.OpenAsync();
-
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.CommandTimeout = CommandTimeoutSeconds;
-
-                        if (parameters?.Length > 0)
-                        {
-                            command.Parameters.AddRange(parameters);
-                        }
-
-                        var rowsAffected = await command.ExecuteNonQueryAsync();
-                        return rowsAffected > 0;
-                    }
+                    command.Parameters.AddRange(parameters);
                 }
+
+                var rowsAffected = await command.ExecuteNonQueryAsync();
+                return rowsAffected > 0;
             }
             catch (SqlException ex)
             {
@@ -135,22 +131,18 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString))
+                using var connection = new SqlConnection(_horizon);
+                await connection.OpenAsync();
+
+                using var command = new SqlCommand(query, connection);
+                command.CommandTimeout = 30;
+
+                if (parameters?.Length > 0)
+                    command.Parameters.AddRange(parameters);
+
+                using (var adapter = new SqlDataAdapter(command))
                 {
-                    await connection.OpenAsync();
-
-                    using (var command = new SqlCommand(query, connection))
-                    {
-                        command.CommandTimeout = 30;
-
-                        if (parameters?.Length > 0)
-                            command.Parameters.AddRange(parameters);
-
-                        using (var adapter = new SqlDataAdapter(command))
-                        {
-                            adapter.Fill(dataTable);
-                        }
-                    }
+                    adapter.Fill(dataTable);
                 }
             }
             catch (Exception ex)
@@ -167,12 +159,12 @@ namespace ClientServicing.Main.DataAccess.SQL
         {
 
             
-                var script = _utilitiesHelper.ReadTestScriptSQl("HorizonScripts", "HorizonMainMember.sql");
+                var script = _utilitiesHelper.ReadTestScriptSQl("HorizonScripts", "GetMainMemberbypolicynumber.sql");
             var HorizondataTable = new DataTable();
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString1))
+                using (var connection = new SqlConnection(_migration))
                 {
                     await connection.OpenAsync();
 
@@ -201,13 +193,13 @@ namespace ClientServicing.Main.DataAccess.SQL
         public async Task<DataTable> ExecuteDataTableD3Async<T>(string d3MainMemberFromD3)
         {
             var script = _utilitiesHelper.ReadTestScriptSQl("D3Scripts", "D3MainMembercompare.sql");
-            var HorizondataTable = new DataTable();
+            
 
             var D3dataTable = new DataTable();
 
             try
             {
-                using (var connection = new SqlConnection(_connectionString2))
+                using (var connection = new SqlConnection(_d3))
                 {
                     await connection.OpenAsync();
 
@@ -244,7 +236,7 @@ namespace ClientServicing.Main.DataAccess.SQL
 
                 try
                 {
-                    using (var connection = new SqlConnection(_connectionString1))
+                    using (var connection = new SqlConnection(_horizon))
                     {
                         await connection.OpenAsync();
 
@@ -298,7 +290,7 @@ namespace ClientServicing.Main.DataAccess.SQL
 
                 try
                 {
-                    using (var connection = new SqlConnection(_connectionString2))
+                    using (var connection = new SqlConnection(_d3))
                     {
                         await connection.OpenAsync();
 

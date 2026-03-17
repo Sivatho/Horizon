@@ -1,5 +1,5 @@
 USE[Polly_C]
-GO
+
 
 -- Create Temp Table: Latest Billing Transaction
 -- Drop if exists
@@ -48,9 +48,9 @@ GROUP BY EntityNo;
 
 -- Final SELECT Using Only Temp Tables
 SELECT
-      p.Policy_NO                     AS policyNo
+      p.Policy_NO                     AS policy_NO
     , e.Entity_NO                     AS entityNo
-    , p.Legacy_Pol_No                 AS legacyPolicyNo
+    , p.Legacy_Pol_No                 AS legacy_Pol_No
     , b.Date_of_Commencement          AS dateOfCommencement
     , mph.Eff_From                    AS captureDate
     , pt.Telecom                      AS preferedCommunicationMethod
@@ -66,21 +66,21 @@ SELECT
     , CASE WHEN pt.TelTypeCD = 1 THEN pt.Telecom END AS emailAddress
     , pt.Telecom                     AS cellNumber 
 
-    , ea.physicalAddress1
-    , ea.physicalAddress2
-    , ea.physicalSuburb
-    , ea.physicalTown
-    , ea.physicalPostalCode
+    , ea.physicalAddress1            AS physicalAddress1
+    , ea.physicalAddress2            AS physicalAddress2
+    , ea.physicalSuburb              AS physicalSuburb
+    , ea.physicalTown                AS physicalTown
+    , ea.physicalPostalCode          AS physicalPostalCode
 
-    , ea.postalAddress1
-    , ea.postalAddress2
-    , ea.postalSuburb
-    , ea.postalTown
-    , ea.postalCode
+    , ea.postalAddress1              AS postalAddress1
+    , ea.postalAddress2              AS postalAddress2
+    , ea.postalSuburb                AS postalSuburb
+    , ea.postalTown                  AS postalTown
+    , ea.postalCode                  AS postalPostalCode
 
-    , ce.EntityGenderCD              AS genderCd
-    , cs.Smoker_CD
-    , cs.S_Desc                   AS smokerDesc
+    , ce.EntityGenderCD              AS genderCD
+    , cs.Smoker_CD                   AS smokerCd
+    , cs.S_Desc                      AS smokerDescr
 
     , lpt.EffDate                    AS lastBillingDate
     , lpt.EffDate                    AS lastPaidDate
@@ -111,5 +111,5 @@ JOIN config.C_Smoker cs                     ON ma.Att_Amount = cs.Smoker_CD
 
 JOIN polmas.M_Premium mp                    ON mp.Policy_NO = b.Policy_NO
 
-WHERE p.Legacy_Pol_No LIKE '6%'
+WHERE p.Legacy_Pol_No = '612329975'
 ORDER BY p.Policy_NO DESC, lpt.EffDate DESC;

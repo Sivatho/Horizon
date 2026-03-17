@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using ClientServicing.Main.AbstractComponents.API.Base;
 using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.DataAccess.SQL;
@@ -11,8 +10,6 @@ namespace ClientServicing.Main.Resources.Shared
 {
     public static class ServiceSetup
     {
-
-
         public class DatabaseSettings
         {
             public string Horizon { get; set; }
@@ -24,56 +21,72 @@ namespace ClientServicing.Main.Resources.Shared
         {
             get
             {
-                var configuration = new ConfigurationBuilder()
-                    .SetBasePath(AppContext.BaseDirectory)
-                    .AddJsonFile("appsettings.json", optional: true)
-                    .AddUserSecrets<ServiceSetupMarker>(optional: true)
-                    .AddEnvironmentVariables()
-                    .Build();
+                var configuration = BuildConfiguration();
 
-                // Load all connection strings directly
-                var settings = new DatabaseSettings
-                {
-                    Horizon = configuration.GetConnectionString("horizonDbConnectionString")
-                               ?? BuildWindowsAuthConnectionString(),
+                var settings = LoadDatabaseSettings(configuration);
 
-                    Migration = configuration.GetConnectionString("horizonMigrationDbConnectionString")
-                               ?? BuildWindowsAuthConnectionString(),
+                ValidateConnectionString(settings.Horizon, "horizonDbConnectionString");
+                ValidateConnectionString(settings.Migration, "horizonMigrationDbConnectionString");
+                ValidateConnectionString(settings.D3, "D3DbConnectionString");
 
-                    D3 = configuration.GetConnectionString("D3DbConnectionString")
-                               ?? BuildWindowsAuthConnectionString()
-                };
-
-                // Validate all connection strings use Windows Auth
-                ValidateWindowsAuth(settings.Horizon);
-                ValidateWindowsAuth(settings.Migration);
-                ValidateWindowsAuth(settings.D3);
-
-                // Build service collection
                 var services = new ServiceCollection();
 
                 services.AddSingleton<IConfiguration>(configuration);
-
-                // Register settings strongly typed
-                services.AddSingleton<IOptions<DatabaseSettings>>(
-                    Options.Create(settings));
-
-                // Register primary data access
+                services.AddSingleton<IOptions<DatabaseSettings>>(Options.Create(settings));
                 services.AddSingleton<IDataAccess, MsSqlDataAccess>();
-
                 services.AddSingleton<IRestLibrary, RestLibrary>();
 
                 return services.BuildServiceProvider();
             }
         }
 
-        private static void ValidateWindowsAuth(string connectionString)
+        private static IConfiguration BuildConfiguration()
         {
-            if (!UsesWindowsAuth(connectionString))
+            return new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                .AddUserSecrets<ServiceSetupMarker>(optional: true)
+                .AddEnvironmentVariables()
+                .Build();
+        }
+
+        private static DatabaseSettings LoadDatabaseSettings(IConfiguration config)
+        {
+            return new DatabaseSettings
+            {
+                Horizon = ReadRequired(config, "ConnectionStrings:horizonDbConnectionString"),
+                Migration = ReadRequired(config, "ConnectionStrings:horizonMigrationDbConnectionString"),
+                D3 = ReadRequired(config, "ConnectionStrings:D3DbConnectionString")
+            };
+        }
+
+        private static string ReadRequired(IConfiguration config, string key)
+        {
+            var value = config[key];
+
+            if (string.IsNullOrWhiteSpace(value))
             {
                 throw new InvalidOperationException(
-                    "Connection string must use Windows Authentication. " +
-                    $"Invalid: {Mask(connectionString)}"
+                    $"Missing required configuration key: '{key}'.\n\n" +
+                    "Ensure this key exists in one of the following:\n" +
+                    "- appsettings.json\n" +
+                    "- user secrets\n" +
+                    "- environment variables\n\n" +
+                    "To set via environment variables, use:\n" +
+                    $"  {key.Replace(":", "__")}=<connection string>"
+                );
+            }
+
+            return value.Trim();
+        }
+
+        private static void ValidateConnectionString(string cs, string keyName)
+        {
+            if (!UsesWindowsAuth(cs))
+            {
+                throw new InvalidOperationException(
+                    $"Connection string '{keyName}' MUST use Windows Authentication.\n" +
+                    $"Invalid value:\n{Mask(cs)}"
                 );
             }
         }
@@ -95,12 +108,6 @@ namespace ClientServicing.Main.Resources.Shared
                 "Password=***MASKED***",
                 System.Text.RegularExpressions.RegexOptions.IgnoreCase
             );
-        }
-
-        private static string BuildWindowsAuthConnectionString()
-        {
-            return "Server=TV4-POLSQLAG-01; Database=Polly_C; Integrated Security=true; " +
-                   "MultipleActiveResultSets=True; TrustServerCertificate=True; Encrypt=false;";
         }
     }
 

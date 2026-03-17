@@ -27,7 +27,7 @@
         public string? faxNumber { get; set; }
         public string? homeNumber { get; set; }
         public string? emailAddress { get; set; }
-        public string? cellNumber { get; set; }
+        public string cellNumber { get; set; }
         public string? workNumber { get; set; }
         public string? alternateNumber { get; set; }
         public string? whatsappNumber { get; set; }

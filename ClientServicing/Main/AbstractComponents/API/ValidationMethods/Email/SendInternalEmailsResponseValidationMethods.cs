@@ -13,11 +13,29 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Email
 {
     public class SendInternalEmailsResponseValidationMethods : AbstractValidationMethods, IPolicyBenefitExtendedMemberResponseValidationMethods
     {
+
+        public void ValidateSendInternalEmailsResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse)
+        {
+            Assert.That(sendInternalEmailsResponse, Is.Not.Null.Or.Empty, "SendInternalEmailsResponse: should not be null or empty");
+        }
+        public SendInternalEmailsResponse PopulateSendInternalEmailsResponse(RestResponse response)
+        {
+            using JsonDocument jsonDocument = JsonDocument.Parse(response.Content);
+            SendInternalEmailsResponse sendInternalEmailsResponse = new SendInternalEmailsResponse();
+
+            var value = jsonDocument.RootElement.GetString();
+            if (!string.IsNullOrEmpty(value))
+            {
+                sendInternalEmailsResponse.responseString = value;
+            }
+
+            return sendInternalEmailsResponse;
+        }
+
         public override void ValidateResponseFieldParametersIsValid(RestResponse restResponse)
         {
             throw new NotImplementedException();
         }
-
         public override void ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(RestResponse restResponse)
         {
             var rules = new List<JsonValidationRule> {
@@ -38,11 +56,6 @@ namespace ClientServicing.Main.AbstractComponents.API.ValidationMethods.Email
                 Assert.Fail("Value: data type is not string.");
 
             }
-        }
-
-        public void ValidateSendInternalEmailsResponseDataIsNotNullOrEmpty(SendInternalEmailsResponse sendInternalEmailsResponse)
-        {
-            Assert.That(sendInternalEmailsResponse, Is.Not.Null.Or.Empty, "SendInternalEmailsResponse: should not be null or empty");
         }
     }
 }

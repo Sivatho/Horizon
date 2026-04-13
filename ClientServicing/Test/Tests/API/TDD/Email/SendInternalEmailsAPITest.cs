@@ -17,7 +17,8 @@ namespace ClientServicing.Test.Tests.API.TDD.Email
         public async Task Given_SendInternalEmailsRequestIsValid_When_SendInternalEmailsAsync_Then_ValidateResponseStatusCodeOK_And_PropertyNameIsValid_And_DataTypesIsValid_And_SendInternalEmailsResponseDataIsNotNullOrEmpty()
         {
             //Arrange
-            SendInternalEmailsRequest sendInternalEmailsRequest = JsonSerializer.Deserialize<SendInternalEmailsRequest>(utilitiesHelper.ReadTestDataJson("Email/Data", "SendInternalEmailRequestPayloadIsValid.json"));
+            var sendInternalEmailsRequest = JsonSerializer.Deserialize<SendInternalEmailsRequest>(
+                utilitiesHelper.ReadTestDataJson("Email/Data", "SendInternalEmailRequestPayloadIsValid.json"));
 
             //Act
             var response = await emailAPIClient.SendInternalEmailsAsync(sendInternalEmailsRequest);
@@ -28,20 +29,6 @@ namespace ClientServicing.Test.Tests.API.TDD.Email
             ValidateResponseStatusCode(response, HttpStatusCode.OK);
             ValidateResponsePropertyNameIsValid_And_DataTypesIsValid(response);
             ValidateSendInternalEmailsResponseDataIsNotNullOrEmpty(sendInternalEmailsResponse);
-        }
-
-        private SendInternalEmailsResponse PopulateSendInternalEmailsResponse(RestResponse response)
-        {
-            using JsonDocument jsonDocument = JsonDocument.Parse(response.Content);
-            SendInternalEmailsResponse sendInternalEmailsResponse = new SendInternalEmailsResponse();
-
-            var value = jsonDocument.RootElement.GetString();
-            if (!string.IsNullOrEmpty(value))
-            {
-                sendInternalEmailsResponse.responseString = value;
-            }
-
-            return sendInternalEmailsResponse;
         }
     }
 }

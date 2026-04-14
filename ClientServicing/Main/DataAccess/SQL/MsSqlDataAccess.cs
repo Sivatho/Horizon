@@ -1,13 +1,8 @@
-﻿using ClientServicing.Main.DataAccess.Interface;
-using ClientServicing.Main.Models.Policy.DBModels;
+﻿using System.Data;
+using ClientServicing.Main.DataAccess.Interface;
 using ClientServicing.Main.Resources.Helper;
-using javax.management;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Options;
-using sun.font;
-using sun.java2d.loops;
-using System.Data;
-using System.Data.SqlClient;
 using static ClientServicing.Main.Resources.Shared.ServiceSetup;
 
 
@@ -19,7 +14,6 @@ namespace ClientServicing.Main.DataAccess.SQL
     /// </summary>
     public class MsSqlDataAccess : IDataAccess
     {
-
         private readonly string _horizon;
         private readonly string _migration;
         private readonly string _d3;
@@ -34,7 +28,6 @@ namespace ClientServicing.Main.DataAccess.SQL
         _migration = settings.Migration;
         _d3 = settings.D3;
     }
-
 
         /// <summary>
         /// Executes a query and maps results to objects of type T.
@@ -153,8 +146,6 @@ namespace ClientServicing.Main.DataAccess.SQL
             return dataTable;
         }
 
-
-
         public async Task<DataTable> ExecuteDataTablefromHorizonCompareAsync<T>(string mainMemberFromHorizon)
         {
 
@@ -222,9 +213,7 @@ namespace ClientServicing.Main.DataAccess.SQL
 
             return D3dataTable;
         }
-
         
-
         public async Task<IEnumerable<T>> ExecutemodelCompareAsync<T>(string query, SqlParameter[]? parameters = null)
              where T : class, new()
         {

@@ -10,7 +10,6 @@ namespace ClientServicing.Main.Controller
     public class BankAPIClient : IBank
     {
         readonly RestClient restClient;
-        readonly UtilitiesHelper utilitiesHelper = new UtilitiesHelper();
         private readonly IRestLibrary sharedRestLibrary;
 
         public BankAPIClient(IRestLibrary sharedRestLibrary)
